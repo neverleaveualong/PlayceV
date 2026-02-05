@@ -40,6 +40,10 @@ export const AppDataSource = new DataSource({
     League,
   ],
   migrations: [path.join(__dirname, "migrations", "*.ts")],
-
+  ...(process.env.DB_SSL === 'true' && {
+    ssl: {
+      rejectUnauthorized: false,
+    },
+  }),
 });
 

@@ -51,7 +51,7 @@ const userController = {
     try {
       log("\n🔁 [비밀번호 초기화]");
 
-      const token = req.params.token;
+      const token = req.params.token as string;
       const { newPassword } = req.body;
 
       if (!token || !newPassword) {
