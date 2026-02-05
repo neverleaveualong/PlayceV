@@ -1,9 +1,19 @@
 import Redis from "ioredis";
 
-export const redisClient = new Redis({
+const redisOptions: any = {
     host: process.env.REDIS_HOST || 'playce-redis',
     port: Number(process.env.REDIS_PORT) || 6379,
-});
+};
+
+if (process.env.REDIS_PASSWORD) {
+    redisOptions.password = process.env.REDIS_PASSWORD;
+}
+
+if (process.env.REDIS_TLS === 'true') {
+    redisOptions.tls = {};
+}
+
+export const redisClient = new Redis(redisOptions);
 
 redisClient.on('ready', () => {
     console.log('✅ Redis 연결 성공');

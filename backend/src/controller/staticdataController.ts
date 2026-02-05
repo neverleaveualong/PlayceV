@@ -18,7 +18,7 @@ const staticdataController = {
   },
 
   getSmallRegions: async (req: Request, res: Response, next: NextFunction) => {
-    const bigRegionId = parseInt(req.params.big_region_id);
+    const bigRegionId = parseInt(req.params.big_region_id as string);
     try {
       log(`\n📍 [지역 소분류 조회] 요청 - 대분류 ID: ${bigRegionId}`);
       const data = await staticdataService.getSmallRegions(bigRegionId);
@@ -43,7 +43,7 @@ const staticdataController = {
   },
 
   getLeagues: async (req: Request, res: Response, next: NextFunction) => {
-    const sportId = parseInt(req.params.sport_id);
+    const sportId = parseInt(req.params.sport_id as string);
     try {
       log(`\n🥇 [리그 목록 조회] 요청 - 종목 ID: ${sportId}`);
       const data = await staticdataService.getLeaguesBySport(sportId);
