@@ -44,7 +44,7 @@ const storeController = {
       log("\n🍴 [식당 수정] 요청");
 
       const userId: number = req.user!.userId;
-      const storeId: number = parseInt(req.params.storeId);
+      const storeId: number = parseInt(req.params.storeId as string);
       const files = req.files as S3File[];
 
       let imgUrls: string[] = [];
@@ -78,7 +78,7 @@ const storeController = {
     try {
       log("\n🍴 [식당 삭제] 요청");
       const userId: number = req.user!.userId;
-      const storeId = parseInt(req.params.storeId);
+      const storeId = parseInt(req.params.storeId as string);
 
       await storeService.deleteStore(userId, storeId);
 
@@ -94,7 +94,7 @@ const storeController = {
     try {
       log("\n🍴 [식당 상세 조회] 요청");
       const userId: number | undefined = req.user?.userId;
-      const storeId = parseInt(req.params.storeId);
+      const storeId = parseInt(req.params.storeId as string);
 
       const responseData = await storeService.getStoreDetail(userId, storeId);
 
