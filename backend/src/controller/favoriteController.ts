@@ -10,7 +10,7 @@ const favoriteController = {
     try {
       log("\n⭐ [즐겨찾기 추가] 요청");
       const userId = req.user!.userId;
-      const storeId = parseInt(req.params.store_id);
+      const storeId = parseInt(req.params.store_id as string);
 
       const result = await favoriteService.addFavorite(userId, storeId);
 
@@ -30,7 +30,7 @@ const favoriteController = {
     try {
       log("\n⭐ [즐겨찾기 삭제] 요청");
       const userId = req.user!.userId;
-      const storeId = parseInt(req.params.store_id);
+      const storeId = parseInt(req.params.store_id as string);
 
       const result = await favoriteService.removeFavorite(userId, storeId);
 

@@ -24,7 +24,7 @@ const deleteBroadcast = async (req: AuthRequest, res: Response, next: NextFuncti
     log("\n🚀 [중계 일정 삭제] 요청");
 
     const userId = req.user!.userId;
-    const { broadcasts_id } = req.params;
+    const broadcasts_id = req.params.broadcasts_id as string;
     await broadcastService.deleteBroadcast(Number(broadcasts_id), userId);
 
     log("✅ [중계 일정 삭제] 성공");
@@ -40,7 +40,7 @@ const updateBroadcast = async (req: AuthRequest, res: Response, next: NextFuncti
     log("\n🚀 [중계 일정 수정] 요청");
 
     const userId = req.user!.userId;
-    const { broadcasts_id } = req.params;
+    const broadcasts_id = req.params.broadcasts_id as string;
     await broadcastService.updateBroadcast(Number(broadcasts_id), req.body, userId);
 
     log("✅ [중계 일정 수정] 성공");
@@ -55,7 +55,7 @@ const getBroadcastsByStore = async (req: Request, res: Response, next: NextFunct
   try {
     log("\n🚀 [중계 일정 조회] 요청");
 
-    const { store_id } = req.params;
+    const store_id = req.params.store_id as string;
     const broadcasts = await broadcastService.getBroadcastsByStore(Number(store_id));
 
     log("✅ [중계 일정 조회] 성공");
