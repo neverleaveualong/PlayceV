@@ -1,7 +1,5 @@
 import { create } from "zustand";
 
-export type TAuthModal = "login" | "signup" | null;
-
 interface AuthState {
   isLoginModalOpen: boolean;
   isSignupModalOpen: boolean;
@@ -30,9 +28,7 @@ export const removeToken = () => {
 const useAuthStore = create<AuthState>((set) => ({
   isLoginModalOpen: false,
   isSignupModalOpen: false,
-  isAuthModalOpen: false,
   isLoggedIn: getToken() ? true : false,
-  authModal: null,
   isPasswordResetModalOpen: false,
   setIsPasswordResetModalOpen: (modal) =>
     set({ isPasswordResetModalOpen: modal }),
