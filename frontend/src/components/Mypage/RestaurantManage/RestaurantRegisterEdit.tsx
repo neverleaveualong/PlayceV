@@ -147,17 +147,6 @@ const RestaurantRegisterEdit = ({ mode }: StoreFormModalProps) => {
       }
     }
 
-    // onSubmit({
-    //   store_name: storeName,
-    //   business_number: businessNumber,
-    //   address,
-    //   phone,
-    //   opening_hours: openingHours,
-    //   menus: menus.filter(Boolean),
-    //   type,
-    //   description,
-    //   img_urls: imgUrls.filter(Boolean),
-    // });
   };
   return (
     <div className="p-2">
