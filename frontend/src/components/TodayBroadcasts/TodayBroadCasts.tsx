@@ -3,11 +3,7 @@ import { FiTv, FiImage } from "react-icons/fi";
 import useMapStore from "../../stores/mapStore";
 import RestaurantDetailComponent from "../RestaurantDetail/RestaurantDetail";
 import type { Broadcast } from "../../types/restaurant.types";
-
-function formatTime(timeStr: string | undefined | null): string {
-  if (!timeStr) return "";
-  return timeStr.split(":").slice(0, 2).join(":");
-}
+import { formatTimeShort } from "../../utils/formatTime";
 
 export default function TodayBroadcastSidebar() {
   const restaurants = useMapStore((state) => state.restaurants);
@@ -137,7 +133,7 @@ export default function TodayBroadcastSidebar() {
                         <></>
                       )}
                       <span className="ml-auto text-xs text-gray-500">
-                        {formatTime(game.match_time)}
+                        {formatTimeShort(game.match_time)}
                       </span>
                     </div>
                     {game.etc && (

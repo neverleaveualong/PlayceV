@@ -5,15 +5,11 @@ import type { RestaurantDetail, Broadcast } from "../../types/restaurant.types";
 import EmptyMessage from "./EmptyMessage";
 import useBroadcastStore from "../../stores/broadcastStore";
 import useMypageStore from "../../stores/mypageStore";
+import { formatTimeShort } from "../../utils/formatTime";
 
 function getKoreanDateString(dateStr: string): string {
   const date = new Date(dateStr);
   return `${date.getMonth() + 1}월 ${date.getDate()}일`;
-}
-
-function formatTime(timeStr: string | undefined | null): string {
-  if (!timeStr) return "";
-  return timeStr.split(":").slice(0, 2).join(":");
 }
 
 function groupByDate(broadcasts: Broadcast[]): Record<string, Broadcast[]> {
@@ -117,7 +113,7 @@ export default function RestaurantDetailBroadcastTab({
                       {b.sport}
                     </span>
                     <span className="ml-auto text-xs text-gray-400">
-                      {formatTime(b.match_time)}
+                      {formatTimeShort(b.match_time)}
                     </span>
                   </div>
                   {b.team_one && b.team_two ? (
@@ -205,7 +201,7 @@ export default function RestaurantDetailBroadcastTab({
                           {b.sport}
                         </span>
                         <span className="ml-auto text-xs text-gray-400">
-                          {formatTime(b.match_time)}
+                          {formatTimeShort(b.match_time)}
                         </span>
                       </div>
                       {b.team_one && b.team_two ? (
