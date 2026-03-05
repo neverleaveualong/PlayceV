@@ -1,4 +1,3 @@
-import BroadcastRestaurants from "../components/Mypage/RestaurantManage/Broadcasts/BroadcastRestaurants";
 import BroadcastView from "../components/Mypage/RestaurantManage/Broadcasts/BroadcastView";
 import RestaurantEdit from "../components/Mypage/RestaurantManage/RestaurantEdit";
 import RestaurantHome from "../components/Mypage/RestaurantManage/RestaurantHome";
@@ -19,11 +18,6 @@ export const menuItems = [
     key: "restaurant-edit",
     label: "식당 수정",
     component: () => <RestaurantEdit />,
-  },
-  {
-    key: "schedule-view-restaurants",
-    label: "중계 일정 관리",
-    component: () => <BroadcastRestaurants />,
   },
   {
     key: "schedule-view-broadcasts",

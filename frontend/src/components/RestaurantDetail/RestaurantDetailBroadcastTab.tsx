@@ -30,7 +30,6 @@ function compareTime(a: string, b: string): number {
 interface RestaurantDetailBroadcastTabProps {
   detail: RestaurantDetail;
   storeId: number;
-  onManage?: () => void;
 }
 
 export default function RestaurantDetailBroadcastTab({
