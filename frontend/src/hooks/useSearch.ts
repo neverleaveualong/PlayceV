@@ -1,8 +1,8 @@
-import { fetchSearchResults } from "../api/search.api";
-import { useSearchStore } from "../stores/searchStore";
-import { getDistanceFromLatLon } from "../utils/distanceUtils";
-import useMapStore from "../stores/mapStore";
-import type { SearchResultItem } from "../types/search";
+import { fetchSearchResults } from "@/api/search.api";
+import { useSearchStore } from "@/stores/searchStore";
+import { getDistanceFromLatLon } from "@/utils/distanceUtils";
+import useMapStore from "@/stores/mapStore";
+import type { SearchResultItem } from "@/types/search";
 
 export const useSearch = () => {
   const {

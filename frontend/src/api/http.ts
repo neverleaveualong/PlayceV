@@ -1,5 +1,5 @@
 import axios, { type AxiosRequestConfig } from "axios";
-import { getToken, removeToken } from "../stores/authStore";
+import { getToken, removeToken } from "@/stores/authStore";
 
 const BASE_URL = import.meta.env.VITE_BASE_URL;
 const DEFAULT_TIMEOUT = 30000;

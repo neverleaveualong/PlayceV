@@ -1,4 +1,4 @@
-import type { SearchResultItem } from "../types/search";
+import type { SearchResultItem } from "@/types/search";
 
 export type SortType = "distance" | "datetime";
 

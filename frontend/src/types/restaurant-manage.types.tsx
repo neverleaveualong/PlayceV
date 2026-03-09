@@ -1,7 +1,7 @@
-import BroadcastView from "../components/Mypage/RestaurantManage/Broadcasts/BroadcastView";
-import RestaurantEdit from "../components/Mypage/RestaurantManage/RestaurantEdit";
-import RestaurantHome from "../components/Mypage/RestaurantManage/RestaurantHome";
-import RestaurantRegister from "../components/Mypage/RestaurantManage/RestaurantRegister";
+import BroadcastView from "@/components/broadcast/BroadcastView";
+import RestaurantEdit from "@/components/mypage/restaurant-manage/RestaurantEdit";
+import RestaurantHome from "@/components/mypage/restaurant-manage/RestaurantHome";
+import RestaurantRegister from "@/components/mypage/restaurant-manage/RestaurantRegister";
 
 export const menuItems = [
   {

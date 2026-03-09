@@ -7,9 +7,9 @@ import {
   passwordReset,
   type PasswordResetRequestProps,
   type PasswordResetProps,
-} from "../api/auth.api";
-import useAuthStore from "../stores/authStore";
-import { apiErrorStatusMessage } from "../utils/apiErrorStatusMessage";
+} from "@/api/auth.api";
+import useAuthStore from "@/stores/authStore";
+import { apiErrorStatusMessage } from "@/utils/apiErrorStatusMessage";
 
 export const useAuth = () => {
   const { storeLogin, storeLogout, setIsLoginModalOpen, setIsSignupModalOpen } =
