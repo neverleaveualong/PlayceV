@@ -1,7 +1,7 @@
 import { useSearchStore } from "@/stores/searchStore";
 import { useRegionStore } from "@/stores/regionStore";
 import { useSportStore } from "@/stores/sportStore";
-import Button from "@/components/Common/Button";
+import Button from "@/components/common/Button";
 
 const ResetSearchButton = () => {
   const resetSearch = useSearchStore((state) => state.reset);

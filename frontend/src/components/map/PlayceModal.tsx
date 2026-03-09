@@ -2,7 +2,7 @@ import type { RestaurantBasic } from "@/types/restaurant.types";
 import { CustomOverlayMap } from "react-kakao-maps-sdk";
 import { FiStar, FiMapPin, FiX } from "react-icons/fi";
 import { FaStar } from "react-icons/fa";
-import Button from "@/components/Common/Button";
+import Button from "@/components/common/Button";
 import useFavoriteStore from "@/stores/favoriteStore";
 import useAuthStore from "@/stores/authStore";
 

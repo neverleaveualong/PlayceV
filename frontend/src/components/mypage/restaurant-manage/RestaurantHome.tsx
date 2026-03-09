@@ -7,7 +7,7 @@ import type { AxiosError } from "axios";
 import { FiEdit2, FiTrash2, FiTv } from "react-icons/fi";
 import RestaurantDetailComponent from "@/components/restaurant/RestaurantDetail";
 import type { MyStore } from "@/types/restaurant.types";
-import Button from "@/components/Common/Button";
+import Button from "@/components/common/Button";
 import useBroadcastStore from "@/stores/broadcastStore";
 import FloatingRegisterButton from "@/components/broadcast/FloatingRegisterButton";
 

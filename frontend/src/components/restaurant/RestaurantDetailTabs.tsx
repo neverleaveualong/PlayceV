@@ -1,7 +1,7 @@
 // RestaurantDetailTabs.tsx
 import { FiTv, FiImage } from "react-icons/fi";
 import { FaUtensils } from "react-icons/fa";
-import Button from "@/components/Common/Button";
+import Button from "@/components/common/Button";
 import classNames from "classnames";
 
 const TABS = ["홈", "메뉴", "사진", "중계"] as const;

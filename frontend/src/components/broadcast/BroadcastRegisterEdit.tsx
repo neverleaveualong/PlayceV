@@ -8,8 +8,8 @@ import useBroadcastFormStore, {
   handleLeagueChange,
   handleSportChange,
 } from "@/stores/broadcastFormStore";
-import SportSelect from "@/components/Common/SportSelect";
-import LeagueSelect from "@/components/Common/LeagueSelect";
+import SportSelect from "@/components/common/SportSelect";
+import LeagueSelect from "@/components/common/LeagueSelect";
 import type { BroadcastRegisterEditProps } from "@/types/broadcastForm";
 import useMypageStore from "@/stores/mypageStore";
 import type { Sport, League } from "@/types/staticdata";
