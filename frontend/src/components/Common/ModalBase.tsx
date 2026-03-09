@@ -57,7 +57,6 @@ const ModalBase = ({
             "overflow-y-auto flex-grow ",
             { "mt-0": type === "mypage" },
             { "mt-5": type !== "mypage" }
-            // { "px-4 py-3": type !== "mypage" }
           )}
         >
           {children}

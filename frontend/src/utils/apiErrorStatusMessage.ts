@@ -1,6 +1,6 @@
 import type { AxiosError } from "axios";
 
-export type errorCodeMessage = {
+type errorCodeMessage = {
   code: number;
   message: string;
 };
