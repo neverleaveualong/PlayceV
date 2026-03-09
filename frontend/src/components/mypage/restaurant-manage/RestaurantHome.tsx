@@ -1,15 +1,15 @@
-import useMypageStore from "../../../stores/mypageStore";
-import useAuthStore from "../../../stores/authStore";
+import useMypageStore from "@/stores/mypageStore";
+import useAuthStore from "@/stores/authStore";
 import { useEffect, useState } from "react";
-import { deleteStore, myStores } from "../../../api/restaurant.api";
-import { apiErrorStatusMessage } from "../../../utils/apiErrorStatusMessage";
+import { deleteStore, myStores } from "@/api/restaurant.api";
+import { apiErrorStatusMessage } from "@/utils/apiErrorStatusMessage";
 import type { AxiosError } from "axios";
 import { FiEdit2, FiTrash2, FiTv } from "react-icons/fi";
-import RestaurantDetailComponent from "../../restaurant/RestaurantDetail";
-import type { MyStore } from "../../../types/restaurant.types";
-import Button from "../../Common/Button";
-import useBroadcastStore from "../../../stores/broadcastStore";
-import FloatingRegisterButton from "../../broadcast/FloatingRegisterButton";
+import RestaurantDetailComponent from "@/components/restaurant/RestaurantDetail";
+import type { MyStore } from "@/types/restaurant.types";
+import Button from "@/components/Common/Button";
+import useBroadcastStore from "@/stores/broadcastStore";
+import FloatingRegisterButton from "@/components/broadcast/FloatingRegisterButton";
 
 const RestaurantHome = () => {
   const [stores, setStores] = useState<MyStore[]>([]);

@@ -1,11 +1,11 @@
-import useAuthStore from "../../stores/authStore";
-import InputText from "../Common/InputText";
+import useAuthStore from "@/stores/authStore";
+import InputText from "@/components/Common/InputText";
 import { useForm } from "react-hook-form";
-import type { SignupProps } from "../../api/auth.api";
-import Button from "../Common/Button";
-import ErrorText from "../Common/ErrorText";
-import { useAuth } from "../../hooks/useAuth";
-import ModalBase from "../Common/ModalBase";
+import type { SignupProps } from "@/api/auth.api";
+import Button from "@/components/Common/Button";
+import ErrorText from "@/components/Common/ErrorText";
+import { useAuth } from "@/hooks/useAuth";
+import ModalBase from "@/components/Common/ModalBase";
 
 interface SignupFormProps {
   email: string;

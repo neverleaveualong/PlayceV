@@ -1,8 +1,8 @@
 import { useState } from "react";
 import SearchResultItem from "./SearchResultItem";
-import { useSearchStore } from "../../stores/searchStore";
-import { sortSearchResults } from "../../utils/sortUtils";
-import RestaurantDetailComponent from "../restaurant/RestaurantDetail";
+import { useSearchStore } from "@/stores/searchStore";
+import { sortSearchResults } from "@/utils/sortUtils";
+import RestaurantDetailComponent from "@/components/restaurant/RestaurantDetail";
 
 const SearchResultList = () => {
   const isSearching = useSearchStore((state) => state.isSearching);

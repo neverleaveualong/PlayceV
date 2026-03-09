@@ -1,4 +1,4 @@
-import type { RegisterStoreProps } from "../../../api/restaurant.api";
+import type { RegisterStoreProps } from "@/api/restaurant.api";
 
 const validateStoreForm = (mode: string, data: RegisterStoreProps) => {
   const newErrors: { [key: string]: string } = {};

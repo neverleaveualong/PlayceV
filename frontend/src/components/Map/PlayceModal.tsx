@@ -1,10 +1,10 @@
-import type { RestaurantBasic } from "../../types/restaurant.types";
+import type { RestaurantBasic } from "@/types/restaurant.types";
 import { CustomOverlayMap } from "react-kakao-maps-sdk";
 import { FiStar, FiMapPin, FiX } from "react-icons/fi";
 import { FaStar } from "react-icons/fa";
-import Button from "../Common/Button";
-import useFavoriteStore from "../../stores/favoriteStore";
-import useAuthStore from "../../stores/authStore";
+import Button from "@/components/Common/Button";
+import useFavoriteStore from "@/stores/favoriteStore";
+import useAuthStore from "@/stores/authStore";
 
 const defaultImage = "https://placehold.co/130x130?text=No+Image";
 

@@ -1,5 +1,5 @@
 import { FaTimes } from "react-icons/fa";
-import Button from "../Common/Button";
+import Button from "@/components/Common/Button";
 
 export interface UserInfoProps {
   email: string;

@@ -1,11 +1,11 @@
 import { Fragment, useState } from "react";
 import { FiTv, FiChevronDown, FiChevronUp, FiVolume2 } from "react-icons/fi";
-import Button from "../Common/Button";
-import type { RestaurantDetail, Broadcast } from "../../types/restaurant.types";
+import Button from "@/components/Common/Button";
+import type { RestaurantDetail, Broadcast } from "@/types/restaurant.types";
 import EmptyMessage from "./EmptyMessage";
-import useBroadcastStore from "../../stores/broadcastStore";
-import useMypageStore from "../../stores/mypageStore";
-import { formatTimeShort } from "../../utils/formatTime";
+import useBroadcastStore from "@/stores/broadcastStore";
+import useMypageStore from "@/stores/mypageStore";
+import { formatTimeShort } from "@/utils/formatTime";
 
 function getKoreanDateString(dateStr: string): string {
   const date = new Date(dateStr);

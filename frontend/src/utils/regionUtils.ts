@@ -1,4 +1,4 @@
-import type { SelectedRegion } from "../types/staticdata";
+import type { SelectedRegion } from "@/types/staticdata";
 
 export const getUpdatedRegionSelection = (
   current: SelectedRegion[],

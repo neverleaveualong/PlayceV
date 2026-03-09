@@ -1,11 +1,11 @@
-import { useAuth } from "../../hooks/useAuth";
+import { useAuth } from "@/hooks/useAuth";
 import { useForm } from "react-hook-form";
-import type { LoginProps } from "../../api/auth.api";
-import InputText from "../Common/InputText";
-import useAuthStore from "../../stores/authStore";
-import Button from "../Common/Button";
-import ErrorText from "../Common/ErrorText";
-import ModalBase from "../Common/ModalBase";
+import type { LoginProps } from "@/api/auth.api";
+import InputText from "@/components/Common/InputText";
+import useAuthStore from "@/stores/authStore";
+import Button from "@/components/Common/Button";
+import ErrorText from "@/components/Common/ErrorText";
+import ModalBase from "@/components/Common/ModalBase";
 
 const LoginModal = () => {
   const { userLogin } = useAuth();

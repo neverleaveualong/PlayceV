@@ -1,5 +1,5 @@
-import { useSearchStore } from "../../stores/searchStore";
-import InputText from "../Common/InputText";
+import { useSearchStore } from "@/stores/searchStore";
+import InputText from "@/components/Common/InputText";
 
 interface SearchInputProps {
   className?: string;

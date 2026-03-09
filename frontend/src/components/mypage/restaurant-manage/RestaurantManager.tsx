@@ -1,14 +1,14 @@
 import { FaArrowLeft, FaTimes } from "react-icons/fa";
-import useMypageStore from "../../../stores/mypageStore";
+import useMypageStore from "@/stores/mypageStore";
 import {
   menuItems,
   type ExtendedSubpage,
-} from "../../../types/restaurant-manage.types";
-import type { MypageProps } from "../MypageModal";
-import useBroadcastStore from "../../../stores/broadcastStore";
-import Button from "../../Common/Button";
-import BroadcastRegister from "../../broadcast/BroadcastRegister";
-import BroadcastEdit from "../../broadcast/BroadcastEdit";
+} from "@/types/restaurant-manage.types";
+import type { MypageProps } from "@/components/Mypage/MypageModal";
+import useBroadcastStore from "@/stores/broadcastStore";
+import Button from "@/components/Common/Button";
+import BroadcastRegister from "@/components/broadcast/BroadcastRegister";
+import BroadcastEdit from "@/components/broadcast/BroadcastEdit";
 
 const RestaurantManager = ({ onClose }: MypageProps) => {
   const { restaurantSubpage, restaurantEditName, setRestaurantSubpage } =

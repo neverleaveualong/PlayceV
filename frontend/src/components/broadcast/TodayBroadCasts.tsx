@@ -1,9 +1,9 @@
 import { useState, useMemo, useEffect } from "react";
 import { FiTv, FiImage } from "react-icons/fi";
-import useMapStore from "../../stores/mapStore";
-import RestaurantDetailComponent from "../restaurant/RestaurantDetail";
-import type { Broadcast } from "../../types/restaurant.types";
-import { formatTimeShort } from "../../utils/formatTime";
+import useMapStore from "@/stores/mapStore";
+import RestaurantDetailComponent from "@/components/restaurant/RestaurantDetail";
+import type { Broadcast } from "@/types/restaurant.types";
+import { formatTimeShort } from "@/utils/formatTime";
 
 export default function TodayBroadcastSidebar() {
   const restaurants = useMapStore((state) => state.restaurants);

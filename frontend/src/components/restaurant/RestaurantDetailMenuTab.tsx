@@ -1,5 +1,5 @@
 import { FaUtensils } from "react-icons/fa";
-import type { RestaurantDetail, MenuItem } from "../../types/restaurant.types";
+import type { RestaurantDetail, MenuItem } from "@/types/restaurant.types";
 import EmptyMessage from "./EmptyMessage";
 
 export default function RestaurantDetailMenuTab({

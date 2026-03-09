@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import validateStoreForm from "./validateStoreForm";
-import ErrorMessage from "../../Common/ErrorMessage";
+import ErrorMessage from "@/components/Common/ErrorMessage";
 import MenuInputList from "./MenuInputList";
 import {
   editStore,
@@ -8,14 +8,14 @@ import {
   registerStore,
   type EditStoreProps,
   type RegisterStoreProps,
-} from "../../../api/restaurant.api";
-import useMypageStore from "../../../stores/mypageStore";
-import FindAddressButton from "../../Common/FindAddressButton";
+} from "@/api/restaurant.api";
+import useMypageStore from "@/stores/mypageStore";
+import FindAddressButton from "@/components/Common/FindAddressButton";
 import ImageUrlInputList from "./ImageUrlInputList";
-import type { menu } from "../../../types/menu";
-import { apiErrorStatusMessage } from "../../../utils/apiErrorStatusMessage";
+import type { menu } from "@/types/menu";
+import { apiErrorStatusMessage } from "@/utils/apiErrorStatusMessage";
 import type { AxiosError } from "axios";
-import useAuthStore from "../../../stores/authStore";
+import useAuthStore from "@/stores/authStore";
 
 interface StoreFormModalProps {
   mode: "create" | "edit";

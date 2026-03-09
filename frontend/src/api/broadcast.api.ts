@@ -1,6 +1,6 @@
 import httpClient from "./http";
 
-import type { CreateBroadcastPayload } from "../types/broadcastForm";
+import type { CreateBroadcastPayload } from "@/types/broadcastForm";
 
 export const createBroadcast = async (data: CreateBroadcastPayload) => {
   const response = await httpClient.post("/broadcasts", data);

@@ -1,6 +1,6 @@
 import { useMap, MapMarker } from "react-kakao-maps-sdk";
-import useMapStore from "../../stores/mapStore";
-import type { RestaurantBasic } from "../../types/restaurant.types";
+import useMapStore from "@/stores/mapStore";
+import type { RestaurantBasic } from "@/types/restaurant.types";
 
 interface PlayceMapMarkerProps {
   restaurant: RestaurantBasic;

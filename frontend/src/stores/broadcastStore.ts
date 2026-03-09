@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import type { Broadcast } from "../types/broadcast";
+import type { Broadcast } from "@/types/broadcast";
 
 const today = new Date();
 
