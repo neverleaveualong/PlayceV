@@ -1,14 +1,10 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from "react-icons/md";
 import { FaBars, FaRegCalendarAlt } from "react-icons/fa";
 
 import TabList from "./TabLists";
 import Calendar from "./Calendar";
-import BroadcastRegister from "./BroadcastRegister";
-import BroadcastEdit from "./BroadcastEdit";
-
 import useBroadcastStore, { dateInfo } from "../../../../stores/broadcastStore";
-import useBroadcastFormStore from "../../../../stores/broadcastFormStore";
 import { getBroadcast } from "../../../../api/broadcast.api";
 import getDaysInMonth from "../../../../utils/getDaysInMonth";
 import useMypageStore from "../../../../stores/mypageStore";
@@ -19,8 +15,6 @@ const BroadcastView = () => {
   const twoMonthsAgo = new Date(yearNum, monthNum - 2);
   const twoMonthsLater = new Date(yearNum, monthNum + 2);
   const { setRestaurantSubpage } = useMypageStore();
-
-  const [formMode, setFormMode] = useState<"create" | "edit" | null>(null);
 
   const {
     year,
@@ -34,8 +28,6 @@ const BroadcastView = () => {
     setBroadcastLists,
     scrollDateCenter,
   } = useBroadcastStore();
-
-  const { editingId } = useBroadcastFormStore();
 
   const isInTwoMonths = (year: number, month: number) => {
     const target = new Date(year, month - 1);
@@ -72,28 +64,6 @@ const BroadcastView = () => {
     fetchBroadcasts();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [storeId]);
-
-  if (formMode === "create") {
-    return (
-      <BroadcastRegister
-        onClose={() => {
-          setFormMode(null);
-          fetchBroadcasts();
-        }}
-      />
-    );
-  }
-
-  if (formMode === "edit" && editingId) {
-    return (
-      <BroadcastEdit
-        onClose={() => {
-          setFormMode(null);
-          fetchBroadcasts();
-        }}
-      />
-    );
-  }
 
   const today = new Date();
   const todayYear = today.getFullYear();
