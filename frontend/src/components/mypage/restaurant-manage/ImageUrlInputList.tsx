@@ -1,5 +1,5 @@
-import ImageUpload from "../../../Common/ImageUpload";
-import ErrorMessage from "./ErrorMessage";
+import ImageUpload from "../../Common/ImageUpload";
+import ErrorMessage from "../../Common/ErrorMessage";
 
 interface ImageUrlInputListProps {
   imgUrls: string[];

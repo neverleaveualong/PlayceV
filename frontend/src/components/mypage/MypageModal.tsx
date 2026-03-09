@@ -1,7 +1,7 @@
 import Sidebar from "../Mypage/Sidebar";
 import FavoriteList from "./FavoriteList";
 import UserInfo from "./UserInfo";
-import RestaurantManager from "./RestaurantManage/RestaurantManager";
+import RestaurantManager from "./restaurant-manage/RestaurantManager";
 import useMypageStore from "../../stores/mypageStore";
 import { useUserInfo } from "../../hooks/useUser";
 import ModalBase from "../Common/ModalBase";

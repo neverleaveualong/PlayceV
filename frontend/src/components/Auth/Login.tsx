@@ -4,7 +4,7 @@ import type { LoginProps } from "../../api/auth.api";
 import InputText from "../Common/InputText";
 import useAuthStore from "../../stores/authStore";
 import Button from "../Common/Button";
-import ErrorText from "./ErrorText";
+import ErrorText from "../Common/ErrorText";
 import ModalBase from "../Common/ModalBase";
 
 const LoginModal = () => {
