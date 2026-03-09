@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import type { SelectedRegion } from "../types/staticdata";
+import type { SelectedRegion } from "@/types/staticdata";
 
 interface RegionState {
   selectedRegions: SelectedRegion[];

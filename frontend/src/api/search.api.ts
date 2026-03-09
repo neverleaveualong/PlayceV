@@ -1,6 +1,6 @@
 import qs from "qs";
-import http from "../api/http";
-import type { SearchResultItem } from "../types/search";
+import http from "@/api/http";
+import type { SearchResultItem } from "@/types/search";
 
 interface SearchParams {
   search?: string;

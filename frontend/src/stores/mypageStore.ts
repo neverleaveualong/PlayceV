@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import type { ExtendedSubpage } from "../types/restaurant-manage.types";
+import type { ExtendedSubpage } from "@/types/restaurant-manage.types";
 
 type TabType = "favorite" | "profile" | "restaurant";
 

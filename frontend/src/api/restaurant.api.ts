@@ -1,7 +1,7 @@
 import axios from "axios";
 import { requestHandler } from "./http";
-import { getToken } from "../stores/authStore";
-import type { menu } from "../types/menu";
+import { getToken } from "@/stores/authStore";
+import type { menu } from "@/types/menu";
 
 export const getStoreDetail = (storeId: number) =>
   requestHandler("get", `/stores/${storeId}`);

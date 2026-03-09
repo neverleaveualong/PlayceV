@@ -1,6 +1,6 @@
 import { create } from "zustand";
-import { getFavorites, addFavorite, removeFavorite } from "../api/favorite.api";
-import type { RestaurantBasic } from "../types/restaurant.types";
+import { getFavorites, addFavorite, removeFavorite } from "@/api/favorite.api";
+import type { RestaurantBasic } from "@/types/restaurant.types";
 
 interface FavoriteStoreState {
   favorites: RestaurantBasic[];

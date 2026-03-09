@@ -1,5 +1,5 @@
-import { searchNearby, type SearchNearbyProps } from "../api/map.api";
-import useMapStore from "../stores/mapStore";
+import { searchNearby, type SearchNearbyProps } from "@/api/map.api";
+import useMapStore from "@/stores/mapStore";
 
 export const useMap = () => {
   const { setRestaurants } = useMapStore();
