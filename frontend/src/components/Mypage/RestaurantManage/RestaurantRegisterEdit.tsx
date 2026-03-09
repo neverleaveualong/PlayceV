@@ -11,7 +11,6 @@ import {
 } from "../../../api/restaurant.api";
 import useMypageStore from "../../../stores/mypageStore";
 import FindAddressButton from "../../Common/FindAddressButton";
-import type { RestaurantDetail } from "../../../types/restaurant.types";
 import ImageUrlInputList from "./modals/ImageUrlInputList";
 import type { menu } from "../../../types/menu";
 import { apiErrorStatusMessage } from "../../../utils/apiErrorStatusMessage";
@@ -26,13 +25,12 @@ const RestaurantRegisterEdit = ({ mode }: StoreFormModalProps) => {
   const { restaurantEditId, setRestaurantSubpage } = useMypageStore();
   const { storeLogout } = useAuthStore();
 
-  const [storeDetail, setStoreDetail] = useState<RestaurantDetail | null>(null);
   const [storeName, setStoreName] = useState("");
   const [businessNumber, setBusinessNumber] = useState("");
   const [address, setAddress] = useState("");
   const [phone, setPhone] = useState("");
   const [openingHours, setOpeningHours] = useState("");
-  const [type, setType] = useState(storeDetail?.type || "");
+  const [type, setType] = useState("");
   const [description, setDescription] = useState("");
   const [menus, setMenus] = useState<menu[]>([{ name: "", price: "" }]); // Todo
   const [imgUrls, setImgUrls] = useState<string[]>([]);
@@ -43,7 +41,6 @@ const RestaurantRegisterEdit = ({ mode }: StoreFormModalProps) => {
     const fetchStoreDetail = async () => {
       const res = await getStoreDetail(restaurantEditId!);
       const data = res.data;
-      setStoreDetail(data);
       setStoreName(data.store_name);
       setAddress(data.address);
       setPhone(data.phone);
