@@ -32,7 +32,7 @@ const RestaurantRegisterEdit = ({ mode }: StoreFormModalProps) => {
   const [openingHours, setOpeningHours] = useState("");
   const [type, setType] = useState("");
   const [description, setDescription] = useState("");
-  const [menus, setMenus] = useState<menu[]>([{ name: "", price: "" }]); // Todo
+  const [menus, setMenus] = useState<menu[]>([{ name: "", price: "" }]);
   const [imgUrls, setImgUrls] = useState<string[]>([]);
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
   const [agree, setAgree] = useState(false);
