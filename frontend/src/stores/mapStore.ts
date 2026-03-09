@@ -11,7 +11,6 @@ interface MapState {
   zoomLevel: number;
   setPosition: (pos: latlng) => void;
   setRestaurants: (restaurantsList: RestaurantBasic[]) => void;
-  resetSpots: () => void;
   setOpenedModal: (modal: number) => void;
   closeModal: () => void;
   setRefreshBtn: (button: boolean) => void;
@@ -29,9 +28,6 @@ const useMapStore = create<MapState>((set) => ({
   },
   setRestaurants: (restaurantsList) => {
     set({ restaurants: restaurantsList });
-  },
-  resetSpots: () => {
-    set({ restaurants: [] });
   },
   setOpenedModal: (modal) => {
     set({ openedModal: modal });

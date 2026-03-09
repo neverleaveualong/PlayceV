@@ -4,9 +4,7 @@ import { Dayjs } from "dayjs";
 interface BroadcastFormState {
   date: Dayjs | null;
   time: Dayjs | null;
-  sport: string;
   sportId: number | null;
-  league: string;
   leagueId: number | null;
   team1: string | null;
   team2: string | null;
@@ -28,9 +26,7 @@ interface BroadcastFormState {
 const useBroadcastFormStore = create<BroadcastFormState>((set) => ({
   date: null,
   time: null,
-  sport: "",
   sportId: null,
-  league: "",
   leagueId: null,
   team1: null,
   team2: null,
@@ -39,8 +35,8 @@ const useBroadcastFormStore = create<BroadcastFormState>((set) => ({
 
   setDate: (date) => set({ date }),
   setTime: (time) => set({ time }),
-  setSport: (sport, sportId) => set({ sport, sportId }),
-  setLeague: (league, leagueId) => set({ league, leagueId }),
+  setSport: (_sport, sportId) => set({ sportId }),
+  setLeague: (_league, leagueId) => set({ leagueId }),
   setteam1: (team) => set({ team1: team }),
   setteam2: (team) => set({ team2: team }),
   setNote: (note) => set({ note }),
@@ -49,9 +45,7 @@ const useBroadcastFormStore = create<BroadcastFormState>((set) => ({
     set({
       date: null,
       time: null,
-      sport: "",
       sportId: null,
-      league: "",
       leagueId: null,
       team1: "",
       team2: "",
@@ -60,20 +54,17 @@ const useBroadcastFormStore = create<BroadcastFormState>((set) => ({
   setInitialForm: (data) => set({ ...data }),
 }));
 
-export const handleSportChange = (sport: string, sportId: number) => {
+export const handleSportChange = (_sport: string, sportId: number) => {
   useBroadcastFormStore.setState({
-    sport,
     sportId,
-    league: "",
     leagueId: null,
     team1: "",
     team2: "",
   });
 };
 
-export const handleLeagueChange = (league: string, leagueId: number | null) => {
+export const handleLeagueChange = (_league: string, leagueId: number | null) => {
   useBroadcastFormStore.setState({
-    league,
     leagueId,
     team1: "",
     team2: "",

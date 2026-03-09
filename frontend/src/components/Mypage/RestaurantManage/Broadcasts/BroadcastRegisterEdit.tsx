@@ -92,8 +92,6 @@ const BroadcastRegisterEdit = (props: BroadcastRegisterEditProps) => {
             setInitialForm({
               date: dayjs(target.match_date),
               time: dayjs(target.match_time, "HH:mm"),
-              sport: target.sport,
-              league: target.league,
               team1: target.team_one,
               team2: target.team_two,
               note: target.etc,
