@@ -4,7 +4,7 @@ import { getToken, removeToken } from "../stores/authStore";
 const BASE_URL = import.meta.env.VITE_BASE_URL;
 const DEFAULT_TIMEOUT = 30000;
 
-export const createClient = (config?: AxiosRequestConfig) => {
+const createClient = (config?: AxiosRequestConfig) => {
   const axiosInstance = axios.create({
     baseURL: BASE_URL,
     timeout: DEFAULT_TIMEOUT,
@@ -29,7 +29,6 @@ export const createClient = (config?: AxiosRequestConfig) => {
     (error) => {
       if (error.response?.status === 401) {
         removeToken();
-        // window.location.href = "/login";
       }
       return Promise.reject(error);
     }
@@ -40,7 +39,7 @@ export const createClient = (config?: AxiosRequestConfig) => {
 
 export const httpClient = createClient();
 
-export type RequestMethod = "get" | "post" | "put" | "patch" | "delete";
+type RequestMethod = "get" | "post" | "put" | "patch" | "delete";
 
 export const requestHandler = async <T = unknown>(
   method: RequestMethod,
@@ -55,7 +54,6 @@ export const requestHandler = async <T = unknown>(
         ? `?${new URLSearchParams(payload).toString()}`
         : "";
       response = await httpClient.get(`${url}${query}`);
-      // response = await httpClient.get(url);
       break;
     }
     case "post":

@@ -1,13 +1,12 @@
 import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from "react-icons/md";
 import { getDay } from "../../../../utils/getDay";
 import getDaysInMonth from "../../../../utils/getDaysInMonth";
-import { useRef, useEffect, useState } from "react";
+import { useRef, useEffect } from "react";
 import useBroadcastStore from "../../../../stores/broadcastStore";
 import useBroadcastFormStore from "../../../../stores/broadcastFormStore";
 import BroadcastActionButtons from "./BroadcastActionButtons";
 import { deleteBroadcast, getBroadcast } from "../../../../api/broadcast.api";
 import { formatTime } from "../../../../utils/formatTime";
-import { fetchSports } from "../../../../api/staticdata.api";
 import useMypageStore from "../../../../stores/mypageStore";
 
 const TabList = () => {
@@ -24,12 +23,6 @@ const TabList = () => {
   } = useBroadcastStore();
   const { setEditingId } = useBroadcastFormStore();
   const { setRestaurantSubpage } = useMypageStore();
-
-  const [, setSports] = useState<{ id: number; name: string }[]>([]);
-
-  useEffect(() => {
-    fetchSports().then(setSports);
-  }, []);
 
   useEffect(() => {
     setTabRef(tabRef);

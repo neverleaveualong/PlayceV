@@ -111,7 +111,6 @@ export default function RestaurantDetailComponent({
           <RestaurantDetailBroadcastTab
             detail={detail}
             storeId={storeId}
-            onManage={() => alert("중계일정 관리 기능을 여기에 구현하세요!")}
           />
         )}
       </div>
