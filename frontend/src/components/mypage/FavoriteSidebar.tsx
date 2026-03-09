@@ -2,8 +2,8 @@ import { useEffect, useState } from "react";
 import { FaStar } from "react-icons/fa";
 import useFavoriteStore from "../../stores/favoriteStore";
 import useAuthStore from "../../stores/authStore";
-import RestaurantCardList from "../RestaurantCardList/RestaurantCardList";
-import RestaurantDetailComponent from "../RestaurantDetail/RestaurantDetail.tsx";
+import RestaurantCardList from "../restaurant/RestaurantCardList";
+import RestaurantDetailComponent from "../restaurant/RestaurantDetail";
 
 export default function FavoriteSidebar() {
   const isLoggedIn = useAuthStore((state) => state.isLoggedIn);

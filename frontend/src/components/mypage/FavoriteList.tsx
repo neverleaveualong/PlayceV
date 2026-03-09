@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { FaTimes } from "react-icons/fa";
 import useFavoriteStore from "../../stores/favoriteStore";
-import RestaurantCardList from "../RestaurantCardList/RestaurantCardList";
-import RestaurantDetailComponent from "../RestaurantDetail/RestaurantDetail";
+import RestaurantCardList from "../restaurant/RestaurantCardList";
+import RestaurantDetailComponent from "../restaurant/RestaurantDetail";
 import Button from "../Common/Button";
 
 interface FavoriteListProps {

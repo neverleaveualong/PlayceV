@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import useMapStore from "../stores/mapStore";
 import { useMap } from "./useMap";
-import { CITY_STATION, SEARCHNEARBY_RADIUS } from "../constant/map-constant";
+import { CITY_STATION, SEARCHNEARBY_RADIUS } from "../constants/map-constant";
 
 export const useGeoLocation = (options = {}) => {
   const { setPosition } = useMapStore();

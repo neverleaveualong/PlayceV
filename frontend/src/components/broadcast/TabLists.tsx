@@ -1,13 +1,13 @@
 import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from "react-icons/md";
-import { getDay } from "../../../../utils/getDay";
-import getDaysInMonth from "../../../../utils/getDaysInMonth";
+import { getDay } from "../../utils/getDay";
+import getDaysInMonth from "../../utils/getDaysInMonth";
 import { useRef, useEffect } from "react";
-import useBroadcastStore from "../../../../stores/broadcastStore";
-import useBroadcastFormStore from "../../../../stores/broadcastFormStore";
+import useBroadcastStore from "../../stores/broadcastStore";
+import useBroadcastFormStore from "../../stores/broadcastFormStore";
 import BroadcastActionButtons from "./BroadcastActionButtons";
-import { deleteBroadcast, getBroadcast } from "../../../../api/broadcast.api";
-import { formatTime } from "../../../../utils/formatTime";
-import useMypageStore from "../../../../stores/mypageStore";
+import { deleteBroadcast, getBroadcast } from "../../api/broadcast.api";
+import { formatTime } from "../../utils/formatTime";
+import useMypageStore from "../../stores/mypageStore";
 
 const TabList = () => {
   const { year, month, date, setDate } = useBroadcastStore();

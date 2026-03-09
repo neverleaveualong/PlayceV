@@ -7,8 +7,8 @@ import {
 import type { MypageProps } from "../MypageModal";
 import useBroadcastStore from "../../../stores/broadcastStore";
 import Button from "../../Common/Button";
-import BroadcastRegister from "./Broadcasts/BroadcastRegister";
-import BroadcastEdit from "./Broadcasts/BroadcastEdit";
+import BroadcastRegister from "../../broadcast/BroadcastRegister";
+import BroadcastEdit from "../../broadcast/BroadcastEdit";
 
 const RestaurantManager = ({ onClose }: MypageProps) => {
   const { restaurantSubpage, restaurantEditName, setRestaurantSubpage } =

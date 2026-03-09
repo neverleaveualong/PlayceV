@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import validateStoreForm from "./modals/validateStoreForm";
-import ErrorMessage from "./modals/ErrorMessage";
-import MenuInputList from "./modals/MenuInputList";
+import validateStoreForm from "./validateStoreForm";
+import ErrorMessage from "../../Common/ErrorMessage";
+import MenuInputList from "./MenuInputList";
 import {
   editStore,
   getStoreDetail,
@@ -11,7 +11,7 @@ import {
 } from "../../../api/restaurant.api";
 import useMypageStore from "../../../stores/mypageStore";
 import FindAddressButton from "../../Common/FindAddressButton";
-import ImageUrlInputList from "./modals/ImageUrlInputList";
+import ImageUrlInputList from "./ImageUrlInputList";
 import type { menu } from "../../../types/menu";
 import { apiErrorStatusMessage } from "../../../utils/apiErrorStatusMessage";
 import type { AxiosError } from "axios";

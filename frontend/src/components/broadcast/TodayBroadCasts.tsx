@@ -1,7 +1,7 @@
 import { useState, useMemo, useEffect } from "react";
 import { FiTv, FiImage } from "react-icons/fi";
 import useMapStore from "../../stores/mapStore";
-import RestaurantDetailComponent from "../RestaurantDetail/RestaurantDetail";
+import RestaurantDetailComponent from "../restaurant/RestaurantDetail";
 import type { Broadcast } from "../../types/restaurant.types";
 import { formatTimeShort } from "../../utils/formatTime";
 
