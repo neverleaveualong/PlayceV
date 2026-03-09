@@ -1,12 +1,12 @@
-import Button from "../Common/Button";
+import Button from "@/components/Common/Button";
 import {
   FaSignInAlt,
   FaSignOutAlt,
   FaUserAlt,
   FaUserPlus,
 } from "react-icons/fa";
-import useAuthStore from "../../stores/authStore";
-import useMypageStore from "../../stores/mypageStore";
+import useAuthStore from "@/stores/authStore";
+import useMypageStore from "@/stores/mypageStore";
 
 const AuthHeader: React.FC = () => {
   const { isLoggedIn, storeLogout, setIsLoginModalOpen, setIsSignupModalOpen } =

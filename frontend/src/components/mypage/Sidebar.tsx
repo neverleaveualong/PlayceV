@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 import { FaStar, FaUserEdit, FaStore } from "react-icons/fa";
-import useMypageStore from "../../stores/mypageStore";
-import useBroadcastStore from "../../stores/broadcastStore";
+import useMypageStore from "@/stores/mypageStore";
+import useBroadcastStore from "@/stores/broadcastStore";
 
 interface SidebarProps {
   selected: "favorite" | "profile" | "restaurant";

@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
-import { fetchBigRegions, fetchSmallRegions } from "../api/staticdata.api";
-import type { BigRegion, SmallRegion } from "../types/staticdata";
+import { fetchBigRegions, fetchSmallRegions } from "@/api/staticdata.api";
+import type { BigRegion, SmallRegion } from "@/types/staticdata";
 
 export const useRegions = (selectedBigRegionId?: number) => {
   const {

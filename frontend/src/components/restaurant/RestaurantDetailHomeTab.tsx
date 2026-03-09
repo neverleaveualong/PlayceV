@@ -1,5 +1,5 @@
 import { FiMapPin, FiClock, FiPhone, FiFileText } from "react-icons/fi";
-import type { RestaurantDetail } from "../../types/restaurant.types";
+import type { RestaurantDetail } from "@/types/restaurant.types";
 import classNames from "classnames";
 
 export default function RestaurantDetailHomeTab({

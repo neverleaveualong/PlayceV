@@ -1,5 +1,5 @@
 import BroadcastRegisterEdit from "./BroadcastRegisterEdit";
-import useBroadcastStore from "../../stores/broadcastStore";
+import useBroadcastStore from "@/stores/broadcastStore";
 
 const BroadcastRegister = ({ onClose }: { onClose: () => void }) => {
   const { storeId, setBroadcastLists } = useBroadcastStore();

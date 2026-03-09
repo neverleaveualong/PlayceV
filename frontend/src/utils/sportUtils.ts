@@ -1,4 +1,4 @@
-import type { SelectedSports } from "../types/staticdata";
+import type { SelectedSports } from "@/types/staticdata";
 
 export const getUpdatedLeagueSelection = (
   current: SelectedSports[],

@@ -1,18 +1,18 @@
 import { useEffect, useState } from "react";
 import { DatePicker, TimePicker } from "antd";
 import dayjs from "dayjs";
-import { createBroadcast, editBroadcast } from "../../api/broadcast.api";
-import { fetchSports, fetchLeagues } from "../../api/staticdata.api";
-import useBroadcastStore from "../../stores/broadcastStore";
+import { createBroadcast, editBroadcast } from "@/api/broadcast.api";
+import { fetchSports, fetchLeagues } from "@/api/staticdata.api";
+import useBroadcastStore from "@/stores/broadcastStore";
 import useBroadcastFormStore, {
   handleLeagueChange,
   handleSportChange,
-} from "../../stores/broadcastFormStore";
-import SportSelect from "../Common/SportSelect";
-import LeagueSelect from "../Common/LeagueSelect";
-import type { BroadcastRegisterEditProps } from "../../types/broadcastForm";
-import useMypageStore from "../../stores/mypageStore";
-import type { Sport, League } from "../../types/staticdata";
+} from "@/stores/broadcastFormStore";
+import SportSelect from "@/components/Common/SportSelect";
+import LeagueSelect from "@/components/Common/LeagueSelect";
+import type { BroadcastRegisterEditProps } from "@/types/broadcastForm";
+import useMypageStore from "@/stores/mypageStore";
+import type { Sport, League } from "@/types/staticdata";
 
 const BroadcastRegisterEdit = (props: BroadcastRegisterEditProps) => {
   const {

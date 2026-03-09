@@ -1,7 +1,7 @@
-import Button from "../Common/Button";
-import useMapStore from "../../stores/mapStore";
+import Button from "@/components/Common/Button";
+import useMapStore from "@/stores/mapStore";
 import { IoReloadOutline } from "react-icons/io5";
-import { searchNearby } from "../../api/map.api";
+import { searchNearby } from "@/api/map.api";
 
 const SpotRefreshButton = () => {
   const { position, zoomLevel, setRefreshBtn, setRestaurants } = useMapStore();

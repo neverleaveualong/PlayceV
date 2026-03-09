@@ -1,6 +1,6 @@
 import { FaStar } from "react-icons/fa";
 import { FiStar, FiX } from "react-icons/fi";
-import type { RestaurantDetail } from "../../types/restaurant.types";
+import type { RestaurantDetail } from "@/types/restaurant.types";
 
 interface RestaurantDetailImageSectionProps {
   detail: RestaurantDetail;

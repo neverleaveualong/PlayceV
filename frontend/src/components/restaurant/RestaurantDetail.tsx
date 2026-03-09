@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
-import type { RestaurantDetail } from "../../types/restaurant.types";
-import useFavoriteStore from "../../stores/favoriteStore";
-import useAuthStore from "../../stores/authStore";
-import { getStoreDetail } from "../../api/restaurant.api";
+import type { RestaurantDetail } from "@/types/restaurant.types";
+import useFavoriteStore from "@/stores/favoriteStore";
+import useAuthStore from "@/stores/authStore";
+import { getStoreDetail } from "@/api/restaurant.api";
 import RestaurantDetailHeader from "./RestaurantDetailHeader";
 import RestaurantDetailImageSection from "./RestaurantDetailImageSection";
 import RestaurantDetailTabs from "./RestaurantDetailTabs";
@@ -10,9 +10,9 @@ import RestaurantDetailHomeTab from "./RestaurantDetailHomeTab";
 import RestaurantDetailMenuTab from "./RestaurantDetailMenuTab";
 import RestaurantDetailBroadcastTab from "./RestaurantDetailBroadcastTab";
 import RestaurantDetailPhotoTab from "./RestaurantDetailPhotoTab";
-import useMapStore from "../../stores/mapStore";
-import { searchNearby } from "../../api/map.api";
-import { SEARCHNEARBY_RADIUS } from "../../constants/map-constant";
+import useMapStore from "@/stores/mapStore";
+import { searchNearby } from "@/api/map.api";
+import { SEARCHNEARBY_RADIUS } from "@/constants/map-constant";
 
 type Tab = "홈" | "메뉴" | "사진" | "중계";
 

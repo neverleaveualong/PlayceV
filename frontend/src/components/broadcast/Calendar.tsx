@@ -1,6 +1,6 @@
-import useBroadcastStore from "../../stores/broadcastStore";
-import { getDayIdx } from "../../utils/getDay";
-import getDaysInMonth from "../../utils/getDaysInMonth";
+import useBroadcastStore from "@/stores/broadcastStore";
+import { getDayIdx } from "@/utils/getDay";
+import getDaysInMonth from "@/utils/getDaysInMonth";
 
 const Calendar = () => {
   const {

@@ -1,8 +1,8 @@
 import { SearchOutlined } from "@ant-design/icons";
-import { useSearchStore } from "../../stores/searchStore";
-import { useRegionStore } from "../../stores/regionStore";
-import { useSportStore } from "../../stores/sportStore";
-import Button from "../Common/Button";
+import { useSearchStore } from "@/stores/searchStore";
+import { useRegionStore } from "@/stores/regionStore";
+import { useSportStore } from "@/stores/sportStore";
+import Button from "@/components/Common/Button";
 
 const SearchButton = () => {
   const {

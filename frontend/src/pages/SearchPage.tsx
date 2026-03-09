@@ -1,17 +1,17 @@
 import { useState, useEffect } from "react";
-import RegionModal from "../components/Search/RegionModal";
-import { useRegionStore } from "../stores/regionStore";
-import SportModal from "../components/Search/SportModal";
-import { useSportStore } from "../stores/sportStore";
-import SearchInput from "../components/Search/SearchInput";
-import SearchButton from "../components/Search/SearchButton";
-import SearchResultList from "../components/Search/SearchResultList";
-import AppHeader from "../components/layout/AppHeader";
-import FavoriteSidebar from "../components/Mypage/FavoriteSidebar";
-import TodayBroadcastSidebar from "../components/broadcast/TodayBroadCasts";
-import { useSearchStore } from "../stores/searchStore";
-import { useSearch } from "../hooks/useSearch";
-import ResetButton from "../components/Search/ResetButton";
+import RegionModal from "@/components/Search/RegionModal";
+import { useRegionStore } from "@/stores/regionStore";
+import SportModal from "@/components/Search/SportModal";
+import { useSportStore } from "@/stores/sportStore";
+import SearchInput from "@/components/Search/SearchInput";
+import SearchButton from "@/components/Search/SearchButton";
+import SearchResultList from "@/components/Search/SearchResultList";
+import AppHeader from "@/components/layout/AppHeader";
+import FavoriteSidebar from "@/components/Mypage/FavoriteSidebar";
+import TodayBroadcastSidebar from "@/components/broadcast/TodayBroadCasts";
+import { useSearchStore } from "@/stores/searchStore";
+import { useSearch } from "@/hooks/useSearch";
+import ResetButton from "@/components/Search/ResetButton";
 
 const SearchPage = () => {
   const [showRegionModal, setShowRegionModal] = useState(false);

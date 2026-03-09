@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { FaTimes } from "react-icons/fa";
-import useFavoriteStore from "../../stores/favoriteStore";
-import RestaurantCardList from "../restaurant/RestaurantCardList";
-import RestaurantDetailComponent from "../restaurant/RestaurantDetail";
-import Button from "../Common/Button";
+import useFavoriteStore from "@/stores/favoriteStore";
+import RestaurantCardList from "@/components/restaurant/RestaurantCardList";
+import RestaurantDetailComponent from "@/components/restaurant/RestaurantDetail";
+import Button from "@/components/Common/Button";
 
 interface FavoriteListProps {
   onClose: () => void;

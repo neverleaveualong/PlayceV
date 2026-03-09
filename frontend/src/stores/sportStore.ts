@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import type { SelectedSports } from "../types/staticdata";
+import type { SelectedSports } from "@/types/staticdata";
 
 interface SportState {
   sport: string;

@@ -1,7 +1,7 @@
 import { create } from "zustand";
-import type { latlng } from "../types/map";
-import type { RestaurantBasic } from "../types/restaurant.types";
-import { CITY_STATION } from "../constants/map-constant";
+import type { latlng } from "@/types/map";
+import type { RestaurantBasic } from "@/types/restaurant.types";
+import { CITY_STATION } from "@/constants/map-constant";
 
 interface MapState {
   position: latlng;

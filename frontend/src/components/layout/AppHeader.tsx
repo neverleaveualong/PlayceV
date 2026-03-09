@@ -1,6 +1,6 @@
-import { useSearchStore } from "../../stores/searchStore";
-import { useRegionStore } from "../../stores/regionStore";
-import { useSportStore } from "../../stores/sportStore";
+import { useSearchStore } from "@/stores/searchStore";
+import { useRegionStore } from "@/stores/regionStore";
+import { useSportStore } from "@/stores/sportStore";
 
 export default function AppLogoHeader() {
   const resetSearch = useSearchStore((state) => state.reset);

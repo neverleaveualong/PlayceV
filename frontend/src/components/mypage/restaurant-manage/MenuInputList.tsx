@@ -1,6 +1,6 @@
 import classNames from "classnames";
-import type { menu } from "../../../types/menu";
-import ErrorMessage from "../../Common/ErrorMessage";
+import type { menu } from "@/types/menu";
+import ErrorMessage from "@/components/Common/ErrorMessage";
 
 interface MenuInputListProps {
   menus: menu[];

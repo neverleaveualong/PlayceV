@@ -1,4 +1,4 @@
-import { FIND_ADDRESS_URL } from "../../constants/find-address";
+import { FIND_ADDRESS_URL } from "@/constants/find-address";
 import { useEffect } from "react";
 import Button from "./Button";
 

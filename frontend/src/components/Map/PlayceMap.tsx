@@ -1,12 +1,12 @@
 import { useEffect, useRef, useState } from "react";
 import { Map } from "react-kakao-maps-sdk";
-import useMapStore from "../../stores/mapStore";
+import useMapStore from "@/stores/mapStore";
 import PlayceMapMarker from "./PlayceMapMarker";
 import PlayceModal from "./PlayceModal";
-import RestaurantDetailComponent from "../restaurant/RestaurantDetail";
+import RestaurantDetailComponent from "@/components/restaurant/RestaurantDetail";
 import GoToCurrentLocationButton from "./CurrentMap";
-import type { RestaurantBasic } from "../../types/restaurant.types";
-import { CITY_STATION } from "../../constants/map-constant";
+import type { RestaurantBasic } from "@/types/restaurant.types";
+import { CITY_STATION } from "@/constants/map-constant";
 
 const PlayceMap: React.FC = () => {
   const {

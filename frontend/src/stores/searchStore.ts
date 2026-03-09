@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import type { SearchResultItem } from "../types/search";
+import type { SearchResultItem } from "@/types/search";
 
 interface SearchState {
   //텍스트 검색

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import type { RestaurantDetail } from "../../types/restaurant.types";
+import type { RestaurantDetail } from "@/types/restaurant.types";
 import { FiX } from "react-icons/fi";
 import EmptyMessage from "./EmptyMessage";
 
