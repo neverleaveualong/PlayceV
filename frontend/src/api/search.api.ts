@@ -2,7 +2,7 @@ import qs from "qs";
 import http from "../api/http";
 import type { SearchResultItem } from "../types/search";
 
-export interface SearchParams {
+interface SearchParams {
   search?: string;
   sports?: string[];
   leagues?: string[];
