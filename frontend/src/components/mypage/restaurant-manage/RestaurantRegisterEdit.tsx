@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import validateStoreForm from "./validateStoreForm";
-import ErrorMessage from "@/components/Common/ErrorMessage";
+import ErrorMessage from "@/components/common/ErrorMessage";
 import MenuInputList from "./MenuInputList";
 import {
   editStore,
@@ -10,7 +10,7 @@ import {
   type RegisterStoreProps,
 } from "@/api/restaurant.api";
 import useMypageStore from "@/stores/mypageStore";
-import FindAddressButton from "@/components/Common/FindAddressButton";
+import FindAddressButton from "@/components/common/FindAddressButton";
 import ImageUrlInputList from "./ImageUrlInputList";
 import type { menu } from "@/types/menu";
 import { apiErrorStatusMessage } from "@/utils/apiErrorStatusMessage";

@@ -2,7 +2,7 @@ import { useRegions } from "@/hooks/useRegions";
 import { useRegionStore } from "@/stores/regionStore";
 import { useState } from "react";
 import { getUpdatedRegionSelection } from "@/utils/regionUtils";
-import Tag from "@/components/Common/Tag";
+import Tag from "@/components/common/Tag";
 
 const RegionPanel = () => {
   const [selectedBigRegionName, setSelectedBigRegionName] =

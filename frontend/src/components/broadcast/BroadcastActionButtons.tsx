@@ -1,5 +1,5 @@
 import { FiEdit2, FiTrash2 } from "react-icons/fi";
-import Button from "@/components/Common/Button";
+import Button from "@/components/common/Button";
 
 interface BroadcastActionButtonsProps {
   onEdit: () => void;

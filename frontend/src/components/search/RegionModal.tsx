@@ -1,7 +1,7 @@
 import RegionPanel from "./RegionPanel";
 import { useRegionStore } from "@/stores/regionStore";
-import Button from "@/components/Common/Button";
-import ModalBase from "@/components/Common/ModalBase";
+import Button from "@/components/common/Button";
+import ModalBase from "@/components/common/ModalBase";
 
 interface RegionModalProps {
   onClose: () => void;

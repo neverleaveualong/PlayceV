@@ -1,6 +1,6 @@
 import { Fragment, useState } from "react";
 import { FiTv, FiChevronDown, FiChevronUp, FiVolume2 } from "react-icons/fi";
-import Button from "@/components/Common/Button";
+import Button from "@/components/common/Button";
 import type { RestaurantDetail, Broadcast } from "@/types/restaurant.types";
 import EmptyMessage from "./EmptyMessage";
 import useBroadcastStore from "@/stores/broadcastStore";

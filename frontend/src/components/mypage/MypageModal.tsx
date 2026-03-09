@@ -1,10 +1,10 @@
-import Sidebar from "@/components/Mypage/Sidebar";
+import Sidebar from "@/components/mypage/Sidebar";
 import FavoriteList from "./FavoriteList";
 import UserInfo from "./UserInfo";
 import RestaurantManager from "./restaurant-manage/RestaurantManager";
 import useMypageStore from "@/stores/mypageStore";
 import { useUserInfo } from "@/hooks/useUser";
-import ModalBase from "@/components/Common/ModalBase";
+import ModalBase from "@/components/common/ModalBase";
 
 export interface MypageProps {
   onClose: () => void;

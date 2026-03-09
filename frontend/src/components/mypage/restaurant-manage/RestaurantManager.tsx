@@ -4,9 +4,9 @@ import {
   menuItems,
   type ExtendedSubpage,
 } from "@/types/restaurant-manage.types";
-import type { MypageProps } from "@/components/Mypage/MypageModal";
+import type { MypageProps } from "@/components/mypage/MypageModal";
 import useBroadcastStore from "@/stores/broadcastStore";
-import Button from "@/components/Common/Button";
+import Button from "@/components/common/Button";
 import BroadcastRegister from "@/components/broadcast/BroadcastRegister";
 import BroadcastEdit from "@/components/broadcast/BroadcastEdit";
 

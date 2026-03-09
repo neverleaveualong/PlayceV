@@ -1,17 +1,17 @@
 import { useEffect } from "react";
-import AuthHeader from "@/components/Auth/AuthHeader";
-import LoginModal from "@/components/Auth/Login";
-import SignupModal from "@/components/Auth/Signup";
-import Map from "@/components/Map/PlayceMap";
-import SpotRefreshButton from "@/components/Map/SpotRefreshButton";
-import MypageModal from "@/components/Mypage/MypageModal";
+import AuthHeader from "@/components/auth/AuthHeader";
+import LoginModal from "@/components/auth/Login";
+import SignupModal from "@/components/auth/Signup";
+import Map from "@/components/map/PlayceMap";
+import SpotRefreshButton from "@/components/map/SpotRefreshButton";
+import MypageModal from "@/components/mypage/MypageModal";
 import { useGeoLocation } from "@/hooks/useGeoLocation";
 import useMapStore from "@/stores/mapStore";
 import useMypageStore from "@/stores/mypageStore";
 import SearchPage from "./SearchPage";
 import { useMap } from "@/hooks/useMap";
 import { SEARCHNEARBY_RADIUS } from "@/constants/map-constant";
-import PasswordResetRequestModal from "@/components/Auth/PasswordResetRequestModal";
+import PasswordResetRequestModal from "@/components/auth/PasswordResetRequestModal";
 
 const Home: React.FC = () => {
   const { position, isRefreshBtnOn, setRestaurants } = useMapStore();

@@ -1,4 +1,4 @@
-import Button from "@/components/Common/Button";
+import Button from "@/components/common/Button";
 import useMapStore from "@/stores/mapStore";
 import { IoReloadOutline } from "react-icons/io5";
 import { searchNearby } from "@/api/map.api";

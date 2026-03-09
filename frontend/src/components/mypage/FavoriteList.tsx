@@ -3,7 +3,7 @@ import { FaTimes } from "react-icons/fa";
 import useFavoriteStore from "@/stores/favoriteStore";
 import RestaurantCardList from "@/components/restaurant/RestaurantCardList";
 import RestaurantDetailComponent from "@/components/restaurant/RestaurantDetail";
-import Button from "@/components/Common/Button";
+import Button from "@/components/common/Button";
 
 interface FavoriteListProps {
   onClose: () => void;
