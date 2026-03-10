@@ -3,7 +3,7 @@ import InputText from "@/components/common/InputText";
 import { useForm } from "react-hook-form";
 import type { SignupProps } from "@/api/auth.api";
 import Button from "@/components/common/Button";
-import ErrorText from "@/components/common/ErrorText";
+import ErrorMessage from "@/components/common/ErrorMessage";
 import { useAuth } from "@/hooks/useAuth";
 import ModalBase from "@/components/common/ModalBase";
 
@@ -59,7 +59,7 @@ const SignupModal = () => {
               type="text"
               {...register("name", { required: true })}
             />
-            {errors.name && <ErrorText message="이름을 입력해주세요" />}
+            {errors.name && <ErrorMessage message="이름을 입력해주세요" />}
           </fieldset>
           <fieldset>
             <InputText
@@ -71,7 +71,7 @@ const SignupModal = () => {
               })}
             />
             {errors.email && (
-              <ErrorText message="유효한 이메일을 입력해주세요" />
+              <ErrorMessage message="유효한 이메일을 입력해주세요" />
             )}
           </fieldset>
           <fieldset>
@@ -80,7 +80,7 @@ const SignupModal = () => {
               type="password"
               {...register("password", { required: true, minLength: 6 })}
             />
-            {errors.password && <ErrorText message="6자 이상 입력해주세요" />}
+            {errors.password && <ErrorMessage message="6자 이상 입력해주세요" />}
           </fieldset>
           <fieldset>
             <InputText
@@ -98,7 +98,7 @@ const SignupModal = () => {
               })}
             />
             {errors.passwordConfirm && (
-              <ErrorText message={errors.passwordConfirm.message} />
+              <ErrorMessage message={errors.passwordConfirm.message} />
             )}
           </fieldset>
           <fieldset>
@@ -118,7 +118,7 @@ const SignupModal = () => {
                 },
               })}
             />
-            {errors.phone && <ErrorText message={errors.phone.message} />}
+            {errors.phone && <ErrorMessage message={errors.phone.message} />}
           </fieldset>
           <fieldset>
             <InputText
@@ -136,7 +136,7 @@ const SignupModal = () => {
                 },
               })}
             />
-            {errors.nickname && <ErrorText message={errors.nickname.message} />}
+            {errors.nickname && <ErrorMessage message={errors.nickname.message} />}
           </fieldset>
           <Button type="submit" className="mt-5" scheme="primary">
             회원가입

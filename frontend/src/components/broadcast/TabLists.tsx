@@ -1,6 +1,7 @@
 import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from "react-icons/md";
 import { getDay } from "@/utils/getDay";
 import getDaysInMonth from "@/utils/getDaysInMonth";
+import { getToday } from "@/utils/dateUtils";
 import { useRef, useEffect } from "react";
 import useBroadcastStore from "@/stores/broadcastStore";
 import useBroadcastFormStore from "@/stores/broadcastFormStore";
@@ -73,10 +74,7 @@ const TabList = () => {
     }
   };
 
-  const today = new Date();
-  const todayDate = today.getDate();
-  const todayMonth = today.getMonth() + 1;
-  const todayYear = today.getFullYear();
+  const { year: todayYear, month: todayMonth, date: todayDate } = getToday();
 
   return (
     <div>

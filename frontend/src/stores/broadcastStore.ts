@@ -1,13 +1,8 @@
 import { create } from "zustand";
-import type { Broadcast } from "@/types/broadcast";
+import type { BroadcastWithIdWithId } from "@/types/broadcast";
+import { getToday } from "@/utils/dateUtils";
 
-const today = new Date();
-
-export const dateInfo = {
-  yearNum: today.getFullYear(),
-  monthNum: today.getMonth(),
-  dateNum: today.getDate(),
-};
+export const dateInfo = getToday();
 
 type TViewOption = "tab" | "calendar";
 
@@ -16,7 +11,7 @@ interface BoradcastState {
   month: number;
   date: number;
   storeId: number;
-  broadcastLists: Broadcast[];
+  broadcastLists: BroadcastWithId[];
   viewOption: TViewOption;
   resetYMD: () => void;
   setYear: (year: number) => void;
@@ -24,7 +19,7 @@ interface BoradcastState {
   setDate: (date: number) => void;
   setStore: (r: string, rId: number) => void;
   setViewOption: (view: TViewOption) => void;
-  setBroadcastLists: (broadcasts: Broadcast[]) => void;
+  setBroadcastWithIdLists: (broadcasts: BroadcastWithId[]) => void;
   tabRef: React.RefObject<HTMLDivElement> | null;
   itemRefs: React.RefObject<Map<number, HTMLDivElement>> | null;
   setTabRef: (ref: React.RefObject<HTMLDivElement>) => void;
@@ -33,18 +28,18 @@ interface BoradcastState {
   scrollDateCenter: () => void;
 }
 
-const useBroadcastStore = create<BoradcastState>((set, get) => ({
-  year: dateInfo.yearNum,
-  month: dateInfo.monthNum + 1,
-  date: dateInfo.dateNum,
+const useBroadcastWithIdStore = create<BoradcastState>((set, get) => ({
+  year: dateInfo.year,
+  month: dateInfo.month,
+  date: dateInfo.date,
   storeId: 0,
   broadcastLists: [],
   viewOption: "tab",
   resetYMD: () => {
     set({
-      year: dateInfo.yearNum,
-      month: dateInfo.monthNum + 1,
-      date: dateInfo.dateNum,
+      year: dateInfo.year,
+      month: dateInfo.month,
+      date: dateInfo.date,
     });
   },
   setYear: (year) => {
@@ -62,7 +57,7 @@ const useBroadcastStore = create<BoradcastState>((set, get) => ({
   setViewOption: (view) => {
     set({ viewOption: view });
   },
-  setBroadcastLists: (broadcasts) => set({ broadcastLists: broadcasts }),
+  setBroadcastWithIdLists: (broadcasts) => set({ broadcastLists: broadcasts }),
   tabRef: null,
   itemRefs: null,
   setTabRef: (ref) => set({ tabRef: ref }),
@@ -86,4 +81,4 @@ const useBroadcastStore = create<BoradcastState>((set, get) => ({
   },
 }));
 
-export default useBroadcastStore;
+export default useBroadcastWithIdStore;
