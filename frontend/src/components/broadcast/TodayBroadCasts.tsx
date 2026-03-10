@@ -4,11 +4,12 @@ import useMapStore from "@/stores/mapStore";
 import RestaurantDetailComponent from "@/components/restaurant/RestaurantDetail";
 import type { Broadcast } from "@/types/restaurant.types";
 import { formatTimeShort } from "@/utils/formatTime";
+import { getToday } from "@/utils/dateUtils";
 
 export default function TodayBroadcastSidebar() {
   const restaurants = useMapStore((state) => state.restaurants);
   const [selectedStoreId, setSelectedStoreId] = useState<number | null>(null);
-  const today = new Date().toISOString().slice(0, 10);
+  const { dateString: today } = getToday();
 
   type TodayBroadcast = Broadcast & {
     store_name: string;

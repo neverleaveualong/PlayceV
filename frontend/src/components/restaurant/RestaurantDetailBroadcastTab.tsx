@@ -6,6 +6,7 @@ import EmptyMessage from "./EmptyMessage";
 import useBroadcastStore from "@/stores/broadcastStore";
 import useMypageStore from "@/stores/mypageStore";
 import { formatTimeShort } from "@/utils/formatTime";
+import { getToday } from "@/utils/dateUtils";
 
 function getKoreanDateString(dateStr: string): string {
   const date = new Date(dateStr);
@@ -37,7 +38,7 @@ export default function RestaurantDetailBroadcastTab({
   storeId,
 }: RestaurantDetailBroadcastTabProps) {
   const [showPast, setShowPast] = useState(false);
-  const today: string = new Date().toISOString().slice(0, 10);
+  const { dateString: today } = getToday();
 
   const futureAndToday: Broadcast[] = [];
   const past: Broadcast[] = [];

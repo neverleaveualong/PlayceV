@@ -1,6 +1,7 @@
 import useBroadcastStore from "@/stores/broadcastStore";
 import { getDayIdx } from "@/utils/getDay";
 import getDaysInMonth from "@/utils/getDaysInMonth";
+import { getToday } from "@/utils/dateUtils";
 
 const Calendar = () => {
   const {
@@ -34,10 +35,7 @@ const Calendar = () => {
 
   const weekdayLabels = ["일", "월", "화", "수", "목", "금", "토"];
 
-  const today = new Date();
-  const todayYear = today.getFullYear();
-  const todayMonth = today.getMonth() + 1;
-  const todayDate = today.getDate();
+  const { year: todayYear, month: todayMonth, date: todayDate } = getToday();
 
   const broadcastCountMap = broadcastLists.reduce((acc, item) => {
     const date = new Date(item.match_date);
