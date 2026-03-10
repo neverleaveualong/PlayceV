@@ -1,5 +1,4 @@
 export interface Broadcast {
-  broadcast_id?: number;
   match_date: string;
   match_time: string;
   sport: string;
@@ -7,4 +6,8 @@ export interface Broadcast {
   team_one: string;
   team_two: string;
   etc: string;
+}
+
+export interface BroadcastWithId extends Broadcast {
+  broadcast_id: number;
 }
