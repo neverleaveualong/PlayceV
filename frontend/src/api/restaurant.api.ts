@@ -1,7 +1,7 @@
 import axios from "axios";
 import { requestHandler } from "./http";
 import { getToken } from "@/stores/authStore";
-import type { menu } from "@/types/menu";
+import type { MenuItem } from "@/types/restaurant.types";
 
 export const getStoreDetail = (storeId: number) =>
   requestHandler("get", `/stores/${storeId}`);
@@ -12,7 +12,7 @@ export interface RegisterStoreProps {
   address: string;
   phone: string;
   opening_hours: string;
-  menus: menu[];
+  menus: MenuItem[];
   type: string;
   images: string[];
   description: string;
@@ -23,7 +23,7 @@ export interface EditStoreProps {
   address: string;
   phone: string;
   opening_hours: string;
-  menus: menu[];
+  menus: MenuItem[];
   type: string;
   images: string[];
   description: string;

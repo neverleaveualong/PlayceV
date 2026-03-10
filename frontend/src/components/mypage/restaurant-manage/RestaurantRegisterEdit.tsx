@@ -12,7 +12,7 @@ import {
 import useMypageStore from "@/stores/mypageStore";
 import FindAddressButton from "@/components/common/FindAddressButton";
 import ImageUrlInputList from "./ImageUrlInputList";
-import type { menu } from "@/types/menu";
+import type { MenuItem } from "@/types/restaurant.types";
 import { apiErrorStatusMessage } from "@/utils/apiErrorStatusMessage";
 import type { AxiosError } from "axios";
 import useAuthStore from "@/stores/authStore";
@@ -32,7 +32,7 @@ const RestaurantRegisterEdit = ({ mode }: StoreFormModalProps) => {
   const [openingHours, setOpeningHours] = useState("");
   const [type, setType] = useState("");
   const [description, setDescription] = useState("");
-  const [menus, setMenus] = useState<menu[]>([{ name: "", price: "" }]);
+  const [menus, setMenus] = useState<MenuItem[]>([{ name: "", price: "" }]);
   const [imgUrls, setImgUrls] = useState<string[]>([]);
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
   const [agree, setAgree] = useState(false);
