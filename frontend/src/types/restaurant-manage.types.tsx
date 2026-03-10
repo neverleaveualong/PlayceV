@@ -1,7 +1,6 @@
 import BroadcastView from "@/components/broadcast/BroadcastView";
-import RestaurantEdit from "@/components/mypage/restaurant-manage/RestaurantEdit";
 import RestaurantHome from "@/components/mypage/restaurant-manage/RestaurantHome";
-import RestaurantRegister from "@/components/mypage/restaurant-manage/RestaurantRegister";
+import RestaurantRegisterEdit from "@/components/mypage/restaurant-manage/RestaurantRegisterEdit";
 
 export const menuItems = [
   {
@@ -12,12 +11,12 @@ export const menuItems = [
   {
     key: "restaurant-register",
     label: "식당 등록하기",
-    component: () => <RestaurantRegister />,
+    component: () => <RestaurantRegisterEdit mode="create" />,
   },
-{
+  {
     key: "restaurant-edit",
     label: "식당 수정",
-    component: () => <RestaurantEdit />,
+    component: () => <RestaurantRegisterEdit mode="edit" />,
   },
   {
     key: "schedule-view-broadcasts",
