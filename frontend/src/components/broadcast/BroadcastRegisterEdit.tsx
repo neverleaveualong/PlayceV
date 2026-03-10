@@ -8,8 +8,7 @@ import useBroadcastFormStore, {
   handleLeagueChange,
   handleSportChange,
 } from "@/stores/broadcastFormStore";
-import SportSelect from "@/components/common/SportSelect";
-import LeagueSelect from "@/components/common/LeagueSelect";
+import SelectInput from "@/components/common/SelectInput";
 import type { BroadcastRegisterEditProps } from "@/types/broadcastForm";
 import useMypageStore from "@/stores/mypageStore";
 import type { Sport, League } from "@/types/staticdata";
@@ -170,7 +169,9 @@ const BroadcastRegisterEdit = (props: BroadcastRegisterEditProps) => {
 
       <div className="flex gap-4">
         <div className="flex-1 min-w-[180px]">
-          <SportSelect
+          <SelectInput
+            label="종목"
+            placeholder="종목 선택"
             value={sportId ?? ""}
             options={sports}
             onChange={(id, name) => {
@@ -187,7 +188,9 @@ const BroadcastRegisterEdit = (props: BroadcastRegisterEditProps) => {
           />
         </div>
         <div className="flex-1 min-w-[180px]">
-          <LeagueSelect
+          <SelectInput
+            label="리그"
+            placeholder="리그 선택"
             value={leagueId ?? ""}
             options={leagues}
             onChange={(id, name) => handleLeagueChange(name, id)}
