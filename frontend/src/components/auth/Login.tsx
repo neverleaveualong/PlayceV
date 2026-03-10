@@ -4,7 +4,7 @@ import type { LoginProps } from "@/api/auth.api";
 import InputText from "@/components/common/InputText";
 import useAuthStore from "@/stores/authStore";
 import Button from "@/components/common/Button";
-import ErrorText from "@/components/common/ErrorText";
+import ErrorMessage from "@/components/common/ErrorMessage";
 import ModalBase from "@/components/common/ModalBase";
 
 const LoginModal = () => {
@@ -44,7 +44,7 @@ const LoginModal = () => {
               type="email"
               {...register("email", { required: true })}
             />
-            {errors.email && <ErrorText message="이메일을 입력해주세요" />}
+            {errors.email && <ErrorMessage message="이메일을 입력해주세요" />}
           </fieldset>
           <fieldset>
             <InputText
@@ -52,7 +52,7 @@ const LoginModal = () => {
               type="password"
               {...register("password", { required: true })}
             />
-            {errors.password && <ErrorText message="비밀번호를 입력해주세요" />}
+            {errors.password && <ErrorMessage message="비밀번호를 입력해주세요" />}
           </fieldset>
           <Button type="submit" className="mt-5" scheme="primary">
             로그인
