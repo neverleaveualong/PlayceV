@@ -1,5 +1,5 @@
 export interface Broadcast {
-  broadcast_id: number;
+  broadcast_id?: number;
   match_date: string;
   match_time: string;
   sport: string;
