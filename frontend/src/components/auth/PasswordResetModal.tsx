@@ -2,7 +2,7 @@ import { useForm } from "react-hook-form";
 import { useAuth } from "@/hooks/useAuth";
 import InputText from "@/components/common/InputText";
 import Button from "@/components/common/Button";
-import ErrorText from "@/components/common/ErrorText";
+import ErrorMessage from "@/components/common/ErrorMessage";
 import { useNavigate, useParams } from "react-router-dom";
 import { useState } from "react";
 import ModalBase from "@/components/common/ModalBase";
@@ -55,7 +55,7 @@ const PasswordResetModal = () => {
               {...register("newPassword", { required: true })}
             />
             {errors.newPassword && (
-              <ErrorText message="새 비밀번호를 입력해주세요" />
+              <ErrorMessage message="새 비밀번호를 입력해주세요" />
             )}
           </fieldset>
           <fieldset>
@@ -65,7 +65,7 @@ const PasswordResetModal = () => {
               {...register("confirmPassword", { required: true })}
             />
             {errors.confirmPassword && (
-              <ErrorText
+              <ErrorMessage
                 message={
                   errors.confirmPassword.message ||
                   "비밀번호 확인을 입력해주세요"
