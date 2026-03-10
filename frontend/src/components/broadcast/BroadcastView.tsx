@@ -9,11 +9,11 @@ import { getBroadcast } from "@/api/broadcast.api";
 import getDaysInMonth from "@/utils/getDaysInMonth";
 import useMypageStore from "@/stores/mypageStore";
 import FloatingRegisterButton from "./FloatingRegisterButton";
+import { getToday } from "@/utils/dateUtils";
 
 const BroadcastView = () => {
-  const { yearNum, monthNum } = dateInfo;
-  const twoMonthsAgo = new Date(yearNum, monthNum - 2);
-  const twoMonthsLater = new Date(yearNum, monthNum + 2);
+  const twoMonthsAgo = new Date(dateInfo.year, dateInfo.month - 1 - 2);
+  const twoMonthsLater = new Date(dateInfo.year, dateInfo.month - 1 + 2);
   const { setRestaurantSubpage } = useMypageStore();
 
   const {
@@ -65,10 +65,7 @@ const BroadcastView = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [storeId]);
 
-  const today = new Date();
-  const todayYear = today.getFullYear();
-  const todayMonth = today.getMonth() + 1;
-  const todayDate = today.getDate();
+  const { year: todayYear, month: todayMonth, date: todayDate } = getToday();
 
   return (
     <div className="flex flex-col pl-2 h-full">

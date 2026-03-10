@@ -1,12 +1,6 @@
-export interface Broadcast {
-  match_date: string;
-  match_time: string;
-  sport: string;
-  league: string;
-  team_one: string;
-  team_two: string;
-  etc: string;
-}
+import type { Broadcast } from "./broadcast";
+
+export type { Broadcast };
 
 export type RestaurantBasic = {
   store_id: number;

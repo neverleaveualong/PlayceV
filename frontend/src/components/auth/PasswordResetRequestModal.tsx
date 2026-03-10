@@ -2,7 +2,7 @@ import { useForm } from "react-hook-form";
 import { useAuth } from "@/hooks/useAuth";
 import InputText from "@/components/common/InputText";
 import Button from "@/components/common/Button";
-import ErrorText from "@/components/common/ErrorText";
+import ErrorMessage from "@/components/common/ErrorMessage";
 import useAuthStore from "@/stores/authStore";
 import ModalBase from "@/components/common/ModalBase";
 
@@ -39,7 +39,7 @@ const PasswordResetRequestModal = () => {
               type="email"
               {...register("email", { required: true })}
             />
-            {errors.email && <ErrorText message="이메일을 입력해주세요" />}
+            {errors.email && <ErrorMessage message="이메일을 입력해주세요" />}
           </fieldset>
           <fieldset>
             <InputText
@@ -47,7 +47,7 @@ const PasswordResetRequestModal = () => {
               type="text"
               {...register("name", { required: true })}
             />
-            {errors.name && <ErrorText message="이름을 입력해주세요" />}
+            {errors.name && <ErrorMessage message="이름을 입력해주세요" />}
           </fieldset>
           <Button type="submit" className="mt-5" scheme="primary">
             비밀번호 초기화 메일 발송

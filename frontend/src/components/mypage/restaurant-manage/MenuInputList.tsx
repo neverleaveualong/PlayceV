@@ -1,10 +1,10 @@
 import classNames from "classnames";
-import type { menu } from "@/types/menu";
+import type { MenuItem } from "@/types/restaurant.types";
 import ErrorMessage from "@/components/common/ErrorMessage";
 
 interface MenuInputListProps {
-  menus: menu[];
-  setMenus: (menus: menu[]) => void;
+  menus: MenuItem[];
+  setMenus: (menus: MenuItem[]) => void;
   error?: string;
 }
 
