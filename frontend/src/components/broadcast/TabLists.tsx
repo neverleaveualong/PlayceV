@@ -153,13 +153,15 @@ const TabList = () => {
                   )}
                 </div>
                 <div className="p-3 flex text-[25px] gap-6 items-center shrink-0">
-                  <BroadcastActionButtons
-                    onEdit={() => {
-                      setEditingId(b.broadcast_id);
-                      setRestaurantSubpage("broadcast-edit");
-                    }}
-                    onDelete={() => handleDelete(b.broadcast_id)}
-                  />
+                  {b.broadcast_id != null && (
+                    <BroadcastActionButtons
+                      onEdit={() => {
+                        setEditingId(b.broadcast_id!);
+                        setRestaurantSubpage("broadcast-edit");
+                      }}
+                      onDelete={() => handleDelete(b.broadcast_id!)}
+                    />
+                  )}
                 </div>
               </div>
             );
