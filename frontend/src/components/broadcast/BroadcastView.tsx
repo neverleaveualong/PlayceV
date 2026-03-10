@@ -12,8 +12,8 @@ import FloatingRegisterButton from "./FloatingRegisterButton";
 import { getToday } from "@/utils/dateUtils";
 
 const BroadcastView = () => {
-  const twoMonthsAgo = new Date(dateInfo.year, dateInfo.month - 2);
-  const twoMonthsLater = new Date(dateInfo.year, dateInfo.month + 2);
+  const twoMonthsAgo = new Date(dateInfo.year, dateInfo.month - 1 - 2);
+  const twoMonthsLater = new Date(dateInfo.year, dateInfo.month - 1 + 2);
   const { setRestaurantSubpage } = useMypageStore();
 
   const {
