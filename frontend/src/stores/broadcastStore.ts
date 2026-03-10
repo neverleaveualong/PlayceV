@@ -1,13 +1,8 @@
 import { create } from "zustand";
 import type { Broadcast } from "@/types/broadcast";
+import { getToday } from "@/utils/dateUtils";
 
-const today = new Date();
-
-export const dateInfo = {
-  yearNum: today.getFullYear(),
-  monthNum: today.getMonth(),
-  dateNum: today.getDate(),
-};
+export const dateInfo = getToday();
 
 type TViewOption = "tab" | "calendar";
 
@@ -34,17 +29,17 @@ interface BoradcastState {
 }
 
 const useBroadcastStore = create<BoradcastState>((set, get) => ({
-  year: dateInfo.yearNum,
-  month: dateInfo.monthNum + 1,
-  date: dateInfo.dateNum,
+  year: dateInfo.year,
+  month: dateInfo.month,
+  date: dateInfo.date,
   storeId: 0,
   broadcastLists: [],
   viewOption: "tab",
   resetYMD: () => {
     set({
-      year: dateInfo.yearNum,
-      month: dateInfo.monthNum + 1,
-      date: dateInfo.dateNum,
+      year: dateInfo.year,
+      month: dateInfo.month,
+      date: dateInfo.date,
     });
   },
   setYear: (year) => {
