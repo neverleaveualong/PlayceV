@@ -1,9 +1,9 @@
-import { useEffect, useState } from "react";
-import { FaTimes } from "react-icons/fa";
+import { useEffect } from "react";
 import useFavoriteStore from "@/stores/favoriteStore";
 import RestaurantCardList from "@/components/restaurant/RestaurantCardList";
 import RestaurantDetailComponent from "@/components/restaurant/RestaurantDetail";
-import Button from "@/components/common/Button";
+import SectionHeader from "@/components/common/SectionHeader";
+import useRestaurantDetail from "@/hooks/useRestaurantDetail";
 
 interface FavoriteListProps {
   onClose: () => void;
@@ -11,7 +11,7 @@ interface FavoriteListProps {
 
 const FavoriteList = ({ onClose }: FavoriteListProps) => {
   const { favorites, fetchFavorites, removeFavorite } = useFavoriteStore();
-  const [selectedStoreId, setSelectedStoreId] = useState<number | null>(null);
+  const { selectedStoreId, openDetail, closeDetail } = useRestaurantDetail();
 
   useEffect(() => {
     fetchFavorites();
@@ -19,24 +19,12 @@ const FavoriteList = ({ onClose }: FavoriteListProps) => {
 
   // 상세보기 버튼 클릭 시 storeId만 저장
   const handleDetail = (store_id: number) => {
-    setSelectedStoreId(store_id);
+    openDetail(store_id);
   };
 
   return (
     <section className="px-2">
-      <div className="flex items-center justify-between text-lg font-semibold my-5">
-        <div className="flex items-center gap-3 text-xl text-mainText">
-          즐겨찾기
-        </div>
-        <Button
-          onClick={onClose}
-          scheme="close"
-          size="icon"
-          className="text-mainText"
-        >
-          <FaTimes />
-        </Button>
-      </div>
+      <SectionHeader title="즐겨찾기" onClose={onClose} />
       <RestaurantCardList
         stores={favorites}
         onRemove={removeFavorite}
@@ -49,7 +37,7 @@ const FavoriteList = ({ onClose }: FavoriteListProps) => {
       {selectedStoreId !== null && (
         <RestaurantDetailComponent
           storeId={selectedStoreId}
-          onClose={() => setSelectedStoreId(null)}
+          onClose={closeDetail}
         />
       )}
     </section>

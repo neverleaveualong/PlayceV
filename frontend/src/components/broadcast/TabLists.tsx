@@ -8,6 +8,7 @@ import useBroadcastFormStore from "@/stores/broadcastFormStore";
 import BroadcastActionButtons from "./BroadcastActionButtons";
 import { deleteBroadcast, getBroadcast } from "@/api/broadcast.api";
 import { formatTime } from "@/utils/formatTime";
+import useToastStore from "@/stores/toastStore";
 import useMypageStore from "@/stores/mypageStore";
 
 const TabList = () => {
@@ -65,12 +66,12 @@ const TabList = () => {
     if (!confirm("중계 일정을 삭제하시겠습니까?")) return;
     try {
       await deleteBroadcast(id);
-      alert("삭제되었습니다.");
+      useToastStore.getState().addToast("삭제되었습니다.", "success");
       const broadcasts = await getBroadcast(storeId);
       setBroadcastLists(broadcasts);
     } catch (error) {
       console.error("삭제 실패", error);
-      alert("삭제에 실패했습니다.");
+      useToastStore.getState().addToast("삭제에 실패했습니다.", "error");
     }
   };
 

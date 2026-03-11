@@ -1,5 +1,5 @@
 import axios, { type AxiosRequestConfig } from "axios";
-import { getToken, removeToken } from "@/stores/authStore";
+import useAuthStore, { getToken } from "@/stores/authStore";
 
 const BASE_URL = import.meta.env.VITE_BASE_URL;
 const DEFAULT_TIMEOUT = 30000;
@@ -28,7 +28,7 @@ const createClient = (config?: AxiosRequestConfig) => {
     (response) => response,
     (error) => {
       if (error.response?.status === 401) {
-        removeToken();
+        useAuthStore.getState().storeLogout();
       }
       return Promise.reject(error);
     }

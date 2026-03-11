@@ -2,13 +2,14 @@ import { useState, useMemo, useEffect } from "react";
 import { FiTv, FiImage } from "react-icons/fi";
 import useMapStore from "@/stores/mapStore";
 import RestaurantDetailComponent from "@/components/restaurant/RestaurantDetail";
+import useRestaurantDetail from "@/hooks/useRestaurantDetail";
 import type { Broadcast } from "@/types/restaurant.types";
 import { formatTimeShort } from "@/utils/formatTime";
 import { getToday } from "@/utils/dateUtils";
 
 export default function TodayBroadcastSidebar() {
   const restaurants = useMapStore((state) => state.restaurants);
-  const [selectedStoreId, setSelectedStoreId] = useState<number | null>(null);
+  const { selectedStoreId, openDetail, closeDetail } = useRestaurantDetail();
   const { dateString: today } = getToday();
 
   type TodayBroadcast = Broadcast & {
@@ -97,7 +98,7 @@ export default function TodayBroadcastSidebar() {
                 <li
                   key={idx}
                   className="bg-white rounded-xl border border-gray-200 px-4 py-3 mb-3 flex items-center gap-4 cursor-pointer hover:bg-primary4 transition-colors"
-                  onClick={() => setSelectedStoreId(game.store_id)}
+                  onClick={() => openDetail(game.store_id)}
                 >
                   {game.main_img ? (
                     <img
@@ -154,7 +155,7 @@ export default function TodayBroadcastSidebar() {
       {selectedStoreId && (
         <RestaurantDetailComponent
           storeId={selectedStoreId}
-          onClose={() => setSelectedStoreId(null)}
+          onClose={closeDetail}
         />
       )}
     </section>

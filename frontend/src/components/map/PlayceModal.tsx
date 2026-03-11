@@ -3,8 +3,7 @@ import { CustomOverlayMap } from "react-kakao-maps-sdk";
 import { FiStar, FiMapPin, FiX } from "react-icons/fi";
 import { FaStar } from "react-icons/fa";
 import Button from "@/components/common/Button";
-import useFavoriteStore from "@/stores/favoriteStore";
-import useAuthStore from "@/stores/authStore";
+import useFavoriteToggle from "@/hooks/useFavoriteToggle";
 
 const defaultImage = "https://placehold.co/130x130?text=No+Image";
 
@@ -19,8 +18,9 @@ const PlayceModal = ({
   onDetailClick,
   onClose,
 }: PlayceModalProps) => {
-  const { favorites, addFavorite, removeFavorite } = useFavoriteStore();
-  const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
+  const { isFavorite, toggleFavorite } = useFavoriteToggle(
+    restaurant?.store_id ?? 0
+  );
 
   if (
     !restaurant ||
@@ -30,23 +30,6 @@ const PlayceModal = ({
     onClose?.();
     return null;
   }
-
-  const isFavorite = favorites.some(
-    (fav) => fav.store_id === restaurant.store_id
-  );
-
-  const handleToggleFavorite = async (e: React.MouseEvent) => {
-    e.stopPropagation();
-    if (!isLoggedIn) {
-      alert("로그인 후 이용할 수 있는 기능입니다.");
-      return;
-    }
-    if (isFavorite) {
-      await removeFavorite(restaurant.store_id);
-    } else {
-      await addFavorite(restaurant.store_id);
-    }
-  };
 
   const handleDetailClick = () => {
     onDetailClick(restaurant);
@@ -180,7 +163,7 @@ const PlayceModal = ({
               size="small"
               scheme="custom"
               onMouseDown={(e) => e.stopPropagation()}
-              onClick={handleToggleFavorite}
+              onClick={(e) => { e.stopPropagation(); toggleFavorite(); }}
               className="flex items-center justify-center w-[40px] h-[40px] p-0 rounded-full border-none shadow-none focus:outline-none"
               style={{ flexShrink: 0 }}
               aria-label={isFavorite ? "즐겨찾기 해제" : "즐겨찾기 추가"}

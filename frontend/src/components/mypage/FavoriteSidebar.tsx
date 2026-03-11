@@ -4,12 +4,13 @@ import useFavoriteStore from "@/stores/favoriteStore";
 import useAuthStore from "@/stores/authStore";
 import RestaurantCardList from "@/components/restaurant/RestaurantCardList";
 import RestaurantDetailComponent from "@/components/restaurant/RestaurantDetail";
+import useRestaurantDetail from "@/hooks/useRestaurantDetail";
 
 export default function FavoriteSidebar() {
   const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
   const { favorites, fetchFavorites, removeFavorite } = useFavoriteStore();
   const [expanded, setExpanded] = useState(false);
-  const [selectedStoreId, setSelectedStoreId] = useState<number | null>(null);
+  const { selectedStoreId, openDetail, closeDetail } = useRestaurantDetail();
 
   useEffect(() => {
     if (isLoggedIn) {
@@ -18,10 +19,6 @@ export default function FavoriteSidebar() {
   }, [isLoggedIn, fetchFavorites]);
 
   const visibleFavorites = expanded ? favorites : favorites.slice(0, 3);
-
-  const handleDetail = (store_id: number) => {
-    setSelectedStoreId(store_id);
-  };
 
   return (
     <section className="w-full bg-white px-1.5 pt-6 pb-2 rounded-2xl border border-gray-100">
@@ -49,12 +46,12 @@ export default function FavoriteSidebar() {
             showDelete
             showDetail
             compact
-            onDetail={handleDetail}
+            onDetail={openDetail}
           />
           {selectedStoreId !== null && (
             <RestaurantDetailComponent
               storeId={selectedStoreId}
-              onClose={() => setSelectedStoreId(null)}
+              onClose={closeDetail}
             />
           )}
         </>

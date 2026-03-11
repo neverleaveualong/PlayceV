@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import type { RestaurantDetail } from "@/types/restaurant.types";
-import useFavoriteStore from "@/stores/favoriteStore";
+import useFavoriteToggle from "@/hooks/useFavoriteToggle";
 import useAuthStore from "@/stores/authStore";
 import { getStoreDetail } from "@/api/restaurant.api";
 import RestaurantDetailHeader from "./RestaurantDetailHeader";
@@ -30,10 +30,8 @@ export default function RestaurantDetailComponent({
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const { setPosition, setRestaurants, setRefreshBtn } = useMapStore();
-
   const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
-  const { favorites, addFavorite, removeFavorite } = useFavoriteStore();
-  const isFavorite = favorites.some((fav) => fav.store_id === storeId);
+  const { isFavorite, toggleFavorite } = useFavoriteToggle(storeId);
 
   useEffect(() => {
     setLoading(true);
@@ -58,17 +56,7 @@ export default function RestaurantDetailComponent({
       .finally(() => setLoading(false));
   }, [storeId, isLoggedIn, setPosition, setRestaurants, setRefreshBtn]);
 
-  const handleToggleFavorite = async () => {
-    if (!isLoggedIn) {
-      alert("로그인 후 이용할 수 있는 기능입니다.");
-      return;
-    }
-    if (isFavorite) {
-      await removeFavorite(storeId);
-    } else {
-      await addFavorite(storeId);
-    }
-  };
+
 
   if (loading) {
     return (
@@ -96,7 +84,7 @@ export default function RestaurantDetailComponent({
       <RestaurantDetailImageSection
         detail={detail}
         isFavorite={isFavorite}
-        onToggleFavorite={handleToggleFavorite}
+        onToggleFavorite={toggleFavorite}
         onClose={onClose}
       />
       <RestaurantDetailTabs

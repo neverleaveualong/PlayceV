@@ -1,15 +1,14 @@
 import useMypageStore from "@/stores/mypageStore";
-import useAuthStore from "@/stores/authStore";
 import { useEffect, useState } from "react";
 import { deleteStore, myStores } from "@/api/restaurant.api";
 import { apiErrorStatusMessage } from "@/utils/apiErrorStatusMessage";
-import type { AxiosError } from "axios";
 import { FiEdit2, FiTrash2, FiTv } from "react-icons/fi";
 import RestaurantDetailComponent from "@/components/restaurant/RestaurantDetail";
 import type { MyStore } from "@/types/restaurant.types";
 import Button from "@/components/common/Button";
 import useBroadcastStore from "@/stores/broadcastStore";
 import FloatingRegisterButton from "@/components/broadcast/FloatingRegisterButton";
+import useToastStore from "@/stores/toastStore";
 
 const RestaurantHome = () => {
   const [stores, setStores] = useState<MyStore[]>([]);
@@ -19,7 +18,7 @@ const RestaurantHome = () => {
   const { setRestaurantSubpage, setRestaurantEditId, setRestaurantEditName } =
     useMypageStore();
   const { setStore } = useBroadcastStore();
-  const { storeLogout } = useAuthStore();
+  const { addToast } = useToastStore();
 
   useEffect(() => {
     const fetchMyStores = async () => {
@@ -29,16 +28,10 @@ const RestaurantHome = () => {
         return res;
       } catch (error) {
         const errorList = [
-          { code: 401, message: "로그인이 만료되었습니다" },
           { code: 404, message: "사용자를 찾을 수 없습니다" },
         ];
         const message = apiErrorStatusMessage(error, errorList);
-        const axiosError = error as AxiosError;
-        const status = axiosError.response?.status;
-        if (status === 401) {
-          storeLogout();
-        }
-        alert(message);
+        if (message) addToast(message, "error");
       }
     };
 
@@ -58,17 +51,11 @@ const RestaurantHome = () => {
             code: 400,
             message: "사업자등록번호 또는 지역이 유효하지 않습니다",
           },
-          { code: 401, message: "로그인이 만료되었습니다" },
           { code: 403, message: "식당 삭제 권한이 없습니다" },
           { code: 404, message: "식당 또는 사용자를 찾을 수 없습니다" },
         ];
         const message = apiErrorStatusMessage(error, errorList);
-        const axiosError = error as AxiosError;
-        const status = axiosError.response?.status;
-        if (status === 401) {
-          storeLogout();
-        }
-        alert(message);
+        if (message) addToast(message, "error");
       }
     }
   };

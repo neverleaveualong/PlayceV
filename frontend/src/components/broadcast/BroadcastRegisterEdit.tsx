@@ -4,6 +4,7 @@ import dayjs from "dayjs";
 import { createBroadcast, editBroadcast } from "@/api/broadcast.api";
 import { fetchSports, fetchLeagues } from "@/api/staticdata.api";
 import useBroadcastStore from "@/stores/broadcastStore";
+import useToastStore from "@/stores/toastStore";
 import useBroadcastFormStore, {
   handleLeagueChange,
   handleSportChange,
@@ -102,11 +103,12 @@ const BroadcastRegisterEdit = (props: BroadcastRegisterEditProps) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props.mode, props.broadcastId, broadcastLists]);
 
+  const { addToast } = useToastStore();
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     if (!date || !time || !sportId || !leagueId) {
-      alert("필수 정보를 모두 입력해주세요.");
+      addToast("필수 정보를 모두 입력해주세요.", "error");
       return;
     }
 
@@ -127,15 +129,15 @@ const BroadcastRegisterEdit = (props: BroadcastRegisterEditProps) => {
           store_id: props.storeId,
         };
         await createBroadcast(createPayload);
-        alert("중계 일정 등록 완료");
+        addToast("중계 일정 등록 완료", "success");
         setRestaurantSubpage("schedule-view-broadcasts");
       } else if (props.mode === "edit" && props.broadcastId != null) {
         await editBroadcast(props.broadcastId, commonPayload);
-        alert("중계 일정 수정 완료");
+        addToast("중계 일정 수정 완료", "success");
         setRestaurantSubpage("schedule-view-broadcasts");
       }
     } catch {
-      alert(`오류가 발생했습니다. 다시 시도해주세요.`);
+      addToast("오류가 발생했습니다. 다시 시도해주세요.", "error");
     }
   };
 
