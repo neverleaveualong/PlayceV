@@ -8,7 +8,7 @@ import useRestaurantDetail from "@/hooks/useRestaurantDetail";
 import useToastStore from "@/stores/toastStore";
 import GoToCurrentLocationButton from "./CurrentMap";
 import type { RestaurantBasic } from "@/types/restaurant.types";
-import { CITY_STATION } from "@/constants/map-constant";
+import { CITY_STATION } from "@/constants/mapConstant";
 
 const PlayceMap: React.FC = () => {
   const {

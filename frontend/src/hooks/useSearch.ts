@@ -56,8 +56,7 @@ export const useSearch = () => {
       } else {
         setResults([]);
       }
-    } catch (err) {
-      console.error("검색 실패", err);
+    } catch {
       setResults([]);
     } finally {
       setIsSearching(false);

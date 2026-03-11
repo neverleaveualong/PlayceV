@@ -6,10 +6,9 @@ import TabList from "./TabLists";
 import Calendar from "./Calendar";
 import useBroadcastStore, { dateInfo } from "@/stores/broadcastStore";
 import { getBroadcast } from "@/api/broadcast.api";
-import getDaysInMonth from "@/utils/getDaysInMonth";
+import getDaysInMonth, { getToday } from "@/utils/dateUtils";
 import useMypageStore from "@/stores/mypageStore";
 import FloatingRegisterButton from "./FloatingRegisterButton";
-import { getToday } from "@/utils/dateUtils";
 
 const BroadcastView = () => {
   const twoMonthsAgo = new Date(dateInfo.year, dateInfo.month - 1 - 2);
@@ -55,8 +54,8 @@ const BroadcastView = () => {
     try {
       const broadcasts = await getBroadcast(storeId);
       setBroadcastLists(broadcasts);
-    } catch (error) {
-      console.error("중계 일정 조회 실패:", error);
+    } catch {
+      // 조회 실패 시 빈 목록 유지
     }
   };
 

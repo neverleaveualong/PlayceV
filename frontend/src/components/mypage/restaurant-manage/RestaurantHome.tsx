@@ -9,12 +9,11 @@ import Button from "@/components/common/Button";
 import useBroadcastStore from "@/stores/broadcastStore";
 import FloatingRegisterButton from "@/components/broadcast/FloatingRegisterButton";
 import useToastStore from "@/stores/toastStore";
+import useRestaurantDetail from "@/hooks/useRestaurantDetail";
 
 const RestaurantHome = () => {
   const [stores, setStores] = useState<MyStore[]>([]);
-  const [selectedDetailStoreId, setSelectedDetailStoreId] = useState<
-    number | null
-  >(null);
+  const { selectedStoreId: selectedDetailStoreId, openDetail, closeDetail } = useRestaurantDetail();
   const { setRestaurantSubpage, setRestaurantEditId, setRestaurantEditName } =
     useMypageStore();
   const { setStore } = useBroadcastStore();
@@ -40,10 +39,10 @@ const RestaurantHome = () => {
   }, []);
 
   // 삭제
-  const handleRemove = (id: number) => {
+  const handleRemove = async (id: number) => {
     if (window.confirm("정말 이 식당을 삭제하시겠습니까?")) {
       try {
-        deleteStore(id);
+        await deleteStore(id);
         setStores((stores) => stores!.filter((store) => store.store_id !== id));
       } catch (error) {
         const errorList = [
@@ -73,7 +72,7 @@ const RestaurantHome = () => {
               key={store.store_id}
               className="flex items-center gap-4 p-3 border-b border-gray-100 last:border-b-0 hover:bg-primary4 hover:cursor-pointer"
               onClick={() => {
-                setSelectedDetailStoreId(store.store_id);
+                openDetail(store.store_id);
               }}
             >
               <img
@@ -137,7 +136,7 @@ const RestaurantHome = () => {
       {selectedDetailStoreId && (
         <RestaurantDetailComponent
           storeId={selectedDetailStoreId}
-          onClose={() => setSelectedDetailStoreId(null)}
+          onClose={closeDetail}
         />
       )}
     </section>
