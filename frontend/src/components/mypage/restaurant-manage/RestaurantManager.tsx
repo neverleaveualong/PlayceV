@@ -1,4 +1,4 @@
-import { FaArrowLeft, FaTimes } from "react-icons/fa";
+import { FaArrowLeft } from "react-icons/fa";
 import useMypageStore from "@/stores/mypageStore";
 import {
   menuItems,
@@ -6,7 +6,7 @@ import {
 } from "@/types/restaurant-manage.types";
 import type { MypageProps } from "@/components/mypage/MypageModal";
 import useBroadcastStore from "@/stores/broadcastStore";
-import Button from "@/components/common/Button";
+import SectionHeader from "@/components/common/SectionHeader";
 import BroadcastRegister from "@/components/broadcast/BroadcastRegister";
 import BroadcastEdit from "@/components/broadcast/BroadcastEdit";
 
@@ -35,9 +35,11 @@ const RestaurantManager = ({ onClose }: MypageProps) => {
 
   return (
     <div className="px-2">
-      <div className="flex items-center justify-between text-lg font-semibold my-5">
-        <div className="flex items-center gap-3">
-          {restaurantSubpage !== "restaurant-home" && (
+      <SectionHeader
+        title={getModalTitle(restaurantSubpage)}
+        onClose={onClose}
+        leftAction={
+          restaurantSubpage !== "restaurant-home" && (
             <FaArrowLeft
               className="hover:cursor-pointer hover:text-primary5"
               onClick={() => {
@@ -58,20 +60,9 @@ const RestaurantManager = ({ onClose }: MypageProps) => {
                 }
               }}
             />
-          )}
-          <div className="flex items-center gap-3 text-xl text-mainText">
-            {getModalTitle(restaurantSubpage)}
-          </div>
-        </div>
-        <Button
-          onClick={onClose}
-          scheme="close"
-          size="icon"
-          className="text-mainText"
-        >
-          <FaTimes />
-        </Button>
-      </div>
+          )
+        }
+      />
 
       <div>{getComponents(restaurantSubpage)}</div>
     </div>

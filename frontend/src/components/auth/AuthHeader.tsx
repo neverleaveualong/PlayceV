@@ -7,12 +7,13 @@ import {
 } from "react-icons/fa";
 import useAuthStore from "@/stores/authStore";
 import useMypageStore from "@/stores/mypageStore";
+import { useAuth } from "@/hooks/useAuth";
 
 const AuthHeader: React.FC = () => {
-  const { isLoggedIn, storeLogout, setIsLoginModalOpen, setIsSignupModalOpen } =
+  const { isLoggedIn, setIsLoginModalOpen, setIsSignupModalOpen } =
     useAuthStore();
-
   const { setIsMypageOpen } = useMypageStore();
+  const { userLogout } = useAuth();
   return (
     <div className="absolute top-5 right-5 z-10 text-lg">
       <div className="flex gap-3">
@@ -23,10 +24,7 @@ const AuthHeader: React.FC = () => {
               size="medium"
               scheme="custom"
               className="bg-white text-primary5 hover:shadow-lg rounded-lg"
-              onClick={() => {
-                alert("로그아웃이 완료되었습니다");
-                storeLogout();
-              }}
+              onClick={() => userLogout()}
             >
               로그아웃
             </Button>

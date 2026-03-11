@@ -1,5 +1,4 @@
-import { FaTimes } from "react-icons/fa";
-import Button from "@/components/common/Button";
+import SectionHeader from "@/components/common/SectionHeader";
 
 export interface UserInfoProps {
   email: string;
@@ -12,20 +11,7 @@ export interface UserInfoProps {
 const UserInfo = ({ email, name, nickname, phone, onClose }: UserInfoProps) => {
   return (
     <div className="px-2">
-      {/* 헤더: 닫기 버튼 포함 */}
-      <div className="flex items-center justify-between text-lg font-semibold my-5">
-        <div className="flex items-center gap-3 text-xl text-mainText">
-          내 정보
-        </div>
-        <Button
-          onClick={onClose}
-          scheme="close"
-          size="icon"
-          className="text-mainText"
-        >
-          <FaTimes />
-        </Button>
-      </div>
+      <SectionHeader title="내 정보" onClose={onClose} />
 
       {/* 사용자 정보 표시 */}
       <div className="flex flex-col gap-2">
