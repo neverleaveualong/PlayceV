@@ -7,7 +7,7 @@ import Tag from "@/components/common/Tag";
 const SportPanel = () => {
   const { sport, selectedLeagues, setSport, setSelectedLeagues } =
     useSportStore();
-  const { data: sports = [] } = useSports();
+  const { data: sports = [], isLoading: sportsLoading } = useSports();
   const selectedSportId = sports.find((s) => s.name === sport)?.id;
   const { data: leagues = [] } = useLeagues(selectedSportId);
 
@@ -24,7 +24,9 @@ const SportPanel = () => {
     <div className="flex flex-col max-h-[500px]">
       <div className="flex divide-x overflow-hidden border-b h-[300px]">
         <div className="w-1/2 overflow-y-auto">
-          {sports.map((s) => (
+          {sportsLoading ? (
+            <p className="text-center text-gray-400 py-4">로딩 중...</p>
+          ) : sports.map((s) => (
             <div
               key={s.id}
               onClick={() => setSport(s.name)}
