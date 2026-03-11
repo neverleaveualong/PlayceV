@@ -6,12 +6,14 @@ import ErrorMessage from "@/components/common/ErrorMessage";
 import { useNavigate, useParams } from "react-router-dom";
 import { useState } from "react";
 import ModalBase from "@/components/common/ModalBase";
+import useToastStore from "@/stores/toastStore";
 
 const PasswordResetModal = () => {
   const { token } = useParams<{ token: string }>();
   const navigate = useNavigate();
   const { userPasswordReset } = useAuth();
   const [loading, setLoading] = useState(false);
+  const { addToast } = useToastStore();
 
   const {
     register,
@@ -35,7 +37,7 @@ const PasswordResetModal = () => {
     setLoading(true);
     await userPasswordReset({ token, newPassword: data.newPassword });
     setLoading(false);
-    alert("비밀번호가 변경되었습니다!");
+    addToast("비밀번호가 변경되었습니다!", "success");
     navigate("/");
   };
 

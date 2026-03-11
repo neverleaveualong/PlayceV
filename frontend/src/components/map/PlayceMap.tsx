@@ -5,6 +5,7 @@ import PlayceMapMarker from "./PlayceMapMarker";
 import PlayceModal from "./PlayceModal";
 import RestaurantDetailComponent from "@/components/restaurant/RestaurantDetail";
 import useRestaurantDetail from "@/hooks/useRestaurantDetail";
+import useToastStore from "@/stores/toastStore";
 import GoToCurrentLocationButton from "./CurrentMap";
 import type { RestaurantBasic } from "@/types/restaurant.types";
 import { CITY_STATION } from "@/constants/map-constant";
@@ -60,7 +61,7 @@ const PlayceMap: React.FC = () => {
             setRefreshBtn(true);
             const pos = getCurPosition();
             if (!pos) {
-              alert("위치 정보를 불러올 수 없습니다");
+              useToastStore.getState().addToast("위치 정보를 불러올 수 없습니다", "error");
               return;
             }
             setPosition(pos);
