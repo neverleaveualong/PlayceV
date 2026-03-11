@@ -1,8 +1,8 @@
-import { useState } from "react";
 import SearchResultItem from "./SearchResultItem";
 import { useSearchStore } from "@/stores/searchStore";
 import { sortSearchResults } from "@/utils/sortUtils";
 import RestaurantDetailComponent from "@/components/restaurant/RestaurantDetail";
+import useRestaurantDetail from "@/hooks/useRestaurantDetail";
 
 const SearchResultList = () => {
   const isSearching = useSearchStore((state) => state.isSearching);
@@ -10,7 +10,7 @@ const SearchResultList = () => {
   const results = useSearchStore((state) => state.results);
   const sort = useSearchStore((state) => state.sort);
   const setSort = useSearchStore((state) => state.setSort);
-  const [selectedStoreId, setSelectedStoreId] = useState<number | null>(null);
+  const { selectedStoreId, openDetail, closeDetail } = useRestaurantDetail();
   const sortedResults = sortSearchResults(results, sort);
 
   if (!hasSearched && !isSearching) return null;
@@ -79,7 +79,7 @@ const SearchResultList = () => {
                 key={item.id}
                 data={displayItem}
                 onClick={() => {
-                  setSelectedStoreId(item.id);
+                  openDetail(item.id);
                 }}
               />
             );
@@ -91,7 +91,7 @@ const SearchResultList = () => {
       {selectedStoreId !== null && (
         <RestaurantDetailComponent
           storeId={selectedStoreId}
-          onClose={() => setSelectedStoreId(null)}
+          onClose={closeDetail}
         />
       )}
     </div>
