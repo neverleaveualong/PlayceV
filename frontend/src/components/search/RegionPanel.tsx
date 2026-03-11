@@ -10,7 +10,7 @@ const RegionPanel = () => {
   const { selectedRegions, toggleRegion, setSelectedRegions } =
     useRegionStore();
 
-  const { bigRegions = [] } = useRegions();
+  const { bigRegions = [], bigRegionsLoading } = useRegions();
   const selectedBigRegionId = bigRegions.find(
     (r) => r.name === selectedBigRegionName
   )?.id;
@@ -32,7 +32,9 @@ const RegionPanel = () => {
     <div className="flex flex-col max-h-[500px]">
       <div className="flex divide-x overflow-hidden border-b h-[300px]">
         <div className="w-1/2 overflow-y-auto scrollbar-hide">
-          {bigRegions.map((region) => (
+          {bigRegionsLoading ? (
+            <p className="text-center text-gray-400 py-4">로딩 중...</p>
+          ) : bigRegions.map((region) => (
             <div
               key={region.id}
               onClick={() => setSelectedBigRegionName(region.name)}
