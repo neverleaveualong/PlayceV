@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { MdUploadFile } from "react-icons/md";
 import { IoClose } from "react-icons/io5";
+import useToastStore from "@/stores/toastStore";
 
 export default function ImageUpload({
   imageUrls,
@@ -9,6 +10,7 @@ export default function ImageUpload({
   imageUrls: string[];
   setImageUrls: (imageUrls: string[]) => void;
 }) {
+  const { addToast } = useToastStore();
   const [isActive, setActive] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
@@ -25,7 +27,7 @@ export default function ImageUpload({
 
   const setFileInfo = (file: File) => {
     if (imageUrls.length >= 3) {
-      alert("이미지는 최대 3개까지 등록 가능합니다");
+      addToast("이미지는 최대 3개까지 등록 가능합니다", "error");
       return;
     }
     const fileReader = new FileReader();
@@ -44,7 +46,7 @@ export default function ImageUpload({
     if (file && file.type.startsWith("image/")) {
       setFileInfo(file);
     } else {
-      alert("이미지 파일만 업로드할 수 있습니다.");
+      addToast("이미지 파일만 업로드할 수 있습니다.", "error");
     }
   };
 
@@ -53,7 +55,7 @@ export default function ImageUpload({
     if (file && file.type.startsWith("image/")) {
       setFileInfo(file);
     } else {
-      alert("이미지 파일만 업로드할 수 있습니다.");
+      addToast("이미지 파일만 업로드할 수 있습니다.", "error");
     }
   };
 

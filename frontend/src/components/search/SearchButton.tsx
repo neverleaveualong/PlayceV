@@ -3,6 +3,7 @@ import { useSearchStore } from "@/stores/searchStore";
 import { useRegionStore } from "@/stores/regionStore";
 import { useSportStore } from "@/stores/sportStore";
 import Button from "@/components/common/Button";
+import useToastStore from "@/stores/toastStore";
 
 const SearchButton = () => {
   const {
@@ -17,6 +18,7 @@ const SearchButton = () => {
   const { selectedRegions } = useRegionStore();
   const { sport, selectedLeagues } = useSportStore();
 
+  const { addToast } = useToastStore();
   const handleSearch = () => {
     const hasKeyword =
       searchText.trim() !== "" ||
@@ -25,7 +27,7 @@ const SearchButton = () => {
       selectedLeagues.length > 0;
 
     if (!hasKeyword) {
-      alert("검색 조건을 하나 이상 입력해주세요.");
+      addToast("검색 조건을 하나 이상 입력해주세요.", "info");
       return;
     }
 

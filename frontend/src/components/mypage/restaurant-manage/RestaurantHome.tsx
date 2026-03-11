@@ -8,6 +8,7 @@ import type { MyStore } from "@/types/restaurant.types";
 import Button from "@/components/common/Button";
 import useBroadcastStore from "@/stores/broadcastStore";
 import FloatingRegisterButton from "@/components/broadcast/FloatingRegisterButton";
+import useToastStore from "@/stores/toastStore";
 
 const RestaurantHome = () => {
   const [stores, setStores] = useState<MyStore[]>([]);
@@ -17,6 +18,7 @@ const RestaurantHome = () => {
   const { setRestaurantSubpage, setRestaurantEditId, setRestaurantEditName } =
     useMypageStore();
   const { setStore } = useBroadcastStore();
+  const { addToast } = useToastStore();
 
   useEffect(() => {
     const fetchMyStores = async () => {
@@ -29,7 +31,7 @@ const RestaurantHome = () => {
           { code: 404, message: "사용자를 찾을 수 없습니다" },
         ];
         const message = apiErrorStatusMessage(error, errorList);
-        alert(message);
+        if (message) addToast(message, "error");
       }
     };
 
@@ -53,7 +55,7 @@ const RestaurantHome = () => {
           { code: 404, message: "식당 또는 사용자를 찾을 수 없습니다" },
         ];
         const message = apiErrorStatusMessage(error, errorList);
-        alert(message);
+        if (message) addToast(message, "error");
       }
     }
   };

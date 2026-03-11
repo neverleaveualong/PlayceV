@@ -14,6 +14,7 @@ import FindAddressButton from "@/components/common/FindAddressButton";
 import ImageUrlInputList from "./ImageUrlInputList";
 import type { MenuItem } from "@/types/restaurant.types";
 import { apiErrorStatusMessage } from "@/utils/apiErrorStatusMessage";
+import useToastStore from "@/stores/toastStore";
 
 interface StoreFormModalProps {
   mode: "create" | "edit";
@@ -21,6 +22,7 @@ interface StoreFormModalProps {
 
 const RestaurantRegisterEdit = ({ mode }: StoreFormModalProps) => {
   const { restaurantEditId, setRestaurantSubpage } = useMypageStore();
+  const { addToast } = useToastStore();
 
   const [storeName, setStoreName] = useState("");
   const [businessNumber, setBusinessNumber] = useState("");
@@ -86,7 +88,7 @@ const RestaurantRegisterEdit = ({ mode }: StoreFormModalProps) => {
       };
       try {
         await registerStore(data);
-        alert(`식당 등록이 완료되었습니다.`);
+        addToast("식당 등록이 완료되었습니다.", "success");
         setRestaurantSubpage("restaurant-home");
       } catch (error) {
         const errorList = [
@@ -98,7 +100,7 @@ const RestaurantRegisterEdit = ({ mode }: StoreFormModalProps) => {
           { code: 409, message: "이미 등록된 사업자등록번호입니다" },
         ];
         const message = apiErrorStatusMessage(error, errorList);
-        alert(message);
+        if (message) addToast(message, "error");
       }
     } else if (mode === "edit") {
       const data: EditStoreProps = {
@@ -113,7 +115,7 @@ const RestaurantRegisterEdit = ({ mode }: StoreFormModalProps) => {
       };
       try {
         await editStore(data, restaurantEditId!);
-        alert(`식당 수정이 완료되었습니다.`);
+        addToast("식당 수정이 완료되었습니다.", "success");
         setRestaurantSubpage("restaurant-home");
       } catch (error) {
         const errorList = [
@@ -125,7 +127,7 @@ const RestaurantRegisterEdit = ({ mode }: StoreFormModalProps) => {
           { code: 404, message: "식당 또는 사용자가 존재하지 않습니다" },
         ];
         const message = apiErrorStatusMessage(error, errorList);
-        alert(message);
+        if (message) addToast(message, "error");
       }
     }
 
