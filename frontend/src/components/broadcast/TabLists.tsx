@@ -1,7 +1,5 @@
 import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from "react-icons/md";
-import { getDay } from "@/utils/getDay";
-import getDaysInMonth from "@/utils/getDaysInMonth";
-import { getToday } from "@/utils/dateUtils";
+import getDaysInMonth, { getDay, getToday } from "@/utils/dateUtils";
 import { useRef, useEffect } from "react";
 import useBroadcastStore from "@/stores/broadcastStore";
 import useBroadcastFormStore from "@/stores/broadcastFormStore";
@@ -69,8 +67,7 @@ const TabList = () => {
       useToastStore.getState().addToast("삭제되었습니다.", "success");
       const broadcasts = await getBroadcast(storeId);
       setBroadcastLists(broadcasts);
-    } catch (error) {
-      console.error("삭제 실패", error);
+    } catch {
       useToastStore.getState().addToast("삭제에 실패했습니다.", "error");
     }
   };

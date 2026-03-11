@@ -8,7 +8,7 @@ import SearchButton from "@/components/search/SearchButton";
 import SearchResultList from "@/components/search/SearchResultList";
 import AppHeader from "@/components/layout/AppHeader";
 import FavoriteSidebar from "@/components/mypage/FavoriteSidebar";
-import TodayBroadcastSidebar from "@/components/broadcast/TodayBroadCasts";
+import TodayBroadcastSidebar from "@/components/broadcast/TodayBroadcastSidebar";
 import { useSearchStore } from "@/stores/searchStore";
 import { useSearch } from "@/hooks/useSearch";
 import ResetButton from "@/components/search/ResetButton";

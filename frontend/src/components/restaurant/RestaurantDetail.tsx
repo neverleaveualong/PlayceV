@@ -12,7 +12,7 @@ import RestaurantDetailBroadcastTab from "./RestaurantDetailBroadcastTab";
 import RestaurantDetailPhotoTab from "./RestaurantDetailPhotoTab";
 import useMapStore from "@/stores/mapStore";
 import { searchNearby } from "@/api/map.api";
-import { SEARCHNEARBY_RADIUS } from "@/constants/map-constant";
+import { SEARCHNEARBY_RADIUS } from "@/constants/mapConstant";
 
 type Tab = "홈" | "메뉴" | "사진" | "중계";
 
