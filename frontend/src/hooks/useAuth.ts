@@ -9,17 +9,19 @@ import {
   type PasswordResetProps,
 } from "@/api/auth.api";
 import useAuthStore from "@/stores/authStore";
+import useToastStore from "@/stores/toastStore";
 import { apiErrorStatusMessage } from "@/utils/apiErrorStatusMessage";
 
 export const useAuth = () => {
   const { storeLogin, storeLogout, setIsLoginModalOpen, setIsSignupModalOpen } =
     useAuthStore();
+  const { addToast } = useToastStore();
 
   const userLogin = async (data: LoginProps) => {
     try {
       const res = await login(data);
       storeLogin(res.data.token);
-      alert("로그인이 완료되었습니다.");
+      addToast("로그인이 완료되었습니다.", "success");
       setIsLoginModalOpen(false);
     } catch (error) {
       const errorList = [
@@ -27,23 +29,23 @@ export const useAuth = () => {
         { code: 401, message: "아이디 또는 비밀번호가 일치하지 않습니다" },
       ];
       const message = apiErrorStatusMessage(error, errorList);
-      alert(message);
+      if (message) addToast(message, "error");
     }
   };
 
   const userLogout = async () => {
     try {
       storeLogout();
-      alert("로그아웃이 완료되었습니다.");
+      addToast("로그아웃이 완료되었습니다.", "success");
     } catch (error) {
-      alert(`${error}\n로그아웃에 실패하였습니다`);
+      addToast("로그아웃에 실패하였습니다", "error");
     }
   };
 
   const userSignup = async (data: SignupProps) => {
     try {
       await signup(data);
-      alert("회원가입이 완료되었습니다.");
+      addToast("회원가입이 완료되었습니다.", "success");
       setIsSignupModalOpen(false);
     } catch (error) {
       const errorList = [
@@ -51,7 +53,7 @@ export const useAuth = () => {
         { code: 409, message: "중복된 이메일 또는 전화번호입니다" },
       ];
       const message = apiErrorStatusMessage(error, errorList);
-      alert(message);
+      if (message) addToast(message, "error");
     }
   };
 
@@ -59,14 +61,14 @@ export const useAuth = () => {
   const userPasswordResetRequest = async (data: PasswordResetRequestProps) => {
     try {
       await passwordResetRequest(data);
-      alert("비밀번호 재설정 메일이 전송되었습니다.");
+      addToast("비밀번호 재설정 메일이 전송되었습니다.", "success");
     } catch (error) {
       const errorList = [
         { code: 400, message: "입력값이 유효하지 않습니다" },
         { code: 404, message: "이메일 또는 이름이 일치하지 않습니다." },
       ];
       const message = apiErrorStatusMessage(error, errorList);
-      alert(message);
+      if (message) addToast(message, "error");
     }
   };
 
@@ -83,7 +85,7 @@ export const useAuth = () => {
         },
       ];
       const message = apiErrorStatusMessage(error, errorList);
-      alert(message);
+      if (message) addToast(message, "error");
     }
   };
 

@@ -21,6 +21,15 @@ module.exports = {
         mainText: "#3A3A3A",
         subText: "#9CA3AF",
       },
+      keyframes: {
+        "slide-up": {
+          "0%": { opacity: "0", transform: "translateY(-20px)" },
+          "100%": { opacity: "1", transform: "translateY(0)" },
+        },
+      },
+      animation: {
+        "slide-up": "slide-up 0.3s ease-out",
+      },
       textStroke: {
         DEFAULT: "1px",
         sm: "0.5px",

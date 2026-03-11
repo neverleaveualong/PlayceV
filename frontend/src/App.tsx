@@ -1,9 +1,10 @@
 import { useEffect } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
-import PasswordResetModal from "./components/Auth/PasswordResetModal";
+import PasswordResetModal from "./components/auth/PasswordResetModal";
 import useAuthStore from "./stores/authStore";
 import useFavoriteStore from "./stores/favoriteStore";
+import Toast from "@/components/common/Toast";
 
 function App() {
   const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
@@ -26,6 +27,7 @@ function App() {
             element={<PasswordResetModal />}
           />
         </Routes>
+        <Toast />
       </main>
     </BrowserRouter>
   );
