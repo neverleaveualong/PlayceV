@@ -10,7 +10,7 @@ import useMapStore from "@/stores/mapStore";
 import useMypageStore from "@/stores/mypageStore";
 import SearchPage from "./SearchPage";
 import { useMap } from "@/hooks/useMap";
-import { SEARCHNEARBY_RADIUS } from "@/constants/map-constant";
+import { SEARCHNEARBY_RADIUS } from "@/constants/mapConstant";
 import PasswordResetRequestModal from "@/components/auth/PasswordResetRequestModal";
 
 const Home: React.FC = () => {
