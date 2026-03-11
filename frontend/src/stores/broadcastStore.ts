@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import type { BroadcastWithIdWithId } from "@/types/broadcast";
+import type { BroadcastWithId } from "@/types/broadcast";
 import { getToday } from "@/utils/dateUtils";
 
 export const dateInfo = getToday();
@@ -19,7 +19,7 @@ interface BoradcastState {
   setDate: (date: number) => void;
   setStore: (r: string, rId: number) => void;
   setViewOption: (view: TViewOption) => void;
-  setBroadcastWithIdLists: (broadcasts: BroadcastWithId[]) => void;
+  setBroadcastLists: (broadcasts: BroadcastWithId[]) => void;
   tabRef: React.RefObject<HTMLDivElement> | null;
   itemRefs: React.RefObject<Map<number, HTMLDivElement>> | null;
   setTabRef: (ref: React.RefObject<HTMLDivElement>) => void;
@@ -28,7 +28,7 @@ interface BoradcastState {
   scrollDateCenter: () => void;
 }
 
-const useBroadcastWithIdStore = create<BoradcastState>((set, get) => ({
+const useBroadcastStore = create<BoradcastState>((set, get) => ({
   year: dateInfo.year,
   month: dateInfo.month,
   date: dateInfo.date,
@@ -57,7 +57,7 @@ const useBroadcastWithIdStore = create<BoradcastState>((set, get) => ({
   setViewOption: (view) => {
     set({ viewOption: view });
   },
-  setBroadcastWithIdLists: (broadcasts) => set({ broadcastLists: broadcasts }),
+  setBroadcastLists: (broadcasts) => set({ broadcastLists: broadcasts }),
   tabRef: null,
   itemRefs: null,
   setTabRef: (ref) => set({ tabRef: ref }),
@@ -81,4 +81,4 @@ const useBroadcastWithIdStore = create<BoradcastState>((set, get) => ({
   },
 }));
 
-export default useBroadcastWithIdStore;
+export default useBroadcastStore;
