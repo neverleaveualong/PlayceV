@@ -136,7 +136,7 @@ const SearchPage = () => {
               <SportModal
                 onClose={() => setShowSportModal(false)}
                 onApply={() => {
-                  setShowRegionModal(false);
+                  setShowSportModal(false);
                 }}
               />
             )}
