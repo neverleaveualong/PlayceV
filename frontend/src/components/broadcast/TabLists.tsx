@@ -67,8 +67,7 @@ const TabList = () => {
       useToastStore.getState().addToast("삭제되었습니다.", "success");
       const broadcasts = await getBroadcast(storeId);
       setBroadcastLists(broadcasts);
-    } catch (error) {
-      console.error("삭제 실패", error);
+    } catch {
       useToastStore.getState().addToast("삭제에 실패했습니다.", "error");
     }
   };

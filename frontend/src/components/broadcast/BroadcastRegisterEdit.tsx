@@ -38,6 +38,7 @@ const BroadcastRegisterEdit = (props: BroadcastRegisterEditProps) => {
   const [leagues, setLeagues] = useState<League[]>([]);
   const { setRestaurantSubpage } = useMypageStore();
   const [isTeamCompetition, setIsTeamCompetition] = useState(true);
+  const { addToast } = useToastStore();
 
   useEffect(() => {
     fetchSports().then(setSports);
@@ -66,7 +67,7 @@ const BroadcastRegisterEdit = (props: BroadcastRegisterEditProps) => {
       );
 
       if (!target) {
-        console.error("수정할 중계 정보를 찾을 수 없습니다.");
+        addToast("수정할 중계 정보를 찾을 수 없습니다.", "error");
         return;
       }
 
@@ -103,7 +104,6 @@ const BroadcastRegisterEdit = (props: BroadcastRegisterEditProps) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props.mode, props.broadcastId, broadcastLists]);
 
-  const { addToast } = useToastStore();
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 

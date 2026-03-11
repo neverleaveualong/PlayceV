@@ -54,8 +54,8 @@ const BroadcastView = () => {
     try {
       const broadcasts = await getBroadcast(storeId);
       setBroadcastLists(broadcasts);
-    } catch (error) {
-      console.error("중계 일정 조회 실패:", error);
+    } catch {
+      // 조회 실패 시 빈 목록 유지
     }
   };
 
