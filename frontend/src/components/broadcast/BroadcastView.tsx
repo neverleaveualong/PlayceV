@@ -6,10 +6,9 @@ import TabList from "./TabLists";
 import Calendar from "./Calendar";
 import useBroadcastStore, { dateInfo } from "@/stores/broadcastStore";
 import { getBroadcast } from "@/api/broadcast.api";
-import getDaysInMonth from "@/utils/getDaysInMonth";
+import getDaysInMonth, { getToday } from "@/utils/dateUtils";
 import useMypageStore from "@/stores/mypageStore";
 import FloatingRegisterButton from "./FloatingRegisterButton";
-import { getToday } from "@/utils/dateUtils";
 
 const BroadcastView = () => {
   const twoMonthsAgo = new Date(dateInfo.year, dateInfo.month - 1 - 2);
