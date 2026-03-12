@@ -15,6 +15,7 @@ import ImageUrlInputList from "./ImageUrlInputList";
 import type { MenuItem } from "@/types/restaurant.types";
 import { getApiErrorMessage } from "@/utils/apiErrorStatusMessage";
 import useToastStore from "@/stores/toastStore";
+import { useQueryClient } from "@tanstack/react-query";
 
 interface StoreFormModalProps {
   mode: "create" | "edit";
@@ -23,6 +24,7 @@ interface StoreFormModalProps {
 const RestaurantRegisterEdit = ({ mode }: StoreFormModalProps) => {
   const { restaurantEditId, setRestaurantSubpage } = useMypageStore();
   const { addToast } = useToastStore();
+  const queryClient = useQueryClient();
 
   const [storeName, setStoreName] = useState("");
   const [businessNumber, setBusinessNumber] = useState("");
@@ -88,6 +90,7 @@ const RestaurantRegisterEdit = ({ mode }: StoreFormModalProps) => {
       };
       try {
         await registerStore(data);
+        queryClient.invalidateQueries({ queryKey: ["myStores"] });
         addToast("식당 등록이 완료되었습니다.", "success");
         setRestaurantSubpage("restaurant-home");
       } catch (error) {
@@ -106,6 +109,7 @@ const RestaurantRegisterEdit = ({ mode }: StoreFormModalProps) => {
       };
       try {
         await editStore(data, restaurantEditId!);
+        queryClient.invalidateQueries({ queryKey: ["myStores"] });
         addToast("식당 수정이 완료되었습니다.", "success");
         setRestaurantSubpage("restaurant-home");
       } catch (error) {

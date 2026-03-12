@@ -1,22 +1,17 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { FaStar } from "react-icons/fa";
-import useFavoriteStore from "@/stores/favoriteStore";
 import useAuthStore from "@/stores/authStore";
 import RestaurantCardList from "@/components/restaurant/RestaurantCardList";
 import RestaurantDetailComponent from "@/components/restaurant/RestaurantDetail";
 import useRestaurantDetail from "@/hooks/useRestaurantDetail";
+import { useFavorites, useRemoveFavorite } from "@/hooks/useFavorites";
 
 export default function FavoriteSidebar() {
   const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
-  const { favorites, fetchFavorites, removeFavorite } = useFavoriteStore();
+  const { data: favorites = [] } = useFavorites();
+  const removeMutation = useRemoveFavorite();
   const [expanded, setExpanded] = useState(false);
   const { selectedStoreId, openDetail, closeDetail } = useRestaurantDetail();
-
-  useEffect(() => {
-    if (isLoggedIn) {
-      fetchFavorites();
-    }
-  }, [isLoggedIn, fetchFavorites]);
 
   const visibleFavorites = expanded ? favorites : favorites.slice(0, 3);
 
@@ -42,7 +37,7 @@ export default function FavoriteSidebar() {
         <>
           <RestaurantCardList
             stores={visibleFavorites}
-            onRemove={removeFavorite}
+            onRemove={(storeId) => removeMutation.mutate(storeId)}
             showDelete
             showDetail
             compact

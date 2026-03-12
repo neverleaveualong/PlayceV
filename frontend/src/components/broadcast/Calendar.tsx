@@ -1,5 +1,6 @@
 import useBroadcastStore from "@/stores/broadcastStore";
 import getDaysInMonth, { getDayIdx, getToday } from "@/utils/dateUtils";
+import useBroadcasts from "@/hooks/useBroadcasts";
 
 const Calendar = () => {
   const {
@@ -8,8 +9,9 @@ const Calendar = () => {
     setDate,
     setViewOption,
     scrollDateCenter,
-    broadcastLists,
+    storeId,
   } = useBroadcastStore();
+  const { data: broadcastLists = [] } = useBroadcasts(storeId);
   const daysInMonth = getDaysInMonth(year, month);
   const firstDayOfWeek = getDayIdx(year, month, 1); // 시작 요일
   const weeks: (number | null)[][] = [];

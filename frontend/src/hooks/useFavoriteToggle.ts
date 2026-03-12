@@ -1,22 +1,30 @@
-import useFavoriteStore from "@/stores/favoriteStore";
+import {
+  useFavorites,
+  useAddFavorite,
+  useRemoveFavorite,
+} from "@/hooks/useFavorites";
 import useAuthStore from "@/stores/authStore";
 import useToastStore from "@/stores/toastStore";
 
 const useFavoriteToggle = (storeId: number) => {
-  const { favorites, addFavorite, removeFavorite } = useFavoriteStore();
+  const { data: favorites = [] } = useFavorites();
   const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
   const { addToast } = useToastStore();
+
+  const addMutation = useAddFavorite();
+  const removeMutation = useRemoveFavorite();
+
   const isFavorite = favorites.some((fav) => fav.store_id === storeId);
 
-  const toggleFavorite = async () => {
+  const toggleFavorite = () => {
     if (!isLoggedIn) {
       addToast("로그인 후 이용할 수 있는 기능입니다.", "info");
       return;
     }
     if (isFavorite) {
-      await removeFavorite(storeId);
+      removeMutation.mutate(storeId);
     } else {
-      await addFavorite(storeId);
+      addMutation.mutate(storeId);
     }
   };
 

@@ -9,14 +9,13 @@ import { useGeoLocation } from "@/hooks/useGeoLocation";
 import useMapStore from "@/stores/mapStore";
 import useMypageStore from "@/stores/mypageStore";
 import SearchPage from "./SearchPage";
-import { useMap } from "@/hooks/useMap";
 import { SEARCHNEARBY_RADIUS } from "@/constants/mapConstant";
 import PasswordResetRequestModal from "@/components/auth/PasswordResetRequestModal";
+import useNearbyRestaurants from "@/hooks/useNearbyRestaurants";
 
 const Home: React.FC = () => {
   const { position, isRefreshBtnOn, setRestaurants } = useMapStore();
   const { isMypageOpen, setIsMypageOpen } = useMypageStore();
-  const { fetchRestaurants } = useMap();
   const { setRestaurantSubpage } = useMypageStore();
   const { setSelectedTab } = useMypageStore();
 
@@ -34,16 +33,17 @@ const Home: React.FC = () => {
 
   useGeoLocation(geolocationOptions);
 
+  const { data: nearbyRestaurants } = useNearbyRestaurants(
+    position.lat,
+    position.lng,
+    SEARCHNEARBY_RADIUS
+  );
+
   useEffect(() => {
-    if (position) {
-      fetchRestaurants({
-        lat: position.lat,
-        lng: position.lng,
-        radius: SEARCHNEARBY_RADIUS,
-      });
+    if (nearbyRestaurants) {
+      setRestaurants(nearbyRestaurants);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [setRestaurants]);
+  }, [nearbyRestaurants, setRestaurants]);
 
   return (
     <div className="flex">

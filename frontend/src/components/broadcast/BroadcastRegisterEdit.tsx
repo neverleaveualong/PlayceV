@@ -13,6 +13,8 @@ import SelectInput from "@/components/common/SelectInput";
 import type { BroadcastRegisterEditProps } from "@/types/broadcastForm";
 import useMypageStore from "@/stores/mypageStore";
 import type { Sport, League } from "@/types/staticdata";
+import useBroadcasts from "@/hooks/useBroadcasts";
+import { useQueryClient } from "@tanstack/react-query";
 
 const BroadcastRegisterEdit = (props: BroadcastRegisterEditProps) => {
   const {
@@ -33,7 +35,9 @@ const BroadcastRegisterEdit = (props: BroadcastRegisterEditProps) => {
     resetForm,
   } = useBroadcastFormStore();
 
-  const { broadcastLists } = useBroadcastStore();
+  const { storeId } = useBroadcastStore();
+  const { data: broadcastLists = [] } = useBroadcasts(storeId);
+  const queryClient = useQueryClient();
   const [sports, setSports] = useState<Sport[]>([]);
   const [leagues, setLeagues] = useState<League[]>([]);
   const { setRestaurantSubpage } = useMypageStore();
@@ -137,12 +141,12 @@ const BroadcastRegisterEdit = (props: BroadcastRegisterEditProps) => {
         };
         await createBroadcast(createPayload);
         addToast("중계 일정 등록 완료", "success");
-        setRestaurantSubpage("schedule-view-broadcasts");
       } else if (props.mode === "edit" && props.broadcastId != null) {
         await editBroadcast(props.broadcastId, commonPayload);
         addToast("중계 일정 수정 완료", "success");
-        setRestaurantSubpage("schedule-view-broadcasts");
       }
+      queryClient.invalidateQueries({ queryKey: ["broadcasts", storeId] });
+      setRestaurantSubpage("schedule-view-broadcasts");
     } catch {
       addToast("오류가 발생했습니다. 다시 시도해주세요.", "error");
     }

@@ -1,5 +1,4 @@
 import { create } from "zustand";
-import type { SearchResultItem } from "@/types/search";
 
 interface SearchState {
   //텍스트 검색
@@ -22,24 +21,21 @@ interface SearchState {
   sort: "distance" | "datetime";
   setSort: (value: "distance" | "datetime") => void;
 
-  // 검색 트리거
-  triggerSearch: boolean;
-  setTriggerSearch: (value: boolean) => void;
-
-  // 검색 리스트 유무
-  isSearching: boolean;
-  setIsSearching: (v: boolean) => void;
-
-  // 검색 결과
-  results: SearchResultItem[];
-  setResults: (results: SearchResultItem[]) => void;
-
-  //검색 했는지 안했는지
-  hasSearched: boolean;
-  setHasSearched: (v: boolean) => void;
+  // 검색 실행된 파라미터 (React Query queryKey로 사용)
+  submittedParams: SubmittedSearchParams | null;
+  setSubmittedParams: (params: SubmittedSearchParams | null) => void;
 
   // 전체 초기화
   reset: () => void;
+}
+
+export interface SubmittedSearchParams {
+  searchText: string;
+  sports: string[];
+  leagues: string[];
+  bigRegions: string[];
+  smallRegions: string[];
+  sort: string;
 }
 
 export const useSearchStore = create<SearchState>((set) => ({
@@ -49,10 +45,7 @@ export const useSearchStore = create<SearchState>((set) => ({
   sports: [],
   leagues: [],
   sort: "distance",
-  triggerSearch: false,
-  isSearching: false,
-  hasSearched: false,
-  results: [],
+  submittedParams: null,
 
   setSearchText: (value) => set({ searchText: value }),
   setBigRegions: (value) => set({ bigRegions: value }),
@@ -60,10 +53,7 @@ export const useSearchStore = create<SearchState>((set) => ({
   setSports: (value) => set({ sports: value }),
   setLeagues: (value) => set({ leagues: value }),
   setSort: (value) => set({ sort: value }),
-  setTriggerSearch: (value) => set({ triggerSearch: value }),
-  setIsSearching: (value) => set({ isSearching: value }),
-  setResults: (results) => set({ results }),
-  setHasSearched: (v) => set({ hasSearched: v }),
+  setSubmittedParams: (params) => set({ submittedParams: params }),
 
   reset: () =>
     set({
@@ -73,8 +63,6 @@ export const useSearchStore = create<SearchState>((set) => ({
       sports: [],
       leagues: [],
       sort: "distance",
-      triggerSearch: false,
-      isSearching: false,
-      hasSearched: false,
+      submittedParams: null,
     }),
 }));

@@ -1,48 +1,28 @@
 import useMypageStore from "@/stores/mypageStore";
-import { useEffect, useState } from "react";
-import { deleteStore, myStores } from "@/api/restaurant.api";
-import { getApiErrorMessage } from "@/utils/apiErrorStatusMessage";
 import { FiEdit2, FiTrash2, FiTv } from "react-icons/fi";
 import RestaurantDetailComponent from "@/components/restaurant/RestaurantDetail";
-import type { MyStore } from "@/types/restaurant.types";
 import Button from "@/components/common/Button";
 import useBroadcastStore from "@/stores/broadcastStore";
 import FloatingRegisterButton from "@/components/broadcast/FloatingRegisterButton";
 import useToastStore from "@/stores/toastStore";
 import useRestaurantDetail from "@/hooks/useRestaurantDetail";
+import { useMyStores, useDeleteStore } from "@/hooks/useMyStores";
+import { getApiErrorMessage } from "@/utils/apiErrorStatusMessage";
 
 const RestaurantHome = () => {
-  const [stores, setStores] = useState<MyStore[]>([]);
+  const { data: stores = [] } = useMyStores();
+  const deleteMutation = useDeleteStore();
   const { selectedStoreId: selectedDetailStoreId, openDetail, closeDetail } = useRestaurantDetail();
   const { setRestaurantSubpage, setRestaurantEditId, setRestaurantEditName } =
     useMypageStore();
   const { setStore } = useBroadcastStore();
   const { addToast } = useToastStore();
 
-  useEffect(() => {
-    const fetchMyStores = async () => {
-      try {
-        const res = await myStores();
-        setStores(res.data);
-        return res;
-      } catch (error) {
-        addToast(getApiErrorMessage(error), "error");
-      }
-    };
-
-    fetchMyStores();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  // 삭제
-  const handleRemove = async (id: number) => {
+  const handleRemove = (id: number) => {
     if (window.confirm("정말 이 식당을 삭제하시겠습니까?")) {
-      try {
-        await deleteStore(id);
-        setStores((stores) => stores!.filter((store) => store.store_id !== id));
-      } catch (error) {
-        addToast(getApiErrorMessage(error), "error");
-      }
+      deleteMutation.mutate(id, {
+        onError: (error) => addToast(getApiErrorMessage(error), "error"),
+      });
     }
   };
 
