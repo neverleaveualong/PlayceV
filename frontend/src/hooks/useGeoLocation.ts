@@ -1,11 +1,9 @@
 import { useState, useEffect } from "react";
 import useMapStore from "@/stores/mapStore";
-import { useMap } from "./useMap";
-import { CITY_STATION, SEARCHNEARBY_RADIUS } from "@/constants/mapConstant";
+import { CITY_STATION } from "@/constants/mapConstant";
 
 export const useGeoLocation = (options = {}) => {
   const { setPosition } = useMapStore();
-  const { fetchRestaurants } = useMap();
 
   const [error, setError] = useState("");
 
@@ -16,24 +14,12 @@ export const useGeoLocation = (options = {}) => {
       lat: latitude,
       lng: longitude,
     });
-
-    fetchRestaurants({
-      lat: latitude,
-      lng: longitude,
-      radius: SEARCHNEARBY_RADIUS,
-    });
   };
 
   const handleError = (err: GeolocationPositionError) => {
     setError(err.message);
 
     setPosition(CITY_STATION);
-
-    fetchRestaurants({
-      lat: CITY_STATION.lat,
-      lng: CITY_STATION.lng,
-      radius: SEARCHNEARBY_RADIUS,
-    });
   };
 
   useEffect(() => {

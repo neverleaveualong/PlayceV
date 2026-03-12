@@ -8,12 +8,11 @@ import useToastStore from "@/stores/toastStore";
 const SearchButton = () => {
   const {
     searchText,
-    setTriggerSearch,
     setBigRegions,
     setSmallRegions,
     setSports,
     setLeagues,
-    setIsSearching,
+    setSubmittedParams,
   } = useSearchStore();
   const { selectedRegions } = useRegionStore();
   const { sport, selectedLeagues } = useSportStore();
@@ -31,15 +30,14 @@ const SearchButton = () => {
       return;
     }
 
+    let bigRegions: string[] = [];
+    let smallRegions: string[] = [];
     if (selectedRegions.length > 0) {
-      const bigs = [...new Set(selectedRegions.map((r) => r.bigRegion))];
-      const smalls = selectedRegions.map((r) => r.smallRegion);
-      setBigRegions(bigs);
-      setSmallRegions(smalls);
-    } else {
-      setBigRegions([]);
-      setSmallRegions([]);
+      bigRegions = [...new Set(selectedRegions.map((r) => r.bigRegion))];
+      smallRegions = selectedRegions.map((r) => r.smallRegion);
     }
+    setBigRegions(bigRegions);
+    setSmallRegions(smallRegions);
 
     const uniqueSports = [...new Set(selectedLeagues.map((l) => l.sport))];
     setSports(uniqueSports);
@@ -47,8 +45,14 @@ const SearchButton = () => {
     const leagues = selectedLeagues.map((l) => l.league);
     setLeagues(leagues);
 
-    setIsSearching(true);
-    setTriggerSearch(true);
+    setSubmittedParams({
+      searchText,
+      sports: uniqueSports,
+      leagues,
+      bigRegions,
+      smallRegions,
+      sort: useSearchStore.getState().sort,
+    });
   };
 
   return (

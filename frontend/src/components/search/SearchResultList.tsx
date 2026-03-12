@@ -3,11 +3,19 @@ import { useSearchStore } from "@/stores/searchStore";
 import { sortSearchResults } from "@/utils/sortUtils";
 import RestaurantDetailComponent from "@/components/restaurant/RestaurantDetail";
 import useRestaurantDetail from "@/hooks/useRestaurantDetail";
+import type { SearchResultItem as SearchResultItemType } from "@/types/search";
 
-const SearchResultList = () => {
-  const isSearching = useSearchStore((state) => state.isSearching);
-  const hasSearched = useSearchStore((state) => state.hasSearched);
-  const results = useSearchStore((state) => state.results);
+interface SearchResultListProps {
+  results: SearchResultItemType[];
+  isSearching: boolean;
+  hasSearched: boolean;
+}
+
+const SearchResultList = ({
+  results,
+  isSearching,
+  hasSearched,
+}: SearchResultListProps) => {
   const sort = useSearchStore((state) => state.sort);
   const setSort = useSearchStore((state) => state.setSort);
   const { selectedStoreId, openDetail, closeDetail } = useRestaurantDetail();

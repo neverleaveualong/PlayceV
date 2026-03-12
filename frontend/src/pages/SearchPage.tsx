@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import RegionModal from "@/components/search/RegionModal";
 import { useRegionStore } from "@/stores/regionStore";
 import SportModal from "@/components/search/SportModal";
@@ -10,15 +10,27 @@ import AppHeader from "@/components/layout/AppHeader";
 import FavoriteSidebar from "@/components/mypage/FavoriteSidebar";
 import TodayBroadcastSidebar from "@/components/broadcast/TodayBroadcastSidebar";
 import { useSearchStore } from "@/stores/searchStore";
-import { useSearch } from "@/hooks/useSearch";
 import ResetButton from "@/components/search/ResetButton";
+import { useSearchResults } from "@/hooks/useSearchResults";
 
 const SearchPage = () => {
   const [showRegionModal, setShowRegionModal] = useState(false);
   const { selectedRegions } = useRegionStore();
-  const { isSearching, triggerSearch, setTriggerSearch } = useSearchStore();
-  const { doSearch } = useSearch();
-  const hasSearched = useSearchStore((state) => state.hasSearched);
+  const { submittedParams } = useSearchStore();
+
+  const { data: results, isLoading: isSearching } = useSearchResults(
+    submittedParams ?? {
+      searchText: "",
+      sports: [],
+      leagues: [],
+      bigRegions: [],
+      smallRegions: [],
+      sort: "distance",
+    },
+    submittedParams !== null
+  );
+
+  const hasSearched = submittedParams !== null;
 
   const selectedRegionLabel =
     selectedRegions.length === 0
@@ -41,14 +53,6 @@ const SearchPage = () => {
     : `${sport} ${selectedLeagues[0].league} 외 ${
         selectedLeagues.length - 1
       }개`;
-
-  useEffect(() => {
-    if (triggerSearch) {
-      doSearch();
-      setTriggerSearch(false);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [triggerSearch]);
 
   return (
     <div className="h-screen bg-white">
@@ -154,7 +158,11 @@ const SearchPage = () => {
         </div>
         {hasSearched || isSearching ? (
           <div className="mt-4 px-3">
-            <SearchResultList />
+            <SearchResultList
+              results={results ?? []}
+              isSearching={isSearching}
+              hasSearched={hasSearched}
+            />
           </div>
         ) : (
           <>
