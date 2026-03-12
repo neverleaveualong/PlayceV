@@ -1,21 +1,17 @@
-import { useEffect } from "react";
-import useFavoriteStore from "@/stores/favoriteStore";
 import RestaurantCardList from "@/components/restaurant/RestaurantCardList";
 import RestaurantDetailComponent from "@/components/restaurant/RestaurantDetail";
 import SectionHeader from "@/components/common/SectionHeader";
 import useRestaurantDetail from "@/hooks/useRestaurantDetail";
+import { useFavorites, useRemoveFavorite } from "@/hooks/useFavorites";
 
 interface FavoriteListProps {
   onClose: () => void;
 }
 
 const FavoriteList = ({ onClose }: FavoriteListProps) => {
-  const { favorites, fetchFavorites, removeFavorite } = useFavoriteStore();
+  const { data: favorites = [] } = useFavorites();
+  const removeMutation = useRemoveFavorite();
   const { selectedStoreId, openDetail, closeDetail } = useRestaurantDetail();
-
-  useEffect(() => {
-    fetchFavorites();
-  }, [fetchFavorites]);
 
   // 상세보기 버튼 클릭 시 storeId만 저장
   const handleDetail = (store_id: number) => {
@@ -27,7 +23,7 @@ const FavoriteList = ({ onClose }: FavoriteListProps) => {
       <SectionHeader title="즐겨찾기" onClose={onClose} />
       <RestaurantCardList
         stores={favorites}
-        onRemove={removeFavorite}
+        onRemove={(storeId) => removeMutation.mutate(storeId)}
         showDelete
         showDetail
         compact={false}

@@ -1,5 +1,3 @@
-import type { BroadcastWithId } from "./broadcast";
-
 export interface CreateBroadcastPayload {
   store_id: number;
   match_date: string;
@@ -15,6 +13,5 @@ export interface BroadcastRegisterEditProps {
   mode: "create" | "edit";
   broadcastId?: number;
   onClose: () => void;
-  setBroadcastLists: (broadcasts: BroadcastWithId[]) => void;
   storeId: number;
 }

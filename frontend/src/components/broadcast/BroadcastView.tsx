@@ -1,11 +1,9 @@
-import { useEffect } from "react";
 import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from "react-icons/md";
 import { FaBars, FaRegCalendarAlt } from "react-icons/fa";
 
 import TabList from "./TabLists";
 import Calendar from "./Calendar";
 import useBroadcastStore, { dateInfo } from "@/stores/broadcastStore";
-import { getBroadcast } from "@/api/broadcast.api";
 import getDaysInMonth, { getToday } from "@/utils/dateUtils";
 import useMypageStore from "@/stores/mypageStore";
 import FloatingRegisterButton from "./FloatingRegisterButton";
@@ -23,8 +21,6 @@ const BroadcastView = () => {
     setMonth,
     setDate,
     setViewOption,
-    storeId,
-    setBroadcastLists,
     scrollDateCenter,
   } = useBroadcastStore();
 
@@ -48,21 +44,6 @@ const BroadcastView = () => {
     setMonth(newMonth);
     setDate(1);
   };
-
-  const fetchBroadcasts = async () => {
-    if (!storeId) return;
-    try {
-      const broadcasts = await getBroadcast(storeId);
-      setBroadcastLists(broadcasts);
-    } catch {
-      // 조회 실패 시 빈 목록 유지
-    }
-  };
-
-  useEffect(() => {
-    fetchBroadcasts();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [storeId]);
 
   const { year: todayYear, month: todayMonth, date: todayDate } = getToday();
 
