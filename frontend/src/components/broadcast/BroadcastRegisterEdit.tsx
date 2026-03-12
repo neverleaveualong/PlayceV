@@ -41,6 +41,13 @@ const BroadcastRegisterEdit = (props: BroadcastRegisterEditProps) => {
   const { addToast } = useToastStore();
 
   useEffect(() => {
+    if (props.mode === "create") {
+      resetForm();
+      setIsTeamCompetition(true);
+    }
+  }, [props.mode, resetForm]);
+
+  useEffect(() => {
     fetchSports().then(setSports);
   }, []);
 

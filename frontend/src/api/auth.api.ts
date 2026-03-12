@@ -23,6 +23,7 @@ export const signup = (data: SignupProps) => {
 
 export interface PasswordResetRequestProps {
   email: string;
+  name: string;
 }
 export const passwordResetRequest = (data: PasswordResetRequestProps) => {
   return requestHandler("post", "/users/reset", data);

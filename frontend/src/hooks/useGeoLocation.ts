@@ -49,5 +49,5 @@ export const useGeoLocation = (options = {}) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  return { location, error };
+  return { error };
 };
