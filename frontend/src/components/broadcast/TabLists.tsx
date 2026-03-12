@@ -4,10 +4,10 @@ import { useRef, useEffect } from "react";
 import useBroadcastStore from "@/stores/broadcastStore";
 import useBroadcastFormStore from "@/stores/broadcastFormStore";
 import BroadcastActionButtons from "./BroadcastActionButtons";
-import { deleteBroadcast, getBroadcast } from "@/api/broadcast.api";
 import { formatTime } from "@/utils/formatTime";
 import useToastStore from "@/stores/toastStore";
 import useMypageStore from "@/stores/mypageStore";
+import useBroadcasts, { useDeleteBroadcast } from "@/hooks/useBroadcasts";
 
 const TabList = () => {
   const { year, month, date, setDate } = useBroadcastStore();
@@ -16,11 +16,9 @@ const TabList = () => {
   ) as React.RefObject<HTMLDivElement>;
   const itemRefs = useRef<Map<number, HTMLDivElement>>(new Map());
   const scrollAmount = 150;
-  const {
-    broadcastLists = [],
-    storeId,
-    setBroadcastLists,
-  } = useBroadcastStore();
+  const { storeId } = useBroadcastStore();
+  const { data: broadcastLists = [] } = useBroadcasts(storeId);
+  const deleteMutation = useDeleteBroadcast(storeId);
   const { setEditingId } = useBroadcastFormStore();
   const { setRestaurantSubpage } = useMypageStore();
 
@@ -60,16 +58,12 @@ const TabList = () => {
     .filter((b) => b.match_date === currentDate)
     .sort((a, b) => a.match_time.localeCompare(b.match_time));
 
-  const handleDelete = async (id: number) => {
+  const handleDelete = (id: number) => {
     if (!confirm("중계 일정을 삭제하시겠습니까?")) return;
-    try {
-      await deleteBroadcast(id);
-      useToastStore.getState().addToast("삭제되었습니다.", "success");
-      const broadcasts = await getBroadcast(storeId);
-      setBroadcastLists(broadcasts);
-    } catch {
-      useToastStore.getState().addToast("삭제에 실패했습니다.", "error");
-    }
+    deleteMutation.mutate(id, {
+      onSuccess: () => useToastStore.getState().addToast("삭제되었습니다.", "success"),
+      onError: () => useToastStore.getState().addToast("삭제에 실패했습니다.", "error"),
+    });
   };
 
   const { year: todayYear, month: todayMonth, date: todayDate } = getToday();
