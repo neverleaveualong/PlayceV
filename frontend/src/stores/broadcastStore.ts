@@ -1,5 +1,4 @@
 import { create } from "zustand";
-import type { BroadcastWithId } from "@/types/broadcast";
 import { getToday } from "@/utils/dateUtils";
 
 export const dateInfo = getToday();
@@ -11,7 +10,6 @@ interface BoradcastState {
   month: number;
   date: number;
   storeId: number;
-  broadcastLists: BroadcastWithId[];
   viewOption: TViewOption;
   resetYMD: () => void;
   setYear: (year: number) => void;
@@ -19,7 +17,6 @@ interface BoradcastState {
   setDate: (date: number) => void;
   setStore: (r: string, rId: number) => void;
   setViewOption: (view: TViewOption) => void;
-  setBroadcastLists: (broadcasts: BroadcastWithId[]) => void;
   tabRef: React.RefObject<HTMLDivElement> | null;
   itemRefs: React.RefObject<Map<number, HTMLDivElement>> | null;
   setTabRef: (ref: React.RefObject<HTMLDivElement>) => void;
@@ -33,7 +30,6 @@ const useBroadcastStore = create<BoradcastState>((set, get) => ({
   month: dateInfo.month,
   date: dateInfo.date,
   storeId: 0,
-  broadcastLists: [],
   viewOption: "tab",
   resetYMD: () => {
     set({
@@ -57,7 +53,6 @@ const useBroadcastStore = create<BoradcastState>((set, get) => ({
   setViewOption: (view) => {
     set({ viewOption: view });
   },
-  setBroadcastLists: (broadcasts) => set({ broadcastLists: broadcasts }),
   tabRef: null,
   itemRefs: null,
   setTabRef: (ref) => set({ tabRef: ref }),

@@ -3,19 +3,18 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from "@/pages/Home";
 import PasswordResetModal from "@/components/auth/PasswordResetModal";
 import useAuthStore from "@/stores/authStore";
-import useFavoriteStore from "@/stores/favoriteStore";
+import { useQueryClient } from "@tanstack/react-query";
 import Toast from "@/components/common/Toast";
 
 function App() {
   const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
-  const resetFavorites = useFavoriteStore((state) => state.resetFavorites);
+  const queryClient = useQueryClient();
 
   useEffect(() => {
     if (!isLoggedIn) {
-      resetFavorites();
+      queryClient.removeQueries({ queryKey: ["favorites"] });
     }
-    // 로그인 시 fetchFavorites() 등도 가능
-  }, [isLoggedIn, resetFavorites]);
+  }, [isLoggedIn, queryClient]);
 
   return (
     <BrowserRouter>
