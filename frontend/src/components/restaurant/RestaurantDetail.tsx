@@ -9,8 +9,6 @@ import RestaurantDetailMenuTab from "./RestaurantDetailMenuTab";
 import RestaurantDetailBroadcastTab from "./RestaurantDetailBroadcastTab";
 import RestaurantDetailPhotoTab from "./RestaurantDetailPhotoTab";
 import useMapStore from "@/stores/mapStore";
-import { searchNearby } from "@/api/map.api";
-import { SEARCHNEARBY_RADIUS } from "@/constants/mapConstant";
 
 type Tab = "홈" | "메뉴" | "사진" | "중계";
 
@@ -25,21 +23,14 @@ export default function RestaurantDetailComponent({
 }: RestaurantDetailComponentProps) {
   const [currentTab, setCurrentTab] = useState<Tab>("홈");
   const { data: detail, isLoading: loading, error } = useStoreDetail(storeId);
-  const { setPosition, setRestaurants, setRefreshBtn } = useMapStore();
+  const { setPosition, setRefreshBtn } = useMapStore();
   const { isFavorite, toggleFavorite } = useFavoriteToggle(storeId);
 
   useEffect(() => {
     if (!detail) return;
     setPosition({ lat: detail.lat, lng: detail.lng });
-    searchNearby({
-      lat: detail.lat,
-      lng: detail.lng,
-      radius: SEARCHNEARBY_RADIUS,
-    }).then((nearStores) => {
-      setRestaurants(nearStores.data);
-      setRefreshBtn(false);
-    });
-  }, [detail, setPosition, setRestaurants, setRefreshBtn]);
+    setRefreshBtn(false);
+  }, [detail, setPosition, setRefreshBtn]);
 
 
 
