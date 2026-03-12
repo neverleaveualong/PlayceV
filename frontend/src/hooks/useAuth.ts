@@ -10,7 +10,7 @@ import {
 } from "@/api/auth.api";
 import useAuthStore from "@/stores/authStore";
 import useToastStore from "@/stores/toastStore";
-import { apiErrorStatusMessage } from "@/utils/apiErrorStatusMessage";
+import { getApiErrorMessage } from "@/utils/apiErrorStatusMessage";
 
 export const useAuth = () => {
   const { storeLogin, storeLogout, setIsLoginModalOpen, setIsSignupModalOpen } =
@@ -24,12 +24,7 @@ export const useAuth = () => {
       addToast("로그인이 완료되었습니다.", "success");
       setIsLoginModalOpen(false);
     } catch (error) {
-      const errorList = [
-        { code: 400, message: "아이디 또는 비밀번호가 유효하지 않습니다" },
-        { code: 401, message: "아이디 또는 비밀번호가 일치하지 않습니다" },
-      ];
-      const message = apiErrorStatusMessage(error, errorList);
-      if (message) addToast(message, "error");
+      addToast(getApiErrorMessage(error), "error");
     }
   };
 
@@ -48,12 +43,7 @@ export const useAuth = () => {
       addToast("회원가입이 완료되었습니다.", "success");
       setIsSignupModalOpen(false);
     } catch (error) {
-      const errorList = [
-        { code: 400, message: "입력값이 유효하지 않습니다" },
-        { code: 409, message: "중복된 이메일 또는 전화번호입니다" },
-      ];
-      const message = apiErrorStatusMessage(error, errorList);
-      if (message) addToast(message, "error");
+      addToast(getApiErrorMessage(error), "error");
     }
   };
 
@@ -63,12 +53,7 @@ export const useAuth = () => {
       await passwordResetRequest(data);
       addToast("비밀번호 재설정 메일이 전송되었습니다.", "success");
     } catch (error) {
-      const errorList = [
-        { code: 400, message: "입력값이 유효하지 않습니다" },
-        { code: 404, message: "이메일 또는 이름이 일치하지 않습니다." },
-      ];
-      const message = apiErrorStatusMessage(error, errorList);
-      if (message) addToast(message, "error");
+      addToast(getApiErrorMessage(error), "error");
     }
   };
 
@@ -77,15 +62,7 @@ export const useAuth = () => {
     try {
       await passwordReset(data);
     } catch (error) {
-      const errorList = [
-        { code: 400, message: "입력값이 유효하지 않습니다" },
-        {
-          code: 401,
-          message: "유효하지 않거나 만료되었습니다. 다시 시도해 주세요",
-        },
-      ];
-      const message = apiErrorStatusMessage(error, errorList);
-      if (message) addToast(message, "error");
+      addToast(getApiErrorMessage(error), "error");
     }
   };
 

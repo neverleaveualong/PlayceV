@@ -13,7 +13,7 @@ import useMypageStore from "@/stores/mypageStore";
 import FindAddressButton from "@/components/common/FindAddressButton";
 import ImageUrlInputList from "./ImageUrlInputList";
 import type { MenuItem } from "@/types/restaurant.types";
-import { apiErrorStatusMessage } from "@/utils/apiErrorStatusMessage";
+import { getApiErrorMessage } from "@/utils/apiErrorStatusMessage";
 import useToastStore from "@/stores/toastStore";
 
 interface StoreFormModalProps {
@@ -91,16 +91,7 @@ const RestaurantRegisterEdit = ({ mode }: StoreFormModalProps) => {
         addToast("식당 등록이 완료되었습니다.", "success");
         setRestaurantSubpage("restaurant-home");
       } catch (error) {
-        const errorList = [
-          {
-            code: 400,
-            message: "사업자등록번호 또는 지역이 유효하지 않습니다",
-          },
-          { code: 404, message: "사용자를 찾을 수 없습니다" },
-          { code: 409, message: "이미 등록된 사업자등록번호입니다" },
-        ];
-        const message = apiErrorStatusMessage(error, errorList);
-        if (message) addToast(message, "error");
+        addToast(getApiErrorMessage(error), "error");
       }
     } else if (mode === "edit") {
       const data: EditStoreProps = {
@@ -118,16 +109,7 @@ const RestaurantRegisterEdit = ({ mode }: StoreFormModalProps) => {
         addToast("식당 수정이 완료되었습니다.", "success");
         setRestaurantSubpage("restaurant-home");
       } catch (error) {
-        const errorList = [
-          {
-            code: 400,
-            message: "잘못된 정보가 입력되었습니다",
-          },
-          { code: 403, message: "식당에 대한 수정 권한이 없습니다" },
-          { code: 404, message: "식당 또는 사용자가 존재하지 않습니다" },
-        ];
-        const message = apiErrorStatusMessage(error, errorList);
-        if (message) addToast(message, "error");
+        addToast(getApiErrorMessage(error), "error");
       }
     }
 

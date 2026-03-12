@@ -1,23 +1,19 @@
 import type { AxiosError } from "axios";
 
-type errorCodeMessage = {
-  code: number;
-  message: string;
-};
+interface ApiErrorResponse {
+  message?: string;
+}
 
-export const apiErrorStatusMessage = (
-  error: unknown,
-  errorList: errorCodeMessage[]
-) => {
-  const axiosError = error as AxiosError;
-  if (axiosError.response) {
-    const status = axiosError.response.status;
-    const message = errorList.find((item) => item.code === status)?.message;
-
-    if (message) {
-      return message;
-    } else {
-      return `오류가 발생하였습니다\n${error}`;
-    }
+export const getApiErrorMessage = (error: unknown): string => {
+  const axiosError = error as AxiosError<ApiErrorResponse>;
+  if (axiosError.response?.data?.message) {
+    return axiosError.response.data.message;
   }
+  if (axiosError.code === "ECONNABORTED") {
+    return "서버 응답 시간이 초과되었습니다. 잠시 후 다시 시도해주세요.";
+  }
+  if (!axiosError.response) {
+    return "서버에 연결할 수 없습니다. 네트워크를 확인해주세요.";
+  }
+  return "오류가 발생하였습니다";
 };
