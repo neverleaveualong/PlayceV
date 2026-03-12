@@ -43,6 +43,7 @@ const BroadcastRegisterEdit = (props: BroadcastRegisterEditProps) => {
   useEffect(() => {
     if (props.mode === "create") {
       resetForm();
+      setIsTeamCompetition(true);
     }
   }, [props.mode, resetForm]);
 

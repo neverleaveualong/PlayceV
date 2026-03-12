@@ -6,7 +6,14 @@ interface ApiErrorResponse {
 
 export const getApiErrorMessage = (error: unknown): string => {
   const axiosError = error as AxiosError<ApiErrorResponse>;
-  return (
-    axiosError.response?.data?.message || "오류가 발생하였습니다"
-  );
+  if (axiosError.response?.data?.message) {
+    return axiosError.response.data.message;
+  }
+  if (axiosError.code === "ECONNABORTED") {
+    return "서버 응답 시간이 초과되었습니다. 잠시 후 다시 시도해주세요.";
+  }
+  if (!axiosError.response) {
+    return "서버에 연결할 수 없습니다. 네트워크를 확인해주세요.";
+  }
+  return "오류가 발생하였습니다";
 };
