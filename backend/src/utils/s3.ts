@@ -42,7 +42,9 @@ export const uploadToS3 = multer({
 export const deleteS3Object = async (url: string) => {
   try {
     const bucket = process.env.AWS_S3_BUCKET_NAME!;
-    const key = decodeURIComponent(new URL(url).pathname.slice(1));
+    const parsed = new URL(url);
+    const pathname = decodeURIComponent(parsed.pathname.slice(1));
+    const key = pathname.startsWith(`${bucket}/`) ? pathname.slice(bucket.length + 1) : pathname;
 
     await s3.send(new DeleteObjectCommand({ Bucket: bucket, Key: key }));
     log(`🗑️ S3 이미지 삭제 완료: ${key}`);

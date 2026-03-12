@@ -7,6 +7,19 @@ import { log } from "../utils/logUtils";
 
 type S3File = Express.Multer.File & { location: string };
 
+const toPathStyleUrl = (url: string): string => {
+  try {
+    const parsed = new URL(url);
+    const hostParts = parsed.hostname.split(".s3.");
+    if (hostParts.length === 2) {
+      const bucket = hostParts[0];
+      const region = hostParts[1].replace(".amazonaws.com", "");
+      return `https://s3.${region}.amazonaws.com/${bucket}${parsed.pathname}`;
+    }
+  } catch {}
+  return url;
+};
+
 const storeController = {
   // 1. 식당 등록
   createStore: async (req: AuthRequest, res: Response, next: NextFunction) => {
@@ -14,7 +27,7 @@ const storeController = {
       log("\n🍴 [식당 등록] 요청");
       const userId: number = req.user!.userId;
       const files = req.files as S3File[];
-      const imgUrls = files?.map((file) => file.location) || [];
+      const imgUrls = files?.map((file) => toPathStyleUrl(file.location)) || [];
 
       const createData = {
         ...req.body,
@@ -54,7 +67,7 @@ const storeController = {
         imgUrls = req.body.img_urls;
       }
 
-      const newImageUrls = files?.map((file) => file.location) || [];
+      const newImageUrls = files?.map((file) => toPathStyleUrl(file.location)) || [];
       const allImgUrls = [...imgUrls, ...newImageUrls];
       const updateData = {
         ...req.body,
