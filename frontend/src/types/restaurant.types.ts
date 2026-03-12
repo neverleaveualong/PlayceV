@@ -25,6 +25,8 @@ export interface RestaurantDetail {
   description: string;
   broadcasts: Broadcast[];
   is_owner?: boolean;
+  lat: number;
+  lng: number;
 }
 
 export interface MyStore {
