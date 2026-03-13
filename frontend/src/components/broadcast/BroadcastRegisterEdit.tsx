@@ -1,145 +1,130 @@
 import { useEffect, useState } from "react";
+import { useForm, Controller } from "react-hook-form";
 import { DatePicker, TimePicker } from "antd";
-import dayjs from "dayjs";
+import dayjs, { Dayjs } from "dayjs";
 import { createBroadcast, editBroadcast } from "@/api/broadcast.api";
-import { fetchSports, fetchLeagues } from "@/api/staticdata.api";
 import useBroadcastStore from "@/stores/broadcastStore";
 import useToastStore from "@/stores/toastStore";
-import useBroadcastFormStore, {
-  handleLeagueChange,
-  handleSportChange,
-} from "@/stores/broadcastFormStore";
 import SelectInput from "@/components/common/SelectInput";
 import type { BroadcastRegisterEditProps } from "@/types/broadcastForm";
 import useMypageStore from "@/stores/mypageStore";
-import type { Sport, League } from "@/types/staticdata";
 import useBroadcasts from "@/hooks/useBroadcasts";
+import { useSports } from "@/hooks/useSports";
+import { useLeagues } from "@/hooks/useLeagues";
 import { useQueryClient } from "@tanstack/react-query";
 
-const BroadcastRegisterEdit = (props: BroadcastRegisterEditProps) => {
-  const {
-    date,
-    time,
-    sportId,
-    leagueId,
-    team1,
-    team2,
-    note,
-    setDate,
-    setTime,
-    setLeague,
-    setteam1,
-    setteam2,
-    setNote,
-    setInitialForm,
-    resetForm,
-  } = useBroadcastFormStore();
+// ① 폼 값 타입 정의
+interface BroadcastFormValues {
+  date: Dayjs | null;
+  time: Dayjs | null;
+  sportId: number | null;
+  leagueId: number | null;
+  team1: string;
+  team2: string;
+  note: string;
+}
 
+const BroadcastRegisterEdit = (props: BroadcastRegisterEditProps) => {
   const { storeId } = useBroadcastStore();
   const { data: broadcastLists = [] } = useBroadcasts(storeId);
   const queryClient = useQueryClient();
-  const [sports, setSports] = useState<Sport[]>([]);
-  const [leagues, setLeagues] = useState<League[]>([]);
   const { setRestaurantSubpage } = useMypageStore();
   const [isTeamCompetition, setIsTeamCompetition] = useState(true);
   const { addToast } = useToastStore();
 
+  // ② useForm — broadcastFormStore를 대체
+  const {
+    register,
+    handleSubmit,
+    control,
+    watch,
+    setValue,
+    reset,
+  } = useForm<BroadcastFormValues>({
+    defaultValues: {
+      date: null,
+      time: null,
+      sportId: null,
+      leagueId: null,
+      team1: "",
+      team2: "",
+      note: "",
+    },
+  });
+
+  // ③ watch — sportId 값을 실시간 감시 (종목↔리그 연동)
+  const sportId = watch("sportId");
+
+  // ④ React Query 훅 — fetchSports/fetchLeagues 직접 호출 제거
+  const { data: sports = [] } = useSports();
+  const { data: leagues = [] } = useLeagues(sportId ?? undefined);
+
+  // ⑤ 등록 모드 진입 시 폼 초기화
   useEffect(() => {
     if (props.mode === "create") {
-      resetForm();
+      reset({
+        date: null,
+        time: null,
+        sportId: null,
+        leagueId: null,
+        team1: "",
+        team2: "",
+        note: "",
+      });
       setIsTeamCompetition(true);
     }
-  }, [props.mode, resetForm]);
+  }, [props.mode, reset]);
 
+  // ⑥ 수정 모드 진입 시 기존 데이터로 폼 채우기
   useEffect(() => {
-    fetchSports().then(setSports);
-  }, []);
+    if (props.mode !== "edit" || props.broadcastId == null) return;
 
-  useEffect(() => {
-    if (sportId) {
-      fetchLeagues(sportId).then((res: League[]) => {
-        setLeagues(res);
-        const leagueIds = res.map((l) => l.id);
-        if (leagueId !== null && !leagueIds.includes(leagueId)) {
-          setLeague("", null);
-        }
-      });
-    } else {
-      setLeagues([]);
-      setLeague("", null);
+    const target = broadcastLists.find(
+      (b) => b.broadcast_id === props.broadcastId
+    );
+    if (!target) {
+      addToast("수정할 중계 정보를 찾을 수 없습니다.", "error");
+      return;
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [sportId]);
 
-  useEffect(() => {
-    if (props.mode === "edit" && props.broadcastId != null) {
-      const target = broadcastLists.find(
-        (b) => b.broadcast_id === props.broadcastId
-      );
-
-      if (!target) {
-        addToast("수정할 중계 정보를 찾을 수 없습니다.", "error");
-        return;
-      }
-
-      fetchSports().then((sports: Sport[]) => {
-        setSports(sports);
-        const sportMatch = sports.find((s) => s.name === target.sport);
-        if (sportMatch) {
-          handleSportChange(sportMatch.name, sportMatch.id);
-
-          setIsTeamCompetition(sportMatch.isTeamCompetition);
-          if (!sportMatch.isTeamCompetition) {
-            setteam1("");
-            setteam2("");
-          }
-
-          fetchLeagues(sportMatch.id).then((leagues: League[]) => {
-            setLeagues(leagues);
-            const leagueMatch = leagues.find((l) => l.name === target.league);
-            if (leagueMatch) {
-              handleLeagueChange(leagueMatch.name, leagueMatch.id);
-            }
-
-            setInitialForm({
-              date: dayjs(target.match_date),
-              time: dayjs(target.match_time, "HH:mm"),
-              team1: target.team_one,
-              team2: target.team_two,
-              note: target.etc,
-            });
-          });
-        }
-      });
+    const sportMatch = sports.find((s) => s.name === target.sport);
+    if (sportMatch) {
+      setIsTeamCompetition(sportMatch.isTeamCompetition);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [props.mode, props.broadcastId, broadcastLists]);
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+    const leagueMatch = leagues.find((l) => l.name === target.league);
 
-    if (!date || !time || !sportId || !leagueId) {
+    reset({
+      date: dayjs(target.match_date),
+      time: dayjs(target.match_time, "HH:mm"),
+      sportId: sportMatch?.id ?? null,
+      leagueId: leagueMatch?.id ?? null,
+      team1: target.team_one,
+      team2: target.team_two,
+      note: target.etc,
+    });
+  }, [props.mode, props.broadcastId, broadcastLists, sports, leagues, reset, addToast]);
+
+  // ⑦ submit — 유효성 통과한 경우만 실행
+  const onSubmit = async (data: BroadcastFormValues) => {
+    if (!data.date || !data.time || !data.sportId || !data.leagueId) {
       addToast("필수 정보를 모두 입력해주세요.", "error");
       return;
     }
 
     const commonPayload = {
-      match_date: date.format("YYYY-MM-DD"),
-      match_time: time.format("HH:mm"),
-      sport_id: sportId,
-      league_id: leagueId,
-      team_one: team1 ?? "",
-      team_two: team2 ?? "",
-      etc: note,
+      match_date: data.date.format("YYYY-MM-DD"),
+      match_time: data.time.format("HH:mm"),
+      sport_id: data.sportId,
+      league_id: data.leagueId,
+      team_one: data.team1 ?? "",
+      team_two: data.team2 ?? "",
+      etc: data.note,
     };
 
     try {
       if (props.mode === "create") {
-        const createPayload = {
-          ...commonPayload,
-          store_id: props.storeId,
-        };
-        await createBroadcast(createPayload);
+        await createBroadcast({ ...commonPayload, store_id: props.storeId });
         addToast("중계 일정 등록 완료", "success");
       } else if (props.mode === "edit" && props.broadcastId != null) {
         await editBroadcast(props.broadcastId, commonPayload);
@@ -152,62 +137,88 @@ const BroadcastRegisterEdit = (props: BroadcastRegisterEditProps) => {
     }
   };
 
+  // ⑧ JSX — Controller로 DatePicker/TimePicker/SelectInput 연결
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
+    <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
       <div className="flex gap-4">
         <div className="flex-1 min-w-[180px]">
           <label className="block mb-1 font-semibold text-mainText">
             날짜 <span className="text-red-500">*</span>
           </label>
-          <DatePicker
-            className="w-full py-2 border-gray-200"
-            value={date}
-            onChange={(v) => v && setDate(v)}
-            getPopupContainer={(trigger) => trigger.parentNode as HTMLElement}
+          <Controller
+            name="date"
+            control={control}
+            render={({ field }) => (
+              <DatePicker
+                className="w-full py-2 border-gray-200"
+                value={field.value}
+                onChange={(v) => v && field.onChange(v)}
+                getPopupContainer={(trigger) => trigger.parentNode as HTMLElement}
+              />
+            )}
           />
         </div>
         <div className="flex-1 min-w-[180px]">
           <label className="block mb-1 font-semibold text-mainText">
             시간 <span className="text-red-500">*</span>
           </label>
-          <TimePicker
-            className="w-full py-2 border-gray-200"
-            format="HH:mm"
-            value={time}
-            onChange={(v) => setTime(v)}
-            getPopupContainer={(trigger) => trigger.parentNode as HTMLElement}
+          <Controller
+            name="time"
+            control={control}
+            render={({ field }) => (
+              <TimePicker
+                className="w-full py-2 border-gray-200"
+                format="HH:mm"
+                value={field.value}
+                onChange={field.onChange}
+                getPopupContainer={(trigger) => trigger.parentNode as HTMLElement}
+              />
+            )}
           />
         </div>
       </div>
 
       <div className="flex gap-4">
         <div className="flex-1 min-w-[180px]">
-          <SelectInput
-            label="종목"
-            placeholder="종목 선택"
-            value={sportId ?? ""}
-            options={sports}
-            onChange={(id, name) => {
-              handleSportChange(name, id);
-              const selected = sports.find((s) => s.id === id);
-              if (selected) {
-                setIsTeamCompetition(selected.isTeamCompetition);
-                if (!selected.isTeamCompetition) {
-                  setteam1("");
-                  setteam2("");
-                }
-              }
-            }}
+          <Controller
+            name="sportId"
+            control={control}
+            render={({ field }) => (
+              <SelectInput
+                label="종목"
+                placeholder="종목 선택"
+                value={field.value ?? ""}
+                options={sports}
+                onChange={(id) => {
+                  field.onChange(id);
+                  setValue("leagueId", null);
+                  const selected = sports.find((s) => s.id === id);
+                  if (selected) {
+                    setIsTeamCompetition(selected.isTeamCompetition);
+                    if (!selected.isTeamCompetition) {
+                      setValue("team1", "");
+                      setValue("team2", "");
+                    }
+                  }
+                }}
+              />
+            )}
           />
         </div>
         <div className="flex-1 min-w-[180px]">
-          <SelectInput
-            label="리그"
-            placeholder="리그 선택"
-            value={leagueId ?? ""}
-            options={leagues}
-            onChange={(id, name) => handleLeagueChange(name, id)}
-            disabled={!sportId}
+          <Controller
+            name="leagueId"
+            control={control}
+            render={({ field }) => (
+              <SelectInput
+                label="리그"
+                placeholder="리그 선택"
+                value={field.value ?? ""}
+                options={leagues}
+                onChange={(id) => field.onChange(id)}
+                disabled={!sportId}
+              />
+            )}
           />
         </div>
       </div>
@@ -221,8 +232,7 @@ const BroadcastRegisterEdit = (props: BroadcastRegisterEditProps) => {
                 ? "팀 이름을 입력해주세요."
                 : "팀 입력이 필요하지 않습니다."
             }
-            value={team1 ?? ""}
-            onChange={(e) => setteam1(e.target.value)}
+            {...register("team1")}
             disabled={!isTeamCompetition}
             className="w-full border px-3 py-2 rounded hover:border-primary5 focus:border-primary5 focus:ring-1 focus:ring-primary1 focus:outline-none"
           />
@@ -235,8 +245,7 @@ const BroadcastRegisterEdit = (props: BroadcastRegisterEditProps) => {
                 ? "팀 이름을 입력해주세요."
                 : "팀 입력이 필요하지 않습니다."
             }
-            value={team2 ?? ""}
-            onChange={(e) => setteam2(e.target.value)}
+            {...register("team2")}
             disabled={!isTeamCompetition}
             className="w-full border px-3 py-2 rounded hover:border-primary5 focus:border-primary5 focus:ring-1 focus:ring-primary1 focus:outline-none"
           />
@@ -246,8 +255,7 @@ const BroadcastRegisterEdit = (props: BroadcastRegisterEditProps) => {
       <div>
         <label className="block mb-1 font-semibold text-mainText">기타</label>
         <textarea
-          value={note}
-          onChange={(e) => setNote(e.target.value)}
+          {...register("note")}
           className="w-full border px-3 py-2 rounded hover:border-primary5 focus:border-primary5 focus:ring-1 focus:ring-primary1 focus:outline-none"
           rows={3}
         />
@@ -257,7 +265,7 @@ const BroadcastRegisterEdit = (props: BroadcastRegisterEditProps) => {
         <button
           type="button"
           onClick={() => {
-            resetForm();
+            reset();
             setRestaurantSubpage("schedule-view-broadcasts");
           }}
           className="px-4 py-2 rounded bg-gray-100"
