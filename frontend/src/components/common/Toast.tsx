@@ -1,3 +1,4 @@
+import { memo } from "react";
 import useToastStore from "@/stores/toastStore";
 import { FiCheckCircle, FiAlertCircle, FiInfo, FiX } from "react-icons/fi";
 
@@ -13,7 +14,7 @@ const colorMap = {
   info: "bg-gray-50 border-gray-300 text-gray-800",
 };
 
-const Toast = () => {
+const Toast = memo(function Toast() {
   const { toasts, removeToast } = useToastStore();
 
   if (toasts.length === 0) return null;
@@ -37,6 +38,6 @@ const Toast = () => {
       ))}
     </div>
   );
-};
+});
 
 export default Toast;

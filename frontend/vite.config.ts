@@ -10,5 +10,18 @@ export default defineConfig({
       "@": path.resolve(__dirname, "src"),
     },
   },
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          vendor: ["react", "react-dom", "react-router-dom"],
+          query: ["@tanstack/react-query"],
+          state: ["zustand", "axios"],
+          antd: ["antd"],
+          icons: ["react-icons"],
+        },
+      },
+    },
+  },
   server: { host: "0.0.0.0" },
 });

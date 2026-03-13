@@ -1,4 +1,4 @@
-import { useState, useMemo, useEffect } from "react";
+import { useState, useMemo, useEffect, useCallback, memo } from "react";
 import { FiTv, FiImage } from "react-icons/fi";
 import useMapStore from "@/stores/mapStore";
 import RestaurantDetailComponent from "@/components/restaurant/RestaurantDetail";
@@ -8,8 +8,9 @@ import type { Broadcast } from "@/types/restaurant.types";
 import { formatTimeShort } from "@/utils/formatTime";
 import { getToday } from "@/utils/dateUtils";
 
-export default function TodayBroadcastSidebar() {
-  const { searchPosition, radius } = useMapStore();
+const TodayBroadcastSidebar = memo(function TodayBroadcastSidebar() {
+  const searchPosition = useMapStore((state) => state.searchPosition);
+  const radius = useMapStore((state) => state.radius);
   const { data: restaurants = [] } = useNearbyRestaurants(
     searchPosition.lat,
     searchPosition.lng,
@@ -58,7 +59,17 @@ export default function TodayBroadcastSidebar() {
     }
   }, [SPORTS, selectedSport]);
 
-  const filtered = todayBroadcasts.filter((b) => b.sport === selectedSport);
+  const filtered = useMemo(
+    () => todayBroadcasts.filter((b) => b.sport === selectedSport),
+    [todayBroadcasts, selectedSport]
+  );
+
+  const handleOpenDetail = useCallback(
+    (storeId: number) => {
+      openDetail(storeId);
+    },
+    [openDetail]
+  );
 
   return (
     <section className="w-full bg-white px-5 pt-1 pb-10 rounded-2xl border border-gray-100">
@@ -104,7 +115,7 @@ export default function TodayBroadcastSidebar() {
                 <li
                   key={idx}
                   className="bg-white rounded-xl border border-gray-200 px-4 py-3 mb-3 flex items-center gap-4 cursor-pointer hover:bg-primary4 transition-colors"
-                  onClick={() => openDetail(game.store_id)}
+                  onClick={() => handleOpenDetail(game.store_id)}
                 >
                   {game.main_img ? (
                     <img
@@ -166,4 +177,6 @@ export default function TodayBroadcastSidebar() {
       )}
     </section>
   );
-}
+});
+
+export default TodayBroadcastSidebar;
