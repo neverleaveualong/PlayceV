@@ -10,6 +10,7 @@ interface MapState {
   isRefreshBtnOn: boolean;
   zoomLevel: number;
   setPosition: (pos: latlng) => void;
+  initPosition: (pos: latlng) => void;
   search: (radius: number) => void;
   setOpenedModal: (modal: number) => void;
   closeModal: () => void;
@@ -26,6 +27,9 @@ const useMapStore = create<MapState>((set, get) => ({
   zoomLevel: 3,
   setPosition: (pos) => {
     set({ position: pos });
+  },
+  initPosition: (pos) => {
+    set({ position: pos, searchPosition: pos });
   },
   search: (radius) => {
     set({ searchPosition: get().position, radius, isRefreshBtnOn: false });
