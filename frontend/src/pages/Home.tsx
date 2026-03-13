@@ -1,14 +1,18 @@
+import { lazy, Suspense } from "react";
 import AuthHeader from "@/components/auth/AuthHeader";
-import LoginModal from "@/components/auth/Login";
-import SignupModal from "@/components/auth/Signup";
 import Map from "@/components/map/PlayceMap";
 import SpotRefreshButton from "@/components/map/SpotRefreshButton";
-import MypageModal from "@/components/mypage/MypageModal";
 import { useGeoLocation } from "@/hooks/useGeoLocation";
 import useMapStore from "@/stores/mapStore";
 import useMypageStore from "@/stores/mypageStore";
 import SearchPage from "./SearchPage";
-import PasswordResetRequestModal from "@/components/auth/PasswordResetRequestModal";
+
+const LoginModal = lazy(() => import("@/components/auth/Login"));
+const SignupModal = lazy(() => import("@/components/auth/Signup"));
+const PasswordResetRequestModal = lazy(
+  () => import("@/components/auth/PasswordResetRequestModal")
+);
+const MypageModal = lazy(() => import("@/components/mypage/MypageModal"));
 
 const Home: React.FC = () => {
   const { position, isRefreshBtnOn } = useMapStore();
@@ -35,14 +39,19 @@ const Home: React.FC = () => {
       <SearchPage />
       <div className="relative w-full h-screen">
         {position && <Map />}
-        {/* 이 위치에서 재탐색 버튼 */}
         {isRefreshBtnOn && <SpotRefreshButton />}
         <AuthHeader />
-        <LoginModal />
-        <SignupModal />
-        <PasswordResetRequestModal />
+        <Suspense>
+          <LoginModal />
+          <SignupModal />
+          <PasswordResetRequestModal />
+        </Suspense>
       </div>
-      {isMypageOpen && <MypageModal onClose={() => handleClose()} />}
+      {isMypageOpen && (
+        <Suspense fallback={<div className="fixed right-0 top-0 h-full w-[430px] bg-white z-[100] flex items-center justify-center">로딩 중...</div>}>
+          <MypageModal onClose={() => handleClose()} />
+        </Suspense>
+      )}
     </div>
   );
 };
