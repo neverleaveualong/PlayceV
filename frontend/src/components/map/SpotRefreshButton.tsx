@@ -1,20 +1,19 @@
 import Button from "@/components/common/Button";
 import useMapStore from "@/stores/mapStore";
 import { IoReloadOutline } from "react-icons/io5";
-import { searchNearby } from "@/api/map.api";
+
+function getScaledValue(level: number): number {
+  if (level >= 8) {
+    return 20;
+  } else if (level === 7) {
+    return 10;
+  } else {
+    return 5;
+  }
+}
 
 const SpotRefreshButton = () => {
-  const { position, zoomLevel, setRefreshBtn, setRestaurants } = useMapStore();
-
-  function getScaledValue(level: number): number {
-    if (level >= 8) {
-      return 20;
-    } else if (level === 7) {
-      return 10;
-    } else {
-      return 5;
-    }
-  }
+  const { zoomLevel, search } = useMapStore();
 
   return (
     <Button
@@ -26,15 +25,8 @@ const SpotRefreshButton = () => {
     hover:bg-white hover:text-primary5 hover:border-primary5
     transition-colors
   `}
-      onClick={async () => {
-        const rad = getScaledValue(zoomLevel);
-        const res = await searchNearby({
-          lat: position.lat,
-          lng: position.lng,
-          radius: rad,
-        });
-        setRestaurants(res.data);
-        setRefreshBtn(false);
+      onClick={() => {
+        search(getScaledValue(zoomLevel));
       }}
     >
       이 위치에서 재탐색

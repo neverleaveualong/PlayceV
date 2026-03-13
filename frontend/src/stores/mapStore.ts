@@ -1,33 +1,34 @@
 import { create } from "zustand";
 import type { latlng } from "@/types/map";
-import type { RestaurantBasic } from "@/types/restaurant.types";
-import { CITY_STATION } from "@/constants/mapConstant";
+import { CITY_STATION, SEARCHNEARBY_RADIUS } from "@/constants/mapConstant";
 
 interface MapState {
   position: latlng;
+  searchPosition: latlng;
   openedModal: number;
-  restaurants: RestaurantBasic[];
+  radius: number;
   isRefreshBtnOn: boolean;
   zoomLevel: number;
   setPosition: (pos: latlng) => void;
-  setRestaurants: (restaurantsList: RestaurantBasic[]) => void;
+  search: (radius: number) => void;
   setOpenedModal: (modal: number) => void;
   closeModal: () => void;
   setRefreshBtn: (button: boolean) => void;
   setZoomLevel: (zoom: number) => void;
 }
 
-const useMapStore = create<MapState>((set) => ({
+const useMapStore = create<MapState>((set, get) => ({
   position: CITY_STATION,
+  searchPosition: CITY_STATION,
   openedModal: -1,
-  restaurants: [],
+  radius: SEARCHNEARBY_RADIUS,
   isRefreshBtnOn: false,
   zoomLevel: 3,
   setPosition: (pos) => {
     set({ position: pos });
   },
-  setRestaurants: (restaurantsList) => {
-    set({ restaurants: restaurantsList });
+  search: (radius) => {
+    set({ searchPosition: get().position, radius, isRefreshBtnOn: false });
   },
   setOpenedModal: (modal) => {
     set({ openedModal: modal });
