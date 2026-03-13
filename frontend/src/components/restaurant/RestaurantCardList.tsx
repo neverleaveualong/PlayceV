@@ -1,3 +1,4 @@
+import { memo } from "react";
 import { FiTrash2 } from "react-icons/fi";
 
 interface RestaurantCardListProps {
@@ -15,7 +16,7 @@ interface RestaurantCardListProps {
   compact?: boolean;
 }
 
-export default function RestaurantCardList({
+const RestaurantCardList = memo(function RestaurantCardList({
   stores,
   onRemove,
   onDetail,
@@ -118,4 +119,6 @@ export default function RestaurantCardList({
       )}
     </ul>
   );
-}
+});
+
+export default RestaurantCardList;

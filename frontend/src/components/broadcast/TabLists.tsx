@@ -1,6 +1,6 @@
 import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from "react-icons/md";
 import getDaysInMonth, { getDay, getToday } from "@/utils/dateUtils";
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useMemo } from "react";
 import useBroadcastStore from "@/stores/broadcastStore";
 import useBroadcastFormStore from "@/stores/broadcastFormStore";
 import BroadcastActionButtons from "./BroadcastActionButtons";
@@ -54,9 +54,13 @@ const TabList = () => {
     date
   ).padStart(2, "0")}`;
 
-  const broadcastsForSelectedDate = broadcastLists
-    .filter((b) => b.match_date === currentDate)
-    .sort((a, b) => a.match_time.localeCompare(b.match_time));
+  const broadcastsForSelectedDate = useMemo(
+    () =>
+      broadcastLists
+        .filter((b) => b.match_date === currentDate)
+        .sort((a, b) => a.match_time.localeCompare(b.match_time)),
+    [broadcastLists, currentDate]
+  );
 
   const handleDelete = (id: number) => {
     if (!confirm("중계 일정을 삭제하시겠습니까?")) return;

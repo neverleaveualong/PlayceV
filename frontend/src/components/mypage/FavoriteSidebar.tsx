@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useMemo, useCallback } from "react";
 import { FaStar } from "react-icons/fa";
 import useAuthStore from "@/stores/authStore";
 import RestaurantCardList from "@/components/restaurant/RestaurantCardList";
@@ -13,13 +13,27 @@ export default function FavoriteSidebar() {
   const [expanded, setExpanded] = useState(false);
   const { selectedStoreId, openDetail, closeDetail } = useRestaurantDetail();
 
-  const visibleFavorites = expanded ? favorites : favorites.slice(0, 3);
+  const visibleFavorites = useMemo(
+    () => (expanded ? favorites : favorites.slice(0, 3)),
+    [expanded, favorites]
+  );
+
+  const handleRemove = useCallback(
+    (storeId: number) => {
+      removeMutation.mutate(storeId);
+    },
+    [removeMutation]
+  );
+
+  const handleToggleExpanded = useCallback(() => {
+    setExpanded((prev) => !prev);
+  }, []);
 
   return (
     <section className="w-full bg-white px-1.5 pt-6 pb-2 rounded-2xl border border-gray-100">
       <button
         className="flex items-center w-full h-8 border-b border-gray-100 bg-white group px-3 pb-3"
-        onClick={() => setExpanded((prev) => !prev)}
+        onClick={handleToggleExpanded}
         aria-label="즐겨찾기 펼치기"
       >
         <FaStar className="text-yellow-400 text-xl mr-2" />
@@ -37,7 +51,7 @@ export default function FavoriteSidebar() {
         <>
           <RestaurantCardList
             stores={visibleFavorites}
-            onRemove={(storeId) => removeMutation.mutate(storeId)}
+            onRemove={handleRemove}
             showDelete
             showDetail
             compact
