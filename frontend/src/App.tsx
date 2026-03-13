@@ -1,10 +1,13 @@
-import { useEffect } from "react";
+import { lazy, Suspense, useEffect } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from "@/pages/Home";
-import PasswordResetModal from "@/components/auth/PasswordResetModal";
 import useAuthStore from "@/stores/authStore";
 import { useQueryClient } from "@tanstack/react-query";
 import Toast from "@/components/common/Toast";
+
+const PasswordResetModal = lazy(
+  () => import("@/components/auth/PasswordResetModal")
+);
 
 function App() {
   const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
@@ -23,7 +26,11 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route
             path="/reset-password/:token"
-            element={<PasswordResetModal />}
+            element={
+              <Suspense fallback={<div className="flex items-center justify-center h-screen">로딩 중...</div>}>
+                <PasswordResetModal />
+              </Suspense>
+            }
           />
         </Routes>
         <Toast />
