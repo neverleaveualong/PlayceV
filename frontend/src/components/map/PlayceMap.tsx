@@ -7,13 +7,15 @@ import RestaurantDetailComponent from "@/components/restaurant/RestaurantDetail"
 import useRestaurantDetail from "@/hooks/useRestaurantDetail";
 import useToastStore from "@/stores/toastStore";
 import GoToCurrentLocationButton from "./CurrentMap";
+import useNearbyRestaurants from "@/hooks/useNearbyRestaurants";
 import type { RestaurantBasic } from "@/types/restaurant.types";
 import { CITY_STATION } from "@/constants/mapConstant";
 
 const PlayceMap: React.FC = () => {
   const {
     position,
-    restaurants,
+    searchPosition,
+    radius,
     openedModal,
     zoomLevel,
     setPosition,
@@ -21,6 +23,12 @@ const PlayceMap: React.FC = () => {
     setRefreshBtn,
     setZoomLevel,
   } = useMapStore();
+
+  const { data: restaurants = [] } = useNearbyRestaurants(
+    searchPosition.lat,
+    searchPosition.lng,
+    radius
+  );
 
   const { selectedStoreId, openDetail, closeDetail } = useRestaurantDetail();
 

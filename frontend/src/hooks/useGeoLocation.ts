@@ -3,14 +3,14 @@ import useMapStore from "@/stores/mapStore";
 import { CITY_STATION } from "@/constants/mapConstant";
 
 export const useGeoLocation = (options = {}) => {
-  const { setPosition } = useMapStore();
+  const { initPosition } = useMapStore();
 
   const [error, setError] = useState("");
 
   const handleSuccess = (pos: GeolocationPosition) => {
     const { latitude, longitude } = pos.coords;
 
-    setPosition({
+    initPosition({
       lat: latitude,
       lng: longitude,
     });
@@ -19,7 +19,7 @@ export const useGeoLocation = (options = {}) => {
   const handleError = (err: GeolocationPositionError) => {
     setError(err.message);
 
-    setPosition(CITY_STATION);
+    initPosition(CITY_STATION);
   };
 
   useEffect(() => {
