@@ -1,4 +1,5 @@
 // RestaurantDetailTabs.tsx
+import { memo } from "react";
 import { FiTv, FiImage } from "react-icons/fi";
 import { FaUtensils } from "react-icons/fa";
 import Button from "@/components/common/Button";
@@ -12,10 +13,11 @@ interface RestaurantDetailTabsProps {
   setCurrentTab: (tab: Tab) => void;
 }
 
-const RestaurantDetailTabs = ({
+const RestaurantDetailTabs = memo(function RestaurantDetailTabs({
   currentTab,
   setCurrentTab,
-}: RestaurantDetailTabsProps) => (
+}: RestaurantDetailTabsProps) {
+  return (
   <div className="flex border-b border-gray-200 bg-white sticky top-0 z-10">
     {TABS.map((tab) => (
       <Button
@@ -34,6 +36,7 @@ const RestaurantDetailTabs = ({
       </Button>
     ))}
   </div>
-);
+  );
+});
 
 export default RestaurantDetailTabs;

@@ -1,3 +1,4 @@
+import { memo } from "react";
 import { FiEdit2, FiTrash2 } from "react-icons/fi";
 import Button from "@/components/common/Button";
 
@@ -6,10 +7,10 @@ interface BroadcastActionButtonsProps {
   onDelete: () => void;
 }
 
-const BroadcastActionButtons = ({
+const BroadcastActionButtons = memo(function BroadcastActionButtons({
   onEdit,
   onDelete,
-}: BroadcastActionButtonsProps) => {
+}: BroadcastActionButtonsProps) {
   return (
     <div className="flex items-center gap-3 mr-3">
       <Button
@@ -26,6 +27,6 @@ const BroadcastActionButtons = ({
       />
     </div>
   );
-};
+});
 
 export default BroadcastActionButtons;

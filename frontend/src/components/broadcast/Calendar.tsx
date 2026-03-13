@@ -1,8 +1,9 @@
+import { memo, useMemo } from "react";
 import useBroadcastStore from "@/stores/broadcastStore";
 import getDaysInMonth, { getDayIdx, getToday } from "@/utils/dateUtils";
 import useBroadcasts from "@/hooks/useBroadcasts";
 
-const Calendar = () => {
+const Calendar = memo(function Calendar() {
   const {
     year,
     month,
@@ -37,16 +38,20 @@ const Calendar = () => {
 
   const { year: todayYear, month: todayMonth, date: todayDate } = getToday();
 
-  const broadcastCountMap = broadcastLists.reduce((acc, item) => {
-    const date = new Date(item.match_date);
-    const y = date.getFullYear();
-    const m = date.getMonth() + 1;
-    const d = date.getDate();
-    const key = `${y}-${m}-${d}`;
+  const broadcastCountMap = useMemo(
+    () =>
+      broadcastLists.reduce((acc, item) => {
+        const date = new Date(item.match_date);
+        const y = date.getFullYear();
+        const m = date.getMonth() + 1;
+        const d = date.getDate();
+        const key = `${y}-${m}-${d}`;
 
-    acc[key] = (acc[key] || 0) + 1;
-    return acc;
-  }, {} as Record<string, number>);
+        acc[key] = (acc[key] || 0) + 1;
+        return acc;
+      }, {} as Record<string, number>),
+    [broadcastLists]
+  );
 
   return (
     <div className="min-h-[415px]">
@@ -113,6 +118,6 @@ const Calendar = () => {
       </div>
     </div>
   );
-};
+});
 
 export default Calendar;

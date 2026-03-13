@@ -1,3 +1,4 @@
+import { useCallback, useMemo } from "react";
 import SearchResultItem from "./SearchResultItem";
 import { useSearchStore } from "@/stores/searchStore";
 import { sortSearchResults } from "@/utils/sortUtils";
@@ -19,7 +20,14 @@ const SearchResultList = ({
   const sort = useSearchStore((state) => state.sort);
   const setSort = useSearchStore((state) => state.setSort);
   const { selectedStoreId, openDetail, closeDetail } = useRestaurantDetail();
-  const sortedResults = sortSearchResults(results, sort);
+
+  const handleSortByDistance = useCallback(() => setSort("distance"), [setSort]);
+  const handleSortByDatetime = useCallback(() => setSort("datetime"), [setSort]);
+
+  const sortedResults = useMemo(
+    () => sortSearchResults(results, sort),
+    [results, sort]
+  );
 
   if (!hasSearched && !isSearching) return null;
 
@@ -34,7 +42,7 @@ const SearchResultList = ({
             className={`text-sm px-2 leading-[1] h-full flex items-center ${
               sort === "distance" ? "text-primary5 font-bold" : "text-gray-400"
             }`}
-            onClick={() => setSort("distance")}
+            onClick={handleSortByDistance}
           >
             거리순
           </button>
@@ -43,7 +51,7 @@ const SearchResultList = ({
             className={`text-sm px-2 leading-[1] h-full flex items-center ${
               sort === "datetime" ? "text-primary5 font-bold" : "text-gray-400"
             }`}
-            onClick={() => setSort("datetime")}
+            onClick={handleSortByDatetime}
           >
             날짜순
           </button>

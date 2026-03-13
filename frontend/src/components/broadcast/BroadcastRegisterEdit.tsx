@@ -25,12 +25,12 @@ interface BroadcastFormValues {
 }
 
 const BroadcastRegisterEdit = (props: BroadcastRegisterEditProps) => {
-  const { storeId } = useBroadcastStore();
+  const storeId = useBroadcastStore((state) => state.storeId);
   const { data: broadcastLists = [] } = useBroadcasts(storeId);
   const queryClient = useQueryClient();
-  const { setRestaurantSubpage } = useMypageStore();
+  const setRestaurantSubpage = useMypageStore((state) => state.setRestaurantSubpage);
   const [isTeamCompetition, setIsTeamCompetition] = useState(true);
-  const { addToast } = useToastStore();
+  const addToast = useToastStore((state) => state.addToast);
 
   // ② useForm — broadcastFormStore를 대체
   const {

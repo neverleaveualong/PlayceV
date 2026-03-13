@@ -1,8 +1,9 @@
+import { memo } from "react";
 import { FaUtensils } from "react-icons/fa";
 import type { RestaurantDetail, MenuItem } from "@/types/restaurant.types";
 import EmptyMessage from "./EmptyMessage";
 
-export default function RestaurantDetailMenuTab({
+const RestaurantDetailMenuTab = memo(function RestaurantDetailMenuTab({
   detail,
 }: {
   detail: RestaurantDetail;
@@ -37,4 +38,6 @@ export default function RestaurantDetailMenuTab({
       )}
     </ul>
   );
-}
+});
+
+export default RestaurantDetailMenuTab;
