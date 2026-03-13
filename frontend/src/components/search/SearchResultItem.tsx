@@ -1,3 +1,4 @@
+import { memo } from "react";
 import type { FC } from "react";
 
 interface SearchResultItemProps {
@@ -11,7 +12,7 @@ interface SearchResultItemProps {
   onClick?: () => void;
 }
 
-const SearchResultItem: FC<SearchResultItemProps> = ({ data, onClick }) => {
+const SearchResultItem: FC<SearchResultItemProps> = memo(function SearchResultItem({ data, onClick }) {
   const { storeName, address, distance, matchInfo, imgUrl } = data;
 
   return (
@@ -44,6 +45,6 @@ const SearchResultItem: FC<SearchResultItemProps> = ({ data, onClick }) => {
       </div>
     </div>
   );
-};
+});
 
 export default SearchResultItem;

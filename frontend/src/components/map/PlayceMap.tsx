@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import { Map } from "react-kakao-maps-sdk";
 import useMapStore from "@/stores/mapStore";
 import PlayceMapMarker from "./PlayceMapMarker";
@@ -12,17 +12,15 @@ import type { RestaurantBasic } from "@/types/restaurant.types";
 import { CITY_STATION } from "@/constants/mapConstant";
 
 const PlayceMap: React.FC = () => {
-  const {
-    position,
-    searchPosition,
-    radius,
-    openedModal,
-    zoomLevel,
-    setPosition,
-    closeModal,
-    setRefreshBtn,
-    setZoomLevel,
-  } = useMapStore();
+  const position = useMapStore((state) => state.position);
+  const searchPosition = useMapStore((state) => state.searchPosition);
+  const radius = useMapStore((state) => state.radius);
+  const openedModal = useMapStore((state) => state.openedModal);
+  const zoomLevel = useMapStore((state) => state.zoomLevel);
+  const setPosition = useMapStore((state) => state.setPosition);
+  const closeModal = useMapStore((state) => state.closeModal);
+  const setRefreshBtn = useMapStore((state) => state.setRefreshBtn);
+  const setZoomLevel = useMapStore((state) => state.setZoomLevel);
 
   const { data: restaurants = [] } = useNearbyRestaurants(
     searchPosition.lat,
@@ -51,6 +49,24 @@ const PlayceMap: React.FC = () => {
     return { lat: center.getLat(), lng: center.getLng() };
   };
 
+  const handleDragEnd = useCallback(() => {
+    setRefreshBtn(true);
+    const pos = getCurPosition();
+    if (!pos) {
+      useToastStore.getState().addToast("위치 정보를 불러올 수 없습니다", "error");
+      return;
+    }
+    setPosition(pos);
+  }, [setRefreshBtn, setPosition]);
+
+  const handleZoomChanged = useCallback(
+    (map: kakao.maps.Map) => {
+      const newZoomLevel = map.getLevel();
+      setZoomLevel(newZoomLevel);
+    },
+    [setZoomLevel]
+  );
+
   // 상세보기 오픈 시 storeId만 저장
   const handleDetailClick = (restaurant: RestaurantBasic) => {
     openDetail(restaurant.store_id);
@@ -65,19 +81,8 @@ const PlayceMap: React.FC = () => {
           center={position ? position : CITY_STATION}
           isPanto={true}
           onClick={closeModal}
-          onDragEnd={() => {
-            setRefreshBtn(true);
-            const pos = getCurPosition();
-            if (!pos) {
-              useToastStore.getState().addToast("위치 정보를 불러올 수 없습니다", "error");
-              return;
-            }
-            setPosition(pos);
-          }}
-          onZoomChanged={(map) => {
-            const newZoomLevel = map.getLevel();
-            setZoomLevel(newZoomLevel);
-          }}
+          onDragEnd={handleDragEnd}
+          onZoomChanged={handleZoomChanged}
         >
           {restaurants.map((restaurant) => (
             <PlayceMapMarker

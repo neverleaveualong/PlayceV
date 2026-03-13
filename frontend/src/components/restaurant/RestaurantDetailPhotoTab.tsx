@@ -1,9 +1,9 @@
-import { useState } from "react";
+import { useState, memo } from "react";
 import type { RestaurantDetail } from "@/types/restaurant.types";
 import { FiX } from "react-icons/fi";
 import EmptyMessage from "./EmptyMessage";
 
-export default function RestaurantDetailPhotoTab({
+const RestaurantDetailPhotoTab = memo(function RestaurantDetailPhotoTab({
   detail,
 }: {
   detail: RestaurantDetail;
@@ -54,4 +54,6 @@ export default function RestaurantDetailPhotoTab({
       )}
     </div>
   );
-}
+});
+
+export default RestaurantDetailPhotoTab;

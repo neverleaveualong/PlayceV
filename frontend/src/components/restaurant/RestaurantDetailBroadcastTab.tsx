@@ -1,4 +1,4 @@
-import { Fragment, useState } from "react";
+import { Fragment, useState, useMemo } from "react";
 import { FiTv, FiChevronDown, FiChevronUp, FiVolume2 } from "react-icons/fi";
 import Button from "@/components/common/Button";
 import type { RestaurantDetail, Broadcast } from "@/types/restaurant.types";
@@ -40,34 +40,43 @@ export default function RestaurantDetailBroadcastTab({
   const [showPast, setShowPast] = useState(false);
   const { dateString: today } = getToday();
 
-  const futureAndToday: Broadcast[] = [];
-  const past: Broadcast[] = [];
-  detail.broadcasts.forEach((b: Broadcast) => {
-    if (compareDate(b.match_date, today) >= 0) {
-      futureAndToday.push(b);
-    } else {
-      past.push(b);
-    }
-  });
+  const { sortedFutureDates, groupedFuture, sortedPastDates, groupedPast, futureAndToday, past } =
+    useMemo(() => {
+      const futureAndToday: Broadcast[] = [];
+      const past: Broadcast[] = [];
+      detail.broadcasts.forEach((b: Broadcast) => {
+        if (compareDate(b.match_date, today) >= 0) {
+          futureAndToday.push(b);
+        } else {
+          past.push(b);
+        }
+      });
 
-  const groupedFuture: Record<string, Broadcast[]> =
-    groupByDate(futureAndToday);
-  const groupedPast: Record<string, Broadcast[]> = groupByDate(past);
+      const groupedFuture: Record<string, Broadcast[]> =
+        groupByDate(futureAndToday);
+      const groupedPast: Record<string, Broadcast[]> = groupByDate(past);
 
-  const sortedFutureDates: string[] = Object.keys(groupedFuture).sort((a, b) =>
-    compareDate(a, b)
-  );
-  const sortedPastDates: string[] = Object.keys(groupedPast).sort((a, b) =>
-    compareDate(b, a)
-  );
+      const sortedFutureDates: string[] = Object.keys(groupedFuture).sort(
+        (a, b) => compareDate(a, b)
+      );
+      const sortedPastDates: string[] = Object.keys(groupedPast).sort((a, b) =>
+        compareDate(b, a)
+      );
 
-  // ✅ 날짜 그룹마다 시간 정렬
-  sortedFutureDates.forEach((date) => {
-    groupedFuture[date].sort((a, b) => compareTime(a.match_time, b.match_time));
-  });
-  sortedPastDates.forEach((date) => {
-    groupedPast[date].sort((a, b) => compareTime(a.match_time, b.match_time));
-  });
+      // 날짜 그룹마다 시간 정렬
+      sortedFutureDates.forEach((date) => {
+        groupedFuture[date].sort((a, b) =>
+          compareTime(a.match_time, b.match_time)
+        );
+      });
+      sortedPastDates.forEach((date) => {
+        groupedPast[date].sort((a, b) =>
+          compareTime(a.match_time, b.match_time)
+        );
+      });
+
+      return { sortedFutureDates, groupedFuture, sortedPastDates, groupedPast, futureAndToday, past };
+    }, [detail.broadcasts, today]);
 
   const { setStore } = useBroadcastStore();
   const { setRestaurantSubpage, setSelectedTab, setIsMypageOpen } =
