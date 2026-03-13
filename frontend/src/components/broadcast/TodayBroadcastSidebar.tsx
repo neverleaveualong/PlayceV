@@ -3,12 +3,18 @@ import { FiTv, FiImage } from "react-icons/fi";
 import useMapStore from "@/stores/mapStore";
 import RestaurantDetailComponent from "@/components/restaurant/RestaurantDetail";
 import useRestaurantDetail from "@/hooks/useRestaurantDetail";
+import useNearbyRestaurants from "@/hooks/useNearbyRestaurants";
 import type { Broadcast } from "@/types/restaurant.types";
 import { formatTimeShort } from "@/utils/formatTime";
 import { getToday } from "@/utils/dateUtils";
 
 export default function TodayBroadcastSidebar() {
-  const restaurants = useMapStore((state) => state.restaurants);
+  const { searchPosition, radius } = useMapStore();
+  const { data: restaurants = [] } = useNearbyRestaurants(
+    searchPosition.lat,
+    searchPosition.lng,
+    radius
+  );
   const { selectedStoreId, openDetail, closeDetail } = useRestaurantDetail();
   const { dateString: today } = getToday();
 
