@@ -22,6 +22,8 @@ interface BoradcastState {
   setTabRef: (ref: React.RefObject<HTMLDivElement>) => void;
   setItemRefs: (ref: React.RefObject<Map<number, HTMLDivElement>>) => void;
 
+  editingId: number | null;
+  setEditingId: (id: number | null) => void;
   scrollDateCenter: () => void;
 }
 
@@ -53,6 +55,8 @@ const useBroadcastStore = create<BoradcastState>((set, get) => ({
   setViewOption: (view) => {
     set({ viewOption: view });
   },
+  editingId: null,
+  setEditingId: (id) => set({ editingId: id }),
   tabRef: null,
   itemRefs: null,
   setTabRef: (ref) => set({ tabRef: ref }),

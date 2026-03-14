@@ -61,8 +61,10 @@ export const useAuth = () => {
   const userPasswordReset = async (data: PasswordResetProps) => {
     try {
       await passwordReset(data);
+      return true;
     } catch (error) {
       addToast(getApiErrorMessage(error), "error");
+      return false;
     }
   };
 

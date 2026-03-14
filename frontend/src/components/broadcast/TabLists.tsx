@@ -1,9 +1,9 @@
 import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from "react-icons/md";
 import getDaysInMonth, { getDay, getToday } from "@/utils/dateUtils";
-import { useRef, useEffect, useMemo } from "react";
+import { useState, useRef, useEffect, useMemo } from "react";
 import useBroadcastStore from "@/stores/broadcastStore";
-import useBroadcastFormStore from "@/stores/broadcastFormStore";
 import BroadcastActionButtons from "./BroadcastActionButtons";
+import ConfirmModal from "@/components/common/ConfirmModal";
 import { formatTime } from "@/utils/formatTime";
 import useToastStore from "@/stores/toastStore";
 import useMypageStore from "@/stores/mypageStore";
@@ -19,8 +19,9 @@ const TabList = () => {
   const { storeId } = useBroadcastStore();
   const { data: broadcastLists = [] } = useBroadcasts(storeId);
   const deleteMutation = useDeleteBroadcast(storeId);
-  const { setEditingId } = useBroadcastFormStore();
+  const { setEditingId } = useBroadcastStore();
   const { setRestaurantSubpage } = useMypageStore();
+  const [deleteTargetId, setDeleteTargetId] = useState<number | null>(null);
 
   useEffect(() => {
     setTabRef(tabRef);
@@ -63,7 +64,6 @@ const TabList = () => {
   );
 
   const handleDelete = (id: number) => {
-    if (!confirm("중계 일정을 삭제하시겠습니까?")) return;
     deleteMutation.mutate(id, {
       onSuccess: () => useToastStore.getState().addToast("삭제되었습니다.", "success"),
       onError: () => useToastStore.getState().addToast("삭제에 실패했습니다.", "error"),
@@ -154,7 +154,7 @@ const TabList = () => {
                       setEditingId(b.broadcast_id);
                       setRestaurantSubpage("broadcast-edit");
                     }}
-                    onDelete={() => handleDelete(b.broadcast_id)}
+                    onDelete={() => setDeleteTargetId(b.broadcast_id)}
                   />
                 </div>
               </div>
@@ -164,6 +164,16 @@ const TabList = () => {
           <div className="p-3">중계 정보가 없습니다.</div>
         )}
       </div>
+      {deleteTargetId !== null && (
+        <ConfirmModal
+          message="중계 일정을 삭제하시겠습니까?"
+          onConfirm={() => {
+            handleDelete(deleteTargetId);
+            setDeleteTargetId(null);
+          }}
+          onCancel={() => setDeleteTargetId(null)}
+        />
+      )}
     </div>
   );
 };

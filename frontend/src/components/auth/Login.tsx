@@ -20,7 +20,6 @@ const LoginModal = () => {
 
   const onSubmit = (data: LoginProps) => {
     userLogin(data);
-    setIsLoginModalOpen(false);
   };
 
   const handleCancel = () => {
