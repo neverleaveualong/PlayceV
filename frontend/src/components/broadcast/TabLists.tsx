@@ -1,6 +1,6 @@
 import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from "react-icons/md";
 import getDaysInMonth, { getDay, getToday } from "@/utils/dateUtils";
-import { useState, useRef, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo } from "react";
 import useBroadcastStore from "@/stores/broadcastStore";
 import BroadcastActionButtons from "./BroadcastActionButtons";
 import ConfirmModal from "@/components/common/ConfirmModal";
@@ -9,34 +9,24 @@ import useToastStore from "@/stores/toastStore";
 import useMypageStore from "@/stores/mypageStore";
 import useBroadcasts, { useDeleteBroadcast } from "@/hooks/useBroadcasts";
 
-const TabList = () => {
-  const { year, month, date, setDate } = useBroadcastStore();
-  const tabRef = useRef<HTMLDivElement>(
-    null
-  ) as React.RefObject<HTMLDivElement>;
-  const itemRefs = useRef<Map<number, HTMLDivElement>>(new Map());
+interface TabListProps {
+  tabRef: React.RefObject<HTMLDivElement | null>;
+  itemRefs: React.RefObject<Map<number, HTMLDivElement>>;
+  scrollToDate: (date: number) => void;
+}
+
+const TabList = ({ tabRef, itemRefs, scrollToDate }: TabListProps) => {
+  const { year, month, date, setDate, storeId, setEditingId } =
+    useBroadcastStore();
   const scrollAmount = 150;
-  const { storeId } = useBroadcastStore();
   const { data: broadcastLists = [] } = useBroadcasts(storeId);
   const deleteMutation = useDeleteBroadcast(storeId);
-  const { setEditingId } = useBroadcastStore();
   const { setRestaurantSubpage } = useMypageStore();
   const [deleteTargetId, setDeleteTargetId] = useState<number | null>(null);
 
   useEffect(() => {
-    setTabRef(tabRef);
-    setItemRefs(itemRefs);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  const { setTabRef, setItemRefs, scrollDateCenter } = useBroadcastStore();
-
-  useEffect(() => {
-    setTimeout(() => {
-      scrollDateCenter();
-    }, 0);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+    scrollToDate(date);
+  }, [scrollToDate, date]);
 
   const handleScrollLeft = () => {
     tabRef.current?.scrollBy({ left: -scrollAmount, behavior: "smooth" });

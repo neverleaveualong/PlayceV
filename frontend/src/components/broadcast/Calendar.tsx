@@ -3,13 +3,16 @@ import useBroadcastStore from "@/stores/broadcastStore";
 import getDaysInMonth, { getDayIdx, getToday } from "@/utils/dateUtils";
 import useBroadcasts from "@/hooks/useBroadcasts";
 
-const Calendar = memo(function Calendar() {
+interface CalendarProps {
+  scrollToDate: (date: number) => void;
+}
+
+const Calendar = memo(function Calendar({ scrollToDate }: CalendarProps) {
   const {
     year,
     month,
     setDate,
     setViewOption,
-    scrollDateCenter,
     storeId,
   } = useBroadcastStore();
   const { data: broadcastLists = [] } = useBroadcasts(storeId);
@@ -86,7 +89,7 @@ const Calendar = memo(function Calendar() {
                     onClick={() => {
                       setDate(day);
                       setViewOption("tab");
-                      scrollDateCenter();
+                      scrollToDate(day);
                     }}
                   >
                     <div className="flex justify-center font-semibold">
