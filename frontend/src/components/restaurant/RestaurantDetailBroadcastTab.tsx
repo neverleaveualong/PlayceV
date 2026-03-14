@@ -254,7 +254,7 @@ export default function RestaurantDetailBroadcastTab({
             scheme="primary"
             onClick={() => {
               setSelectedTab("restaurant");
-              setStore(detail.store_name, storeId);
+              setStore(storeId);
               setRestaurantSubpage("schedule-view-broadcasts");
               setIsMypageOpen(true);
             }}

@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { FaArrowLeft } from "react-icons/fa";
 import useMypageStore from "@/stores/mypageStore";
 import {
@@ -7,6 +8,7 @@ import {
 import type { MypageProps } from "@/components/mypage/MypageModal";
 import useBroadcastStore from "@/stores/broadcastStore";
 import SectionHeader from "@/components/common/SectionHeader";
+import ConfirmModal from "@/components/common/ConfirmModal";
 import BroadcastRegister from "@/components/broadcast/BroadcastRegister";
 import BroadcastEdit from "@/components/broadcast/BroadcastEdit";
 
@@ -14,6 +16,7 @@ const RestaurantManager = ({ onClose }: MypageProps) => {
   const { restaurantSubpage, restaurantEditName, setRestaurantSubpage } =
     useMypageStore();
   const { resetYMD } = useBroadcastStore();
+  const [showEditCancelConfirm, setShowEditCancelConfirm] = useState(false);
 
   const getModalTitle = (key: ExtendedSubpage) => {
     if (key === "broadcast-register") return "중계 일정 등록";
@@ -52,9 +55,7 @@ const RestaurantManager = ({ onClose }: MypageProps) => {
                   setRestaurantSubpage("restaurant-home");
                   resetYMD();
                 } else if (restaurantSubpage === "restaurant-edit") {
-                  if (window.confirm("식당 수정을 취소하시겠습니까?")) {
-                    setRestaurantSubpage("restaurant-home");
-                  }
+                  setShowEditCancelConfirm(true);
                 } else {
                   setRestaurantSubpage("restaurant-home");
                 }
@@ -65,6 +66,16 @@ const RestaurantManager = ({ onClose }: MypageProps) => {
       />
 
       <div>{getComponents(restaurantSubpage)}</div>
+      {showEditCancelConfirm && (
+        <ConfirmModal
+          message="식당 수정을 취소하시겠습니까?"
+          onConfirm={() => {
+            setShowEditCancelConfirm(false);
+            setRestaurantSubpage("restaurant-home");
+          }}
+          onCancel={() => setShowEditCancelConfirm(false)}
+        />
+      )}
     </div>
   );
 };
