@@ -17,17 +17,11 @@ interface BoradcastState {
   setDate: (date: number) => void;
   setStore: (r: string, rId: number) => void;
   setViewOption: (view: TViewOption) => void;
-  tabRef: React.RefObject<HTMLDivElement> | null;
-  itemRefs: React.RefObject<Map<number, HTMLDivElement>> | null;
-  setTabRef: (ref: React.RefObject<HTMLDivElement>) => void;
-  setItemRefs: (ref: React.RefObject<Map<number, HTMLDivElement>>) => void;
-
   editingId: number | null;
   setEditingId: (id: number | null) => void;
-  scrollDateCenter: () => void;
 }
 
-const useBroadcastStore = create<BoradcastState>((set, get) => ({
+const useBroadcastStore = create<BoradcastState>((set) => ({
   year: dateInfo.year,
   month: dateInfo.month,
   date: dateInfo.date,
@@ -57,27 +51,6 @@ const useBroadcastStore = create<BoradcastState>((set, get) => ({
   },
   editingId: null,
   setEditingId: (id) => set({ editingId: id }),
-  tabRef: null,
-  itemRefs: null,
-  setTabRef: (ref) => set({ tabRef: ref }),
-  setItemRefs: (ref) => set({ itemRefs: ref }),
-
-  scrollDateCenter: () => {
-    const tabRef = get().tabRef?.current;
-    const itemRefs = get().itemRefs?.current;
-    const todayDate = get().date;
-
-    if (tabRef && itemRefs) {
-      const todayEl = itemRefs.get(todayDate);
-      if (todayEl) {
-        const scrollPos =
-          todayEl.offsetLeft + todayEl.offsetWidth / 2 - tabRef.clientWidth / 2;
-
-        tabRef.scrollTo({ left: scrollPos, behavior: "smooth" });
-        get().setDate(todayDate);
-      }
-    }
-  },
 }));
 
 export default useBroadcastStore;
