@@ -35,8 +35,9 @@ const PasswordResetModal = () => {
     }
     if (!token) return;
     setLoading(true);
-    await userPasswordReset({ token, newPassword: data.newPassword });
+    const success = await userPasswordReset({ token, newPassword: data.newPassword });
     setLoading(false);
+    if (!success) return;
     addToast("비밀번호가 변경되었습니다!", "success");
     navigate("/");
   };

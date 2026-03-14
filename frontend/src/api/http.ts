@@ -1,4 +1,5 @@
 import axios, { type AxiosRequestConfig } from "axios";
+import qs from "qs";
 import useAuthStore, { getToken } from "@/stores/authStore";
 
 const BASE_URL = import.meta.env.VITE_BASE_URL;
@@ -51,7 +52,7 @@ export const requestHandler = async <T = unknown>(
   switch (method) {
     case "get": {
       const query = payload
-        ? `?${new URLSearchParams(payload).toString()}`
+        ? `?${qs.stringify(payload, { arrayFormat: "repeat" })}`
         : "";
       response = await httpClient.get(`${url}${query}`);
       break;

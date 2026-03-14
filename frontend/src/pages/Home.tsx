@@ -16,9 +16,8 @@ const MypageModal = lazy(() => import("@/components/mypage/MypageModal"));
 
 const Home: React.FC = () => {
   const { position, isRefreshBtnOn } = useMapStore();
-  const { isMypageOpen, setIsMypageOpen } = useMypageStore();
-  const { setRestaurantSubpage } = useMypageStore();
-  const { setSelectedTab } = useMypageStore();
+  const { isMypageOpen, setIsMypageOpen, setRestaurantSubpage, setSelectedTab } =
+    useMypageStore();
 
   const geolocationOptions = {
     enableHighAccuracy: true,

@@ -1,7 +1,9 @@
+import { useState } from "react";
 import useMypageStore from "@/stores/mypageStore";
 import { FiEdit2, FiTrash2, FiTv } from "react-icons/fi";
 import RestaurantDetailComponent from "@/components/restaurant/RestaurantDetail";
 import Button from "@/components/common/Button";
+import ConfirmModal from "@/components/common/ConfirmModal";
 import useBroadcastStore from "@/stores/broadcastStore";
 import FloatingRegisterButton from "@/components/broadcast/FloatingRegisterButton";
 import useToastStore from "@/stores/toastStore";
@@ -17,13 +19,12 @@ const RestaurantHome = () => {
     useMypageStore();
   const { setStore } = useBroadcastStore();
   const { addToast } = useToastStore();
+  const [deleteTargetId, setDeleteTargetId] = useState<number | null>(null);
 
   const handleRemove = (id: number) => {
-    if (window.confirm("정말 이 식당을 삭제하시겠습니까?")) {
-      deleteMutation.mutate(id, {
-        onError: (error) => addToast(getApiErrorMessage(error), "error"),
-      });
-    }
+    deleteMutation.mutate(id, {
+      onError: (error) => addToast(getApiErrorMessage(error), "error"),
+    });
   };
 
   return (
@@ -85,7 +86,7 @@ const RestaurantHome = () => {
               <Button
                 onClick={(e) => {
                   e.stopPropagation();
-                  handleRemove(store.store_id);
+                  setDeleteTargetId(store.store_id);
                 }}
                 scheme="storeCircle"
                 icon={<FiTrash2 className="text-red-500 text-xl" />}
@@ -104,6 +105,16 @@ const RestaurantHome = () => {
         <RestaurantDetailComponent
           storeId={selectedDetailStoreId}
           onClose={closeDetail}
+        />
+      )}
+      {deleteTargetId !== null && (
+        <ConfirmModal
+          message="정말 이 식당을 삭제하시겠습니까?"
+          onConfirm={() => {
+            handleRemove(deleteTargetId);
+            setDeleteTargetId(null);
+          }}
+          onCancel={() => setDeleteTargetId(null)}
         />
       )}
     </section>
