@@ -15,7 +15,7 @@ interface BoradcastState {
   setYear: (year: number) => void;
   setMonth: (month: number) => void;
   setDate: (date: number) => void;
-  setStore: (r: string, rId: number) => void;
+  setStore: (storeId: number) => void;
   setViewOption: (view: TViewOption) => void;
   editingId: number | null;
   setEditingId: (id: number | null) => void;
@@ -43,8 +43,8 @@ const useBroadcastStore = create<BoradcastState>((set) => ({
   setDate: (date) => {
     set({ date: date });
   },
-  setStore: (_s: string, sId: number) => {
-    set({ storeId: sId });
+  setStore: (storeId) => {
+    set({ storeId });
   },
   setViewOption: (view) => {
     set({ viewOption: view });
