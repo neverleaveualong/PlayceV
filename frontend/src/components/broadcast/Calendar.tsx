@@ -89,7 +89,7 @@ const Calendar = memo(function Calendar({ scrollToDate }: CalendarProps) {
                     onClick={() => {
                       setDate(day);
                       setViewOption("tab");
-                      scrollToDate(day);
+                      setTimeout(() => scrollToDate(day), 0);
                     }}
                   >
                     <div className="flex justify-center font-semibold">

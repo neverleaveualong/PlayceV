@@ -62,7 +62,7 @@ const RestaurantHome = () => {
               <Button
                 onClick={(e) => {
                   e.stopPropagation();
-                  setStore(store.store_name, store.store_id);
+                  setStore(store.store_id);
                   setRestaurantSubpage("schedule-view-broadcasts");
                 }}
                 scheme="storeCircle"
