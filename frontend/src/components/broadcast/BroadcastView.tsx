@@ -7,11 +7,13 @@ import useBroadcastStore, { dateInfo } from "@/stores/broadcastStore";
 import getDaysInMonth, { getToday } from "@/utils/dateUtils";
 import useMypageStore from "@/stores/mypageStore";
 import FloatingRegisterButton from "./FloatingRegisterButton";
+import useDateScroll from "@/hooks/useDateScroll";
 
 const BroadcastView = () => {
   const twoMonthsAgo = new Date(dateInfo.year, dateInfo.month - 1 - 2);
   const twoMonthsLater = new Date(dateInfo.year, dateInfo.month - 1 + 2);
   const { setRestaurantSubpage } = useMypageStore();
+  const { tabRef, itemRefs, scrollToDate } = useDateScroll();
 
   const {
     year,
@@ -21,7 +23,6 @@ const BroadcastView = () => {
     setMonth,
     setDate,
     setViewOption,
-    scrollDateCenter,
   } = useBroadcastStore();
 
   const isInTwoMonths = (year: number, month: number) => {
@@ -58,7 +59,7 @@ const BroadcastView = () => {
             setDate(todayDate);
 
             setTimeout(() => {
-              scrollDateCenter();
+              scrollToDate(todayDate);
             }, 0);
           }}
         >
@@ -105,7 +106,11 @@ const BroadcastView = () => {
 
       <div className="relative h-full w-full">
         <div className="min-h-[400px]">
-          {viewOption === "calendar" ? <Calendar /> : <TabList />}
+          {viewOption === "calendar" ? (
+            <Calendar scrollToDate={scrollToDate} />
+          ) : (
+            <TabList tabRef={tabRef} itemRefs={itemRefs} scrollToDate={scrollToDate} />
+          )}
         </div>
       </div>
       <FloatingRegisterButton

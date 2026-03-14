@@ -1,7 +1,7 @@
 import { create } from "zustand";
 
 interface Toast {
-  id: number;
+  id: string;
   message: string;
   type: "success" | "error" | "info";
 }
@@ -9,13 +9,15 @@ interface Toast {
 interface ToastState {
   toasts: Toast[];
   addToast: (message: string, type?: Toast["type"]) => void;
-  removeToast: (id: number) => void;
+  removeToast: (id: string) => void;
 }
+
+let toastCounter = 0;
 
 const useToastStore = create<ToastState>((set) => ({
   toasts: [],
   addToast: (message, type = "info") => {
-    const id = Date.now();
+    const id = `toast-${++toastCounter}`;
     set((state) => ({
       toasts: [
         ...state.toasts,
