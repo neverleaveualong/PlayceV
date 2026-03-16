@@ -57,7 +57,6 @@ const RestaurantHome = () => {
                   {store.address}
                 </div>
               </div>
-              {/* 중계 */}
               <Button
                 onClick={(e) => {
                   e.stopPropagation();
@@ -67,9 +66,8 @@ const RestaurantHome = () => {
                 scheme="storeCircle"
                 icon={<FiTv className="text-primary5 text-xl" />}
                 hoverColor="gray-100"
+                title="중계 관리"
               ></Button>
-              {/* 수정 버튼 */}
-
               <Button
                 onClick={(e) => {
                   e.stopPropagation();
@@ -80,8 +78,8 @@ const RestaurantHome = () => {
                 scheme="storeCircle"
                 icon={<FiEdit2 className="text-blue-500 text-xl" />}
                 hoverColor="blue-50"
+                title="수정"
               ></Button>
-              {/* 삭제 버튼 */}
               <Button
                 onClick={(e) => {
                   e.stopPropagation();
@@ -90,6 +88,7 @@ const RestaurantHome = () => {
                 scheme="storeCircle"
                 icon={<FiTrash2 className="text-red-500 text-xl" />}
                 hoverColor="red-50"
+                title="삭제"
               ></Button>
             </div>
           ))}

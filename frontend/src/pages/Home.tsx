@@ -29,7 +29,7 @@ const Home: React.FC = () => {
   const handleClose = () => {
     setIsMypageOpen(false);
     setRestaurantSubpage("restaurant-home");
-    setSelectedTab("favorite");
+    setSelectedTab("profile");
   };
 
   useGeoLocation(geolocationOptions);
