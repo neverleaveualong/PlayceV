@@ -29,7 +29,8 @@ const createClient = (config?: AxiosRequestConfig) => {
   axiosInstance.interceptors.response.use(
     (response) => response,
     (error) => {
-      if (error.response?.status === 401) {
+      const isLoggedIn = useAuthStore.getState().isLoggedIn;
+      if (error.response?.status === 401 && isLoggedIn) {
         useAuthStore.getState().storeLogout();
         useToastStore.getState().addToast("로그인이 만료되었습니다", "info");
       }
