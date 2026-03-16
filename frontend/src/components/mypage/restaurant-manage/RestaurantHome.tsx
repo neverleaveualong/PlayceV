@@ -10,6 +10,7 @@ import useToastStore from "@/stores/toastStore";
 import useRestaurantDetail from "@/hooks/useRestaurantDetail";
 import { useMyStores, useDeleteStore } from "@/hooks/useMyStores";
 import { getApiErrorMessage } from "@/utils/apiErrorStatusMessage";
+import EmptyMessage from "@/components/restaurant/EmptyMessage";
 
 const RestaurantHome = () => {
   const { data: stores = [] } = useMyStores();
@@ -30,9 +31,7 @@ const RestaurantHome = () => {
   return (
     <section>
       {stores.length === 0 ? (
-        <div className="text-gray-400 text-center py-20 text-lg tracking-wide">
-          등록된 식당이 없습니다.
-        </div>
+        <EmptyMessage message="등록된 식당이 없습니다." />
       ) : (
         <ul>
           {stores.map((store) => (
@@ -67,7 +66,7 @@ const RestaurantHome = () => {
                 }}
                 scheme="storeCircle"
                 icon={<FiTv className="text-primary5 text-xl" />}
-                hoverColor="lightgray"
+                hoverColor="gray-100"
               ></Button>
               {/* 수정 버튼 */}
 

@@ -1,10 +1,11 @@
 import { useState, useMemo, useEffect, useCallback, memo } from "react";
-import { FiTv, FiImage } from "react-icons/fi";
+import { FiTv } from "react-icons/fi";
 import useMapStore from "@/stores/mapStore";
 import RestaurantDetailComponent from "@/components/restaurant/RestaurantDetail";
 import useRestaurantDetail from "@/hooks/useRestaurantDetail";
 import useNearbyRestaurants from "@/hooks/useNearbyRestaurants";
 import LoadingSpinner from "@/components/common/LoadingSpinner";
+import EmptyMessage from "@/components/restaurant/EmptyMessage";
 import type { Broadcast } from "@/types/restaurant.types";
 import { formatTimeShort } from "@/utils/formatTime";
 import { getToday } from "@/utils/dateUtils";
@@ -85,9 +86,7 @@ const TodayBroadcastSidebar = memo(function TodayBroadcastSidebar() {
       {isLoading ? (
         <LoadingSpinner message="중계 일정을 불러오는 중..." />
       ) : todayBroadcasts.length === 0 ? (
-        <div className="text-gray-400 py-8 text-center text-base">
-          오늘 중계되는 경기가 없습니다.
-        </div>
+        <EmptyMessage message="오늘 중계되는 경기가 없습니다." />
       ) : (
         <>
           {/* 종목 탭 */}
@@ -110,9 +109,7 @@ const TodayBroadcastSidebar = memo(function TodayBroadcastSidebar() {
           {/* 카드형 경기 리스트 */}
           <ul>
             {filtered.length === 0 ? (
-              <li className="text-gray-400 py-8 text-center text-base">
-                오늘 중계되는 경기가 없습니다.
-              </li>
+              <EmptyMessage message="오늘 중계되는 경기가 없습니다." />
             ) : (
               filtered.map((game, idx) => (
                 <li
@@ -120,17 +117,11 @@ const TodayBroadcastSidebar = memo(function TodayBroadcastSidebar() {
                   className="bg-white rounded-xl border border-gray-200 px-4 py-3 mb-3 flex items-center gap-4 cursor-pointer hover:bg-primary4 transition-colors"
                   onClick={() => handleOpenDetail(game.store_id)}
                 >
-                  {game.main_img ? (
-                    <img
-                      src={game.main_img}
-                      alt={game.store_name}
-                      className="w-12 h-12 rounded-lg object-cover bg-gray-100 flex-shrink-0"
-                    />
-                  ) : (
-                    <div className="w-12 h-12 rounded-lg bg-gray-100 flex items-center justify-center text-gray-300 text-2xl">
-                      <FiImage />
-                    </div>
-                  )}
+                  <img
+                    src={game.main_img || "/noimg.png"}
+                    alt={game.store_name}
+                    className="w-12 h-12 rounded-lg object-cover bg-gray-100 flex-shrink-0"
+                  />
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2 mb-0.5">
                       <span className="font-bold text-primary5 truncate">

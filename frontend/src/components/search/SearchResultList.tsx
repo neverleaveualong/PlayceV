@@ -6,6 +6,7 @@ import RestaurantDetailComponent from "@/components/restaurant/RestaurantDetail"
 import useRestaurantDetail from "@/hooks/useRestaurantDetail";
 import type { SearchResultItem as SearchResultItemType } from "@/types/search";
 import LoadingSpinner from "@/components/common/LoadingSpinner";
+import EmptyMessage from "@/components/restaurant/EmptyMessage";
 
 interface SearchResultListProps {
   results: SearchResultItemType[];
@@ -63,9 +64,7 @@ const SearchResultList = ({
         {isSearching ? (
           <div className="py-12"><LoadingSpinner message="검색 중..." /></div>
         ) : sortedResults.length === 0 ? (
-          <p className="text-center text-gray-400 py-20 text-xl">
-            검색 결과가 없습니다.
-          </p>
+          <EmptyMessage message="검색 결과가 없습니다." />
         ) : (
           sortedResults.map((item) => {
             const date = item.broadcast
