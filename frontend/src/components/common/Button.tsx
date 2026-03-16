@@ -40,20 +40,21 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 
     const schemeStyle = {
       primary:
-        "bg-primary1 text-white border border-primary1 hover:bg-primary5 hover:border-primary5",
+        "bg-primary5 text-white border border-primary5 hover:brightness-95",
       secondary:
         "bg-white text-primary5 border border-primary5 hover:bg-primary5 hover:border-primary5 hover:text-white",
-
       close: "text-gray-400 hover:text-primary5",
       tab: "bg-transparent text-gray-400 hover:text-primary5 border-b-2 border-transparent",
       custom: "",
       apply:
-        "bg-primary5 text-white border border-primary5 shadow-none hover:shadow-none hover:text-white hover:brightness-95",
+        "bg-primary5 text-white border border-primary5 hover:brightness-95",
       reset:
         "bg-white text-primary5 border border-primary5 hover:bg-gray-100 hover:text-primary5 hover:border-primary5",
       storeCircle: classNames(
         "w-8 h-8 flex items-center justify-center bg-white rounded-full shadow transition ml-1",
-        hoverColor && `hover:bg-${hoverColor}`
+        hoverColor === "blue-50" && "hover:bg-blue-50",
+        hoverColor === "red-50" && "hover:bg-red-50",
+        hoverColor === "gray-100" && "hover:bg-gray-100"
       ),
     };
 

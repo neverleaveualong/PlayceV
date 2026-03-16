@@ -18,15 +18,11 @@ const RestaurantDetailImageSection = ({
   onClose,
 }: RestaurantDetailImageSectionProps) => (
   <div className="w-full h-56 bg-gradient-to-tr via-white to-orange-50 flex items-center justify-center relative">
-    {detail.img_urls?.[0] ? (
-      <img
-        src={detail.img_urls[0]}
-        alt={detail.store_name}
-        className="w-full h-full object-cover rounded-b-xl"
-      />
-    ) : (
-      <span className="text-gray-400">이미지 없음</span>
-    )}
+    <img
+      src={detail.img_urls?.[0] || "/noimg.png"}
+      alt={detail.store_name}
+      className="w-full h-full object-cover rounded-b-xl"
+    />
     {/* 저장/공유 버튼 */}
     <div className="absolute left-6 top-6 flex gap-3 z-10">
       <button
