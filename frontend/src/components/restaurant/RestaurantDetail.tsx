@@ -25,7 +25,7 @@ export default function RestaurantDetailComponent({
   const [currentTab, setCurrentTab] = useState<Tab>("홈");
   const { data: detail, isLoading: loading, error } = useStoreDetail(storeId);
   const { setPosition, setRefreshBtn } = useMapStore();
-  const { isFavorite, toggleFavorite } = useFavoriteToggle(storeId);
+  const { isFavorite, toggleFavorite, isPending: isFavoritePending } = useFavoriteToggle(storeId);
 
   useEffect(() => {
     if (!detail) return;
@@ -61,6 +61,7 @@ export default function RestaurantDetailComponent({
       <RestaurantDetailImageSection
         detail={detail}
         isFavorite={isFavorite}
+        isFavoritePending={isFavoritePending}
         onToggleFavorite={toggleFavorite}
         onClose={onClose}
       />

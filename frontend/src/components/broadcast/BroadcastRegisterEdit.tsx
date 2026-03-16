@@ -30,6 +30,7 @@ const BroadcastRegisterEdit = (props: BroadcastRegisterEditProps) => {
   const queryClient = useQueryClient();
   const setRestaurantSubpage = useMypageStore((state) => state.setRestaurantSubpage);
   const [isTeamCompetition, setIsTeamCompetition] = useState(true);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const addToast = useToastStore((state) => state.addToast);
 
   // ② useForm — broadcastFormStore를 대체
@@ -122,6 +123,7 @@ const BroadcastRegisterEdit = (props: BroadcastRegisterEditProps) => {
       etc: data.note,
     };
 
+    setIsSubmitting(true);
     try {
       if (props.mode === "create") {
         await createBroadcast({ ...commonPayload, store_id: props.storeId });
@@ -134,6 +136,8 @@ const BroadcastRegisterEdit = (props: BroadcastRegisterEditProps) => {
       setRestaurantSubpage("schedule-view-broadcasts");
     } catch {
       addToast("오류가 발생했습니다. 다시 시도해주세요.", "error");
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -274,9 +278,10 @@ const BroadcastRegisterEdit = (props: BroadcastRegisterEditProps) => {
         </button>
         <button
           type="submit"
-          className="px-4 py-2 rounded bg-primary5 text-white"
+          disabled={isSubmitting}
+          className={`px-4 py-2 rounded bg-primary5 text-white ${isSubmitting ? "opacity-60 cursor-not-allowed" : ""}`}
         >
-          {props.mode === "edit" ? "수정" : "등록"}
+          {isSubmitting ? "처리 중..." : props.mode === "edit" ? "수정" : "등록"}
         </button>
       </div>
     </form>

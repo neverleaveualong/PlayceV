@@ -15,12 +15,14 @@ const useFavoriteToggle = (storeId: number) => {
   const removeMutation = useRemoveFavorite();
 
   const isFavorite = favorites.some((fav) => fav.store_id === storeId);
+  const isPending = addMutation.isPending || removeMutation.isPending;
 
   const toggleFavorite = () => {
     if (!isLoggedIn) {
       addToast("로그인 후 이용할 수 있는 기능입니다.", "info");
       return;
     }
+    if (isPending) return;
     if (isFavorite) {
       removeMutation.mutate(storeId);
     } else {
@@ -28,7 +30,7 @@ const useFavoriteToggle = (storeId: number) => {
     }
   };
 
-  return { isFavorite, toggleFavorite };
+  return { isFavorite, toggleFavorite, isPending };
 };
 
 export default useFavoriteToggle;
