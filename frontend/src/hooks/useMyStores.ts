@@ -1,14 +1,17 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { myStores, deleteStore } from "@/api/restaurant.api";
 import type { MyStore } from "@/types/restaurant.types";
+import useAuthStore from "@/stores/authStore";
 
 export const useMyStores = () => {
+  const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
   return useQuery<MyStore[]>({
     queryKey: ["myStores"],
     queryFn: async () => {
       const res = await myStores();
       return res.data;
     },
+    enabled: isLoggedIn,
   });
 };
 

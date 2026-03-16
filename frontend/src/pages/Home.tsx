@@ -1,4 +1,5 @@
 import { lazy, Suspense } from "react";
+import LoadingSpinner from "@/components/common/LoadingSpinner";
 import AuthHeader from "@/components/auth/AuthHeader";
 import Map from "@/components/map/PlayceMap";
 import SpotRefreshButton from "@/components/map/SpotRefreshButton";
@@ -47,7 +48,7 @@ const Home: React.FC = () => {
         </Suspense>
       </div>
       {isMypageOpen && (
-        <Suspense fallback={<div className="fixed right-0 top-0 h-full w-[430px] bg-white z-[100] flex items-center justify-center">로딩 중...</div>}>
+        <Suspense fallback={<div className="fixed right-0 top-0 h-full w-[430px] bg-white z-[100] flex items-center justify-center"><LoadingSpinner /></div>}>
           <MypageModal onClose={() => handleClose()} />
         </Suspense>
       )}

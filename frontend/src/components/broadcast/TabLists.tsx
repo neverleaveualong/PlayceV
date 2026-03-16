@@ -8,6 +8,7 @@ import { formatTime } from "@/utils/formatTime";
 import useToastStore from "@/stores/toastStore";
 import useMypageStore from "@/stores/mypageStore";
 import useBroadcasts, { useDeleteBroadcast } from "@/hooks/useBroadcasts";
+import EmptyMessage from "@/components/restaurant/EmptyMessage";
 
 interface TabListProps {
   tabRef: React.RefObject<HTMLDivElement | null>;
@@ -151,7 +152,7 @@ const TabList = ({ tabRef, itemRefs, scrollToDate }: TabListProps) => {
             );
           })
         ) : (
-          <div className="p-3">중계 정보가 없습니다.</div>
+          <EmptyMessage message="중계 정보가 없습니다." />
         )}
       </div>
       {deleteTargetId !== null && (
