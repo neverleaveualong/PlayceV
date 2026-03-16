@@ -8,7 +8,7 @@ import ErrorMessage from "@/components/common/ErrorMessage";
 import ModalBase from "@/components/common/ModalBase";
 
 const LoginModal = () => {
-  const { userLogin } = useAuth();
+  const { userLogin, isPending } = useAuth();
   const { isLoginModalOpen, setIsLoginModalOpen, setIsPasswordResetModalOpen } =
     useAuthStore();
 
@@ -53,7 +53,7 @@ const LoginModal = () => {
             />
             {errors.password && <ErrorMessage message="비밀번호를 입력해주세요" />}
           </fieldset>
-          <Button type="submit" className="mt-5" scheme="primary">
+          <Button type="submit" className="mt-5" scheme="primary" isLoading={isPending}>
             로그인
           </Button>
           <div className="flex justify-center mt-2">

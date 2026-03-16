@@ -1,5 +1,6 @@
 import { memo } from "react";
 import { FiTrash2 } from "react-icons/fi";
+import EmptyMessage from "./EmptyMessage";
 
 interface RestaurantCardListProps {
   stores: {
@@ -27,7 +28,7 @@ const RestaurantCardList = memo(function RestaurantCardList({
   return (
     <ul className={compact ? "" : "flex flex-col divide-y divide-gray-100"}>
       {stores.length === 0 ? (
-        <li className="text-gray-400 text-center py-8">식당이 없습니다.</li>
+        <EmptyMessage message="식당이 없습니다." />
       ) : (
         stores.map((store) => (
           <li

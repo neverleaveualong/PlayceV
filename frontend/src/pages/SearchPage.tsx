@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { FiChevronDown } from "react-icons/fi";
 import RegionModal from "@/components/search/RegionModal";
 import { useRegionStore } from "@/stores/regionStore";
 import SportModal from "@/components/search/SportModal";
@@ -86,19 +87,7 @@ const SearchPage = () => {
               >
                 {selectedRegionLabel}
               </span>
-              <svg
-                className="w-4 h-4 text-gray-400 ml-2 flex-shrink-0"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M19 9l-7 7-7-7"
-                />
-              </svg>
+              <FiChevronDown className="w-4 h-4 text-gray-400 ml-2 flex-shrink-0" />
             </button>
             {showRegionModal && (
               <RegionModal
@@ -122,19 +111,7 @@ const SearchPage = () => {
               >
                 {selectedSportLabel}
               </span>
-              <svg
-                className="w-4 h-4 text-gray-400 ml-2 flex-shrink-0"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M19 9l-7 7-7-7"
-                />
-              </svg>
+              <FiChevronDown className="w-4 h-4 text-gray-400 ml-2 flex-shrink-0" />
             </button>
             {showSportModal && (
               <SportModal

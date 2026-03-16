@@ -5,6 +5,7 @@ import type { RestaurantDetail } from "@/types/restaurant.types";
 interface RestaurantDetailImageSectionProps {
   detail: RestaurantDetail;
   isFavorite: boolean;
+  isFavoritePending?: boolean;
   onToggleFavorite: () => void;
   onClose?: () => void;
 }
@@ -12,24 +13,22 @@ interface RestaurantDetailImageSectionProps {
 const RestaurantDetailImageSection = ({
   detail,
   isFavorite,
+  isFavoritePending = false,
   onToggleFavorite,
   onClose,
 }: RestaurantDetailImageSectionProps) => (
   <div className="w-full h-56 bg-gradient-to-tr via-white to-orange-50 flex items-center justify-center relative">
-    {detail.img_urls?.[0] ? (
-      <img
-        src={detail.img_urls[0]}
-        alt={detail.store_name}
-        className="w-full h-full object-cover rounded-b-xl"
-      />
-    ) : (
-      <span className="text-gray-400">이미지 없음</span>
-    )}
+    <img
+      src={detail.img_urls?.[0] || "/noimg.png"}
+      alt={detail.store_name}
+      className="w-full h-full object-cover rounded-b-xl"
+    />
     {/* 저장/공유 버튼 */}
     <div className="absolute left-6 top-6 flex gap-3 z-10">
       <button
         onClick={onToggleFavorite}
-        className="bg-white/90 rounded-full p-2 shadow hover:bg-orange-50 transition"
+        disabled={isFavoritePending}
+        className={`bg-white/90 rounded-full p-2 shadow hover:bg-orange-50 transition ${isFavoritePending ? "opacity-50 cursor-not-allowed" : ""}`}
         aria-label={isFavorite ? "즐겨찾기 해제" : "즐겨찾기 추가"}
       >
         {isFavorite ? (

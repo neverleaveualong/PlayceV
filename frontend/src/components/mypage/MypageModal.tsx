@@ -5,6 +5,7 @@ import RestaurantManager from "./restaurant-manage/RestaurantManager";
 import useMypageStore from "@/stores/mypageStore";
 import { useUserInfo } from "@/hooks/useUser";
 import ModalBase from "@/components/common/ModalBase";
+import LoadingSpinner from "@/components/common/LoadingSpinner";
 
 export interface MypageProps {
   onClose: () => void;
@@ -40,7 +41,7 @@ const MypageModal = ({ onClose }: MypageProps) => {
           {selectedTab === "favorite" && <FavoriteList onClose={onClose} />}
           {selectedTab === "profile" && (
             <>
-              {isLoading && <p>로딩 중...</p>}
+              {isLoading && <LoadingSpinner message="프로필을 불러오는 중..." />}
               {isError && <p>유저 정보를 불러오지 못했습니다.</p>}
               {user && (
                 <UserInfo

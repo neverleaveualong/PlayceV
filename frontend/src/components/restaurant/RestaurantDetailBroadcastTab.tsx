@@ -180,9 +180,7 @@ export default function RestaurantDetailBroadcastTab({
         {showPast && (
           <ul className="mt-2">
             {past.length === 0 ? (
-              <li className="text-gray-400 py-6 text-center text-base">
-                지난 중계정보가 없습니다.
-              </li>
+              <EmptyMessage message="지난 중계정보가 없습니다." />
             ) : (
               sortedPastDates.map((date, groupIdx) => (
                 <Fragment key={date}>

@@ -5,7 +5,7 @@ import { FaStar } from "react-icons/fa";
 import Button from "@/components/common/Button";
 import useFavoriteToggle from "@/hooks/useFavoriteToggle";
 
-const defaultImage = "https://placehold.co/130x130?text=No+Image";
+const defaultImage = "/noimg.png";
 
 interface PlayceModalProps {
   restaurant: RestaurantBasic | undefined;
@@ -18,7 +18,7 @@ const PlayceModal = ({
   onDetailClick,
   onClose,
 }: PlayceModalProps) => {
-  const { isFavorite, toggleFavorite } = useFavoriteToggle(
+  const { isFavorite, toggleFavorite, isPending: isFavoritePending } = useFavoriteToggle(
     restaurant?.store_id ?? 0
   );
 
@@ -164,7 +164,8 @@ const PlayceModal = ({
               scheme="custom"
               onMouseDown={(e) => e.stopPropagation()}
               onClick={(e) => { e.stopPropagation(); toggleFavorite(); }}
-              className="flex items-center justify-center w-[40px] h-[40px] p-0 rounded-full border-none shadow-none focus:outline-none"
+              disabled={isFavoritePending}
+              className={`flex items-center justify-center w-[40px] h-[40px] p-0 rounded-full border-none shadow-none focus:outline-none ${isFavoritePending ? "opacity-50 cursor-not-allowed" : ""}`}
               style={{ flexShrink: 0 }}
               aria-label={isFavorite ? "즐겨찾기 해제" : "즐겨찾기 추가"}
             >
