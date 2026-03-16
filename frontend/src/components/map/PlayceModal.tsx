@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import type { RestaurantBasic } from "@/types/restaurant.types";
 import { CustomOverlayMap } from "react-kakao-maps-sdk";
 import { FiStar, FiMapPin, FiX } from "react-icons/fi";
@@ -22,14 +23,13 @@ const PlayceModal = ({
     restaurant?.store_id ?? 0
   );
 
-  if (
-    !restaurant ||
-    typeof restaurant.lat !== "number" ||
-    typeof restaurant.lng !== "number"
-  ) {
-    onClose?.();
-    return null;
-  }
+  const isInvalid = !restaurant || typeof restaurant.lat !== "number" || typeof restaurant.lng !== "number";
+
+  useEffect(() => {
+    if (isInvalid) onClose?.();
+  }, [isInvalid, onClose]);
+
+  if (isInvalid) return null;
 
   const handleDetailClick = () => {
     onDetailClick(restaurant);

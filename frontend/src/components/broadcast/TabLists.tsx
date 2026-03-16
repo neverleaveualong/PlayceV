@@ -123,7 +123,7 @@ const TabList = ({ tabRef, itemRefs, scrollToDate }: TabListProps) => {
           broadcastsForSelectedDate.map((b, index) => {
             return (
               <div
-                key={`${b.broadcast_id}-${index}`}
+                key={b.broadcast_id}
                 className="flex justify-between border-b"
               >
                 <div className="p-3 flex flex-col text-[15px] w-0 flex-1">
