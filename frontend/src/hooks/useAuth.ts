@@ -28,13 +28,9 @@ export const useAuth = () => {
     }
   };
 
-  const userLogout = async () => {
-    try {
-      storeLogout();
-      addToast("로그아웃이 완료되었습니다.", "success");
-    } catch (error) {
-      addToast("로그아웃에 실패하였습니다", "error");
-    }
+  const userLogout = () => {
+    storeLogout();
+    addToast("로그아웃이 완료되었습니다.", "success");
   };
 
   const userSignup = async (data: SignupProps) => {

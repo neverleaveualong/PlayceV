@@ -1,6 +1,7 @@
 import axios, { type AxiosRequestConfig } from "axios";
 import qs from "qs";
 import useAuthStore, { getToken } from "@/stores/authStore";
+import useToastStore from "@/stores/toastStore";
 
 const BASE_URL = import.meta.env.VITE_BASE_URL;
 const DEFAULT_TIMEOUT = 30000;
@@ -30,6 +31,7 @@ const createClient = (config?: AxiosRequestConfig) => {
     (error) => {
       if (error.response?.status === 401) {
         useAuthStore.getState().storeLogout();
+        useToastStore.getState().addToast("로그인이 만료되었습니다", "info");
       }
       return Promise.reject(error);
     }
