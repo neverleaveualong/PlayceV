@@ -5,6 +5,7 @@ import { sortSearchResults } from "@/utils/sortUtils";
 import RestaurantDetailComponent from "@/components/restaurant/RestaurantDetail";
 import useRestaurantDetail from "@/hooks/useRestaurantDetail";
 import type { SearchResultItem as SearchResultItemType } from "@/types/search";
+import LoadingSpinner from "@/components/common/LoadingSpinner";
 
 interface SearchResultListProps {
   results: SearchResultItemType[];
@@ -60,7 +61,7 @@ const SearchResultList = ({
 
       <div className="">
         {isSearching ? (
-          <p className="text-center text-gray-400 py-20">검색 중입니다.</p>
+          <div className="py-12"><LoadingSpinner message="검색 중..." /></div>
         ) : sortedResults.length === 0 ? (
           <p className="text-center text-gray-400 py-20 text-xl">
             검색 결과가 없습니다.

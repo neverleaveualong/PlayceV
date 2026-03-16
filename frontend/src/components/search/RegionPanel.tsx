@@ -3,6 +3,7 @@ import { useRegionStore } from "@/stores/regionStore";
 import { useState } from "react";
 import { getUpdatedRegionSelection } from "@/utils/regionUtils";
 import Tag from "@/components/common/Tag";
+import LoadingSpinner from "@/components/common/LoadingSpinner";
 
 const RegionPanel = () => {
   const [selectedBigRegionName, setSelectedBigRegionName] =
@@ -33,7 +34,7 @@ const RegionPanel = () => {
       <div className="flex divide-x overflow-hidden border-b h-[300px]">
         <div className="w-1/2 overflow-y-auto scrollbar-hide">
           {bigRegionsLoading ? (
-            <p className="text-center text-gray-400 py-4">로딩 중...</p>
+            <LoadingSpinner />
           ) : bigRegions.map((region) => (
             <div
               key={region.id}
@@ -57,7 +58,7 @@ const RegionPanel = () => {
               <p>상세 지역을 확인할 수 있습니다</p>
             </div>
           ) : smallRegions.length === 0 ? (
-            <p className="text-center text-gray-400 py-4">로딩 중...</p>
+            <LoadingSpinner />
           ) : (
             smallRegions.map((sub) => {
               const isChecked = selectedRegions.some(

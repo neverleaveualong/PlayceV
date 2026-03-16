@@ -3,6 +3,7 @@ import { useSports } from "@/hooks/useSports";
 import { useLeagues } from "@/hooks/useLeagues";
 import { getUpdatedLeagueSelection } from "@/utils/sportUtils";
 import Tag from "@/components/common/Tag";
+import LoadingSpinner from "@/components/common/LoadingSpinner";
 
 const SportPanel = () => {
   const { sport, selectedLeagues, setSport, setSelectedLeagues } =
@@ -25,7 +26,7 @@ const SportPanel = () => {
       <div className="flex divide-x overflow-hidden border-b h-[300px]">
         <div className="w-1/2 overflow-y-auto">
           {sportsLoading ? (
-            <p className="text-center text-gray-400 py-4">로딩 중...</p>
+            <LoadingSpinner />
           ) : sports.map((s) => (
             <div
               key={s.id}
