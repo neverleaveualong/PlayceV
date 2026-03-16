@@ -4,6 +4,7 @@ import useMapStore from "@/stores/mapStore";
 import RestaurantDetailComponent from "@/components/restaurant/RestaurantDetail";
 import useRestaurantDetail from "@/hooks/useRestaurantDetail";
 import useNearbyRestaurants from "@/hooks/useNearbyRestaurants";
+import LoadingSpinner from "@/components/common/LoadingSpinner";
 import type { Broadcast } from "@/types/restaurant.types";
 import { formatTimeShort } from "@/utils/formatTime";
 import { getToday } from "@/utils/dateUtils";
@@ -11,7 +12,7 @@ import { getToday } from "@/utils/dateUtils";
 const TodayBroadcastSidebar = memo(function TodayBroadcastSidebar() {
   const searchPosition = useMapStore((state) => state.searchPosition);
   const radius = useMapStore((state) => state.radius);
-  const { data: restaurants = [] } = useNearbyRestaurants(
+  const { data: restaurants = [], isLoading } = useNearbyRestaurants(
     searchPosition.lat,
     searchPosition.lng,
     radius
@@ -81,7 +82,9 @@ const TodayBroadcastSidebar = memo(function TodayBroadcastSidebar() {
         지도에서 탐색한 가게의 중계일정만 보여드려요
       </div>
 
-      {todayBroadcasts.length === 0 ? (
+      {isLoading ? (
+        <LoadingSpinner message="중계 일정을 불러오는 중..." />
+      ) : todayBroadcasts.length === 0 ? (
         <div className="text-gray-400 py-8 text-center text-base">
           오늘 중계되는 경기가 없습니다.
         </div>

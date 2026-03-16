@@ -9,6 +9,7 @@ import RestaurantDetailMenuTab from "./RestaurantDetailMenuTab";
 import RestaurantDetailBroadcastTab from "./RestaurantDetailBroadcastTab";
 import RestaurantDetailPhotoTab from "./RestaurantDetailPhotoTab";
 import useMapStore from "@/stores/mapStore";
+import LoadingSpinner from "@/components/common/LoadingSpinner";
 
 type Tab = "홈" | "메뉴" | "사진" | "중계";
 
@@ -38,7 +39,7 @@ export default function RestaurantDetailComponent({
     return (
       <aside className="fixed left-0 top-0 h-full w-[430px] z-[100] bg-white shadow-2xl border-r border-gray-100 flex flex-col font-pretendard">
         <div className="flex-1 flex items-center justify-center">
-          로딩 중...
+          <LoadingSpinner message="식당 정보를 불러오는 중..." />
         </div>
       </aside>
     );

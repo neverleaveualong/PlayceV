@@ -5,10 +5,11 @@ import RestaurantCardList from "@/components/restaurant/RestaurantCardList";
 import RestaurantDetailComponent from "@/components/restaurant/RestaurantDetail";
 import useRestaurantDetail from "@/hooks/useRestaurantDetail";
 import { useFavorites, useRemoveFavorite } from "@/hooks/useFavorites";
+import LoadingSpinner from "@/components/common/LoadingSpinner";
 
 export default function FavoriteSidebar() {
   const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
-  const { data: favorites = [] } = useFavorites();
+  const { data: favorites = [], isLoading } = useFavorites();
   const removeMutation = useRemoveFavorite();
   const [expanded, setExpanded] = useState(false);
   const { selectedStoreId, openDetail, closeDetail } = useRestaurantDetail();
@@ -47,6 +48,8 @@ export default function FavoriteSidebar() {
         <div className="py-8 text-center text-gray-400 text-base">
           즐겨찾기 기능은 로그인이 필요합니다.
         </div>
+      ) : isLoading ? (
+        <LoadingSpinner message="즐겨찾기를 불러오는 중..." />
       ) : (
         <>
           <RestaurantCardList
