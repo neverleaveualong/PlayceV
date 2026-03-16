@@ -5,6 +5,7 @@ import type { RestaurantDetail } from "@/types/restaurant.types";
 interface RestaurantDetailImageSectionProps {
   detail: RestaurantDetail;
   isFavorite: boolean;
+  isFavoritePending?: boolean;
   onToggleFavorite: () => void;
   onClose?: () => void;
 }
@@ -12,6 +13,7 @@ interface RestaurantDetailImageSectionProps {
 const RestaurantDetailImageSection = ({
   detail,
   isFavorite,
+  isFavoritePending = false,
   onToggleFavorite,
   onClose,
 }: RestaurantDetailImageSectionProps) => (
@@ -29,7 +31,8 @@ const RestaurantDetailImageSection = ({
     <div className="absolute left-6 top-6 flex gap-3 z-10">
       <button
         onClick={onToggleFavorite}
-        className="bg-white/90 rounded-full p-2 shadow hover:bg-orange-50 transition"
+        disabled={isFavoritePending}
+        className={`bg-white/90 rounded-full p-2 shadow hover:bg-orange-50 transition ${isFavoritePending ? "opacity-50 cursor-not-allowed" : ""}`}
         aria-label={isFavorite ? "즐겨찾기 해제" : "즐겨찾기 추가"}
       >
         {isFavorite ? (

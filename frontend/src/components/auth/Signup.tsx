@@ -17,7 +17,7 @@ interface SignupFormProps {
 }
 
 const SignupModal = () => {
-  const { userSignup } = useAuth();
+  const { userSignup, isPending } = useAuth();
   const { isSignupModalOpen, setIsSignupModalOpen } = useAuthStore();
 
   const handleCancel = () => {
@@ -138,7 +138,7 @@ const SignupModal = () => {
             />
             {errors.nickname && <ErrorMessage message={errors.nickname.message} />}
           </fieldset>
-          <Button type="submit" className="mt-5" scheme="primary">
+          <Button type="submit" className="mt-5" scheme="primary" isLoading={isPending}>
             회원가입
           </Button>
         </div>
