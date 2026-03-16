@@ -24,7 +24,7 @@ const ModalBase = ({
   return createPortal(
     <div
       className="fixed inset-0 z-[9999] flex items-start justify-center pt-[20vh] sm:pt-[12vh] bg-black bg-opacity-50"
-      onClick={onClose}
+      onClick={type === "auth" ? undefined : onClose}
     >
       <div
         className={classNames(
