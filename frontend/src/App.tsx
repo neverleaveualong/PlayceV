@@ -2,6 +2,7 @@ import { lazy, Suspense, useEffect } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from "@/pages/Home";
 import useAuthStore from "@/stores/authStore";
+import LoadingSpinner from "@/components/common/LoadingSpinner";
 import { useQueryClient } from "@tanstack/react-query";
 import Toast from "@/components/common/Toast";
 
@@ -27,7 +28,7 @@ function App() {
           <Route
             path="/reset-password/:token"
             element={
-              <Suspense fallback={<div className="flex items-center justify-center h-screen">로딩 중...</div>}>
+              <Suspense fallback={<div className="flex items-center justify-center h-screen"><LoadingSpinner /></div>}>
                 <PasswordResetModal />
               </Suspense>
             }
