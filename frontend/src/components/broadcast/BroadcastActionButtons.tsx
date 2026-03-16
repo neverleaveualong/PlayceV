@@ -18,12 +18,14 @@ const BroadcastActionButtons = memo(function BroadcastActionButtons({
         scheme="storeCircle"
         icon={<FiEdit2 className="text-blue-500 text-xl" />}
         hoverColor="blue-50"
+        title="수정"
       />
       <Button
         onClick={onDelete}
         scheme="storeCircle"
         icon={<FiTrash2 className="text-red-500 text-xl" />}
         hoverColor="red-50"
+        title="삭제"
       />
     </div>
   );

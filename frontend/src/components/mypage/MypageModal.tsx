@@ -1,5 +1,4 @@
 import Sidebar from "@/components/mypage/Sidebar";
-import FavoriteList from "./FavoriteList";
 import UserInfo from "./UserInfo";
 import RestaurantManager from "./restaurant-manage/RestaurantManager";
 import useMypageStore from "@/stores/mypageStore";
@@ -17,7 +16,7 @@ const MypageModal = ({ onClose }: MypageProps) => {
 
   const handleClose = () => {
     setRestaurantSubpage("restaurant-home");
-    setSelectedTab("favorite");
+    setSelectedTab("profile");
     onClose();
   };
   const { data, isLoading, isError } = useUserInfo();
@@ -38,7 +37,6 @@ const MypageModal = ({ onClose }: MypageProps) => {
         {/* 오른쪽 콘텐츠 영역 */}
         <div className="relative w-[70%] h-full p-6 overflow-y-auto">
           {/* 콘텐츠 */}
-          {selectedTab === "favorite" && <FavoriteList onClose={onClose} />}
           {selectedTab === "profile" && (
             <>
               {isLoading && <LoadingSpinner message="프로필을 불러오는 중..." />}
