@@ -9,9 +9,11 @@ import useMypageStore from "@/stores/mypageStore";
 import FloatingRegisterButton from "./FloatingRegisterButton";
 import useDateScroll from "@/hooks/useDateScroll";
 
+const CALENDAR_RANGE_MONTHS = 2;
+
 const BroadcastView = () => {
-  const twoMonthsAgo = new Date(dateInfo.year, dateInfo.month - 1 - 2);
-  const twoMonthsLater = new Date(dateInfo.year, dateInfo.month - 1 + 2);
+  const rangeStart = new Date(dateInfo.year, dateInfo.month - 1 - CALENDAR_RANGE_MONTHS);
+  const rangeEnd = new Date(dateInfo.year, dateInfo.month - 1 + CALENDAR_RANGE_MONTHS);
   const { setRestaurantSubpage } = useMypageStore();
   const { tabRef, itemRefs, scrollToDate } = useDateScroll();
 
@@ -25,9 +27,9 @@ const BroadcastView = () => {
     setViewOption,
   } = useBroadcastStore();
 
-  const isInTwoMonths = (year: number, month: number) => {
+  const isInRange = (year: number, month: number) => {
     const target = new Date(year, month - 1);
-    return target >= twoMonthsAgo && target <= twoMonthsLater;
+    return target >= rangeStart && target <= rangeEnd;
   };
 
   const handleLeft = () => {
@@ -71,7 +73,7 @@ const BroadcastView = () => {
             className="hover:cursor-pointer text-[35px] disabled:text-lightgray"
             onClick={handleLeft}
             disabled={
-              !isInTwoMonths(
+              !isInRange(
                 month > 1 ? year : year - 1,
                 month > 1 ? month - 1 : 12
               )
@@ -84,7 +86,7 @@ const BroadcastView = () => {
             className="hover:cursor-pointer text-[35px] disabled:text-lightgray"
             onClick={handleRight}
             disabled={
-              !isInTwoMonths(
+              !isInRange(
                 month < 12 ? year : year + 1,
                 month < 12 ? month + 1 : 1
               )

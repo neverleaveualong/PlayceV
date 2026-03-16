@@ -5,7 +5,7 @@ import { FaStar } from "react-icons/fa";
 import Button from "@/components/common/Button";
 import useFavoriteToggle from "@/hooks/useFavoriteToggle";
 
-const defaultImage = "https://placehold.co/130x130?text=No+Image";
+const defaultImage = "/noimg.png";
 
 interface PlayceModalProps {
   restaurant: RestaurantBasic | undefined;
