@@ -1,10 +1,13 @@
-import type { AxiosError } from "axios";
+import axios, { type AxiosError } from "axios";
 
 interface ApiErrorResponse {
   message?: string;
 }
 
 export const getApiErrorMessage = (error: unknown): string => {
+  if (!axios.isAxiosError(error)) {
+    return "오류가 발생하였습니다";
+  }
   const axiosError = error as AxiosError<ApiErrorResponse>;
   if (axiosError.response?.data?.message) {
     return axiosError.response.data.message;
