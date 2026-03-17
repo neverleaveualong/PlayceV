@@ -37,7 +37,7 @@ export default function RestaurantDetailComponent({
 
   if (loading) {
     return (
-      <aside className="fixed left-0 top-0 h-full w-sidebar z-[100] bg-white shadow-2xl border-r border-gray-100 flex flex-col font-pretendard">
+      <aside className="fixed left-0 top-0 h-full w-sidebar z-[100] bg-white shadow-2xl border-r border-gray-100 flex flex-col font-pretendard animate-slide-in-left">
         <div className="flex-1 flex items-center justify-center">
           <LoadingSpinner message="식당 정보를 불러오는 중..." />
         </div>
@@ -47,7 +47,7 @@ export default function RestaurantDetailComponent({
 
   if (error || !detail) {
     return (
-      <aside className="fixed left-0 top-0 h-full w-sidebar z-[100] bg-white shadow-2xl border-r border-gray-100 flex flex-col font-pretendard">
+      <aside className="fixed left-0 top-0 h-full w-sidebar z-[100] bg-white shadow-2xl border-r border-gray-100 flex flex-col font-pretendard animate-slide-in-left">
         <div className="flex-1 flex items-center justify-center text-red-500">
           {error ? "상세 정보를 불러오지 못했습니다." : "오류"}
         </div>
@@ -56,7 +56,7 @@ export default function RestaurantDetailComponent({
   }
 
   return (
-    <aside className="fixed left-0 top-0 h-full w-sidebar z-[100] bg-white shadow-2xl border-r border-gray-100 flex flex-col font-pretendard">
+    <aside className="fixed left-0 top-0 h-full w-sidebar z-[100] bg-white shadow-2xl border-r border-gray-100 flex flex-col font-pretendard animate-slide-in-left">
       <RestaurantDetailHeader />
       <RestaurantDetailImageSection
         detail={detail}
