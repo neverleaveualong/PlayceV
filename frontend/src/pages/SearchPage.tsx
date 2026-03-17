@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { FiChevronDown } from "react-icons/fi";
+import { FiChevronDown, FiSearch, FiStar } from "react-icons/fi";
 import RegionModal from "@/components/search/RegionModal";
 import { useRegionStore } from "@/stores/regionStore";
 import SportModal from "@/components/search/SportModal";
@@ -8,13 +8,16 @@ import SearchInput from "@/components/search/SearchInput";
 import SearchButton from "@/components/search/SearchButton";
 import SearchResultList from "@/components/search/SearchResultList";
 import AppHeader from "@/components/layout/AppHeader";
-import FavoriteSidebar from "@/components/mypage/FavoriteSidebar";
 import TodayBroadcastSidebar from "@/components/broadcast/TodayBroadcastSidebar";
+import FavoriteSidebar from "@/components/mypage/FavoriteSidebar";
 import { useSearchStore } from "@/stores/searchStore";
 import ResetButton from "@/components/search/ResetButton";
 import { useSearchResults } from "@/hooks/useSearchResults";
 
+type SidebarTab = "search" | "favorites";
+
 const SearchPage = () => {
+  const [activeTab, setActiveTab] = useState<SidebarTab>("search");
   const [showRegionModal, setShowRegionModal] = useState(false);
   const { selectedRegions } = useRegionStore();
   const { submittedParams } = useSearchStore();
@@ -61,91 +64,114 @@ const SearchPage = () => {
       <aside
         className="w-[430px] h-screen overflow-y-auto border-r bg-white"
         style={{
-          scrollbarWidth: "none", // Firefox
-          msOverflowStyle: "none", // IE, Edge
+          scrollbarWidth: "none",
+          msOverflowStyle: "none",
         }}
       >
         {/* 앱 이름/로고 */}
         <AppHeader />
 
-        {/* 검색 영역 */}
-        <div className="bg-primary4 px-3 py-3 space-y-2">
-          {/* 입력창 */}
-          <div>
-            <SearchInput className="w-full" />
-          </div>
-
-          {/* 지역 검색 버튼 */}
-          <div>
-            <button
-              onClick={() => setShowRegionModal(true)}
-              className="flex items-center justify-between w-full px-4 py-2 border rounded bg-white text-gray-700 text-sm shadow-sm hover:border-primary1 min-w-0"
-            >
-              <span
-                className="truncate block text-left min-w-0"
-                title={selectedRegionLabel}
-              >
-                {selectedRegionLabel}
-              </span>
-              <FiChevronDown className="w-4 h-4 text-gray-400 ml-2 flex-shrink-0" />
-            </button>
-            {showRegionModal && (
-              <RegionModal
-                onClose={() => setShowRegionModal(false)}
-                onApply={() => {
-                  setShowRegionModal(false);
-                }}
-              />
-            )}
-          </div>
-
-          {/* 경기 검색 버튼 */}
-          <div>
-            <button
-              onClick={() => setShowSportModal(true)}
-              className="flex items-center justify-between w-full px-4 py-2 border rounded bg-white text-gray-700 text-sm shadow-sm hover:border-primary1 min-w-0"
-            >
-              <span
-                className="truncate block text-left min-w-0"
-                title={selectedSportLabel}
-              >
-                {selectedSportLabel}
-              </span>
-              <FiChevronDown className="w-4 h-4 text-gray-400 ml-2 flex-shrink-0" />
-            </button>
-            {showSportModal && (
-              <SportModal
-                onClose={() => setShowSportModal(false)}
-                onApply={() => {
-                  setShowSportModal(false);
-                }}
-              />
-            )}
-          </div>
-
-          {/* 검색 버튼 */}
-          <div className="flex gap-2">
-            <div className="flex-[7]">
-              <SearchButton />
-            </div>
-            <div className="flex-[3]">
-              <ResetButton />
-            </div>
-          </div>
+        {/* 탭 */}
+        <div className="flex border-b border-gray-200">
+          <button
+            onClick={() => setActiveTab("search")}
+            className={`flex-1 flex items-center justify-center gap-2 py-3 text-sm font-semibold transition-colors ${
+              activeTab === "search"
+                ? "text-primary5 border-b-2 border-primary5"
+                : "text-gray-400 hover:text-gray-600"
+            }`}
+          >
+            <FiSearch className="text-base" />
+            검색
+          </button>
+          <button
+            onClick={() => setActiveTab("favorites")}
+            className={`flex-1 flex items-center justify-center gap-2 py-3 text-sm font-semibold transition-colors ${
+              activeTab === "favorites"
+                ? "text-primary5 border-b-2 border-primary5"
+                : "text-gray-400 hover:text-gray-600"
+            }`}
+          >
+            <FiStar className="text-base" />
+            즐겨찾기
+          </button>
         </div>
-        {hasSearched || isSearching ? (
-          <div className="mt-4 px-3">
-            <SearchResultList
-              results={results ?? []}
-              isSearching={isSearching}
-              hasSearched={hasSearched}
-            />
-          </div>
-        ) : (
+
+        {/* 탭 콘텐츠 */}
+        {activeTab === "search" ? (
           <>
-            <FavoriteSidebar />
-            <TodayBroadcastSidebar />
+            {/* 검색 영역 */}
+            <div className="bg-primary4 px-3 py-3 space-y-2">
+              <div>
+                <SearchInput className="w-full" />
+              </div>
+              <div>
+                <button
+                  onClick={() => setShowRegionModal(true)}
+                  className="flex items-center justify-between w-full px-4 py-2 border rounded bg-white text-gray-700 text-sm shadow-sm hover:border-primary1 min-w-0"
+                >
+                  <span
+                    className="truncate block text-left min-w-0"
+                    title={selectedRegionLabel}
+                  >
+                    {selectedRegionLabel}
+                  </span>
+                  <FiChevronDown className="w-4 h-4 text-gray-400 ml-2 flex-shrink-0" />
+                </button>
+                {showRegionModal && (
+                  <RegionModal
+                    onClose={() => setShowRegionModal(false)}
+                    onApply={() => {
+                      setShowRegionModal(false);
+                    }}
+                  />
+                )}
+              </div>
+              <div>
+                <button
+                  onClick={() => setShowSportModal(true)}
+                  className="flex items-center justify-between w-full px-4 py-2 border rounded bg-white text-gray-700 text-sm shadow-sm hover:border-primary1 min-w-0"
+                >
+                  <span
+                    className="truncate block text-left min-w-0"
+                    title={selectedSportLabel}
+                  >
+                    {selectedSportLabel}
+                  </span>
+                  <FiChevronDown className="w-4 h-4 text-gray-400 ml-2 flex-shrink-0" />
+                </button>
+                {showSportModal && (
+                  <SportModal
+                    onClose={() => setShowSportModal(false)}
+                    onApply={() => {
+                      setShowSportModal(false);
+                    }}
+                  />
+                )}
+              </div>
+              <div className="flex gap-2">
+                <div className="flex-[7]">
+                  <SearchButton />
+                </div>
+                <div className="flex-[3]">
+                  <ResetButton />
+                </div>
+              </div>
+            </div>
+            {hasSearched || isSearching ? (
+              <div className="mt-4 px-3">
+                <SearchResultList
+                  results={results ?? []}
+                  isSearching={isSearching}
+                  hasSearched={hasSearched}
+                />
+              </div>
+            ) : (
+              <TodayBroadcastSidebar />
+            )}
           </>
+        ) : (
+          <FavoriteSidebar />
         )}
       </aside>
     </div>

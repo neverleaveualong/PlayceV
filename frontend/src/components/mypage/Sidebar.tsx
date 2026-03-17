@@ -1,11 +1,11 @@
 import type { ReactNode } from "react";
-import { FaStar, FaUserEdit, FaStore } from "react-icons/fa";
+import { FaUserEdit, FaStore, FaTv } from "react-icons/fa";
 import useMypageStore from "@/stores/mypageStore";
 import useBroadcastStore from "@/stores/broadcastStore";
 
 interface SidebarProps {
-  selected: "favorite" | "profile" | "restaurant";
-  onSelect: (tab: "favorite" | "profile" | "restaurant") => void;
+  selected: "profile" | "restaurant" | "broadcast";
+  onSelect: (tab: "profile" | "restaurant" | "broadcast") => void;
 }
 
 interface SidebarItemProps {
@@ -37,16 +37,6 @@ const Sidebar = ({ selected, onSelect }: SidebarProps) => {
     <div className="w-full h-full bg-primary4 px-4 py-10 flex flex-col gap-2">
       <div className="flex flex-col gap-2 mt-1">
         <SidebarItem
-          icon={<FaStar />}
-          label="즐겨찾기"
-          active={selected === "favorite"}
-          onClick={() => {
-            onSelect("favorite");
-            setRestaurantSubpage("restaurant-home");
-            resetYMD();
-          }}
-        />
-        <SidebarItem
           icon={<FaUserEdit />}
           label="내 정보"
           active={selected === "profile"}
@@ -61,6 +51,16 @@ const Sidebar = ({ selected, onSelect }: SidebarProps) => {
           label="식당 관리"
           active={selected === "restaurant"}
           onClick={() => onSelect("restaurant")}
+        />
+        <SidebarItem
+          icon={<FaTv />}
+          label="중계 관리"
+          active={selected === "broadcast"}
+          onClick={() => {
+            onSelect("broadcast");
+            setRestaurantSubpage("restaurant-home");
+            resetYMD();
+          }}
         />
       </div>
     </div>
