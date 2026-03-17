@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import type { ExtendedSubpage } from "@/types/restaurant-manage.types";
 
-type TabType = "favorite" | "profile" | "restaurant";
+type TabType = "profile" | "restaurant" | "broadcast";
 
 interface MypageState {
   isMypageOpen: boolean;
@@ -18,7 +18,7 @@ interface MypageState {
 
 const useMypageStore = create<MypageState>((set) => ({
   isMypageOpen: false,
-  selectedTab: "favorite",
+  selectedTab: "profile",
   restaurantSubpage: "restaurant-home",
   restaurantEditId: null,
   restaurantEditName: null,

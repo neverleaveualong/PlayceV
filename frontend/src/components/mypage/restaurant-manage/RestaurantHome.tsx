@@ -1,11 +1,9 @@
 import { useState } from "react";
 import useMypageStore from "@/stores/mypageStore";
-import { FiEdit2, FiTrash2, FiTv } from "react-icons/fi";
+import { FiEdit2, FiPlus, FiTrash2 } from "react-icons/fi";
 import RestaurantDetailComponent from "@/components/restaurant/RestaurantDetail";
 import Button from "@/components/common/Button";
 import ConfirmModal from "@/components/common/ConfirmModal";
-import useBroadcastStore from "@/stores/broadcastStore";
-import FloatingRegisterButton from "@/components/broadcast/FloatingRegisterButton";
 import useToastStore from "@/stores/toastStore";
 import useRestaurantDetail from "@/hooks/useRestaurantDetail";
 import { useMyStores, useDeleteStore } from "@/hooks/useMyStores";
@@ -18,7 +16,6 @@ const RestaurantHome = () => {
   const { selectedStoreId: selectedDetailStoreId, openDetail, closeDetail } = useRestaurantDetail();
   const { setRestaurantSubpage, setRestaurantEditId, setRestaurantEditName } =
     useMypageStore();
-  const { setStore } = useBroadcastStore();
   const { addToast } = useToastStore();
   const [deleteTargetId, setDeleteTargetId] = useState<number | null>(null);
 
@@ -30,14 +27,24 @@ const RestaurantHome = () => {
 
   return (
     <section>
+      <div className="flex justify-end mb-3">
+        <Button
+          scheme="primary"
+          size="semi"
+          icon={<FiPlus />}
+          onClick={() => setRestaurantSubpage("restaurant-register")}
+        >
+          식당 등록
+        </Button>
+      </div>
       {stores.length === 0 ? (
         <EmptyMessage message="등록된 식당이 없습니다." />
       ) : (
         <ul>
           {stores.map((store) => (
-            <div
+            <li
               key={store.store_id}
-              className="flex items-center gap-4 p-3 border-b border-gray-100 last:border-b-0 hover:bg-primary4 hover:cursor-pointer"
+              className="list-none flex items-center gap-4 p-3 border-b border-gray-100 last:border-b-0 hover:bg-primary4 hover:cursor-pointer"
               onClick={() => {
                 openDetail(store.store_id);
               }}
@@ -57,19 +64,6 @@ const RestaurantHome = () => {
                   {store.address}
                 </div>
               </div>
-              {/* 중계 */}
-              <Button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setStore(store.store_id);
-                  setRestaurantSubpage("schedule-view-broadcasts");
-                }}
-                scheme="storeCircle"
-                icon={<FiTv className="text-primary5 text-xl" />}
-                hoverColor="gray-100"
-              ></Button>
-              {/* 수정 버튼 */}
-
               <Button
                 onClick={(e) => {
                   e.stopPropagation();
@@ -80,8 +74,8 @@ const RestaurantHome = () => {
                 scheme="storeCircle"
                 icon={<FiEdit2 className="text-blue-500 text-xl" />}
                 hoverColor="blue-50"
+                title="수정"
               ></Button>
-              {/* 삭제 버튼 */}
               <Button
                 onClick={(e) => {
                   e.stopPropagation();
@@ -90,15 +84,12 @@ const RestaurantHome = () => {
                 scheme="storeCircle"
                 icon={<FiTrash2 className="text-red-500 text-xl" />}
                 hoverColor="red-50"
+                title="삭제"
               ></Button>
-            </div>
+            </li>
           ))}
         </ul>
       )}
-      <FloatingRegisterButton
-        className={`absolute bottom-10 right-10`}
-        onClick={() => setRestaurantSubpage("restaurant-register")}
-      />
       {/* 상세보기 */}
       {selectedDetailStoreId && (
         <RestaurantDetailComponent

@@ -79,8 +79,7 @@ export default function RestaurantDetailBroadcastTab({
     }, [detail.broadcasts, today]);
 
   const { setStore } = useBroadcastStore();
-  const { setRestaurantSubpage, setSelectedTab, setIsMypageOpen } =
-    useMypageStore();
+  const { setRestaurantSubpage, setSelectedTab, setIsMypageOpen } = useMypageStore();
 
   const ETC_LABEL = (
     <span className="inline-flex items-center gap-1 text-xs font-semibold text-primary5 mr-1">
@@ -109,9 +108,9 @@ export default function RestaurantDetailBroadcastTab({
                   {date}
                 </span>
               </h4>
-              {groupedFuture[date].map((b, idx) => (
+              {groupedFuture[date].map((b) => (
                 <li
-                  key={idx}
+                  key={b.broadcast_id}
                   className="rounded-xl p-4 mb-3 flex flex-col gap-2 border border-primary2 bg-white"
                 >
                   <div className="flex items-center gap-2 mb-1">
@@ -195,9 +194,9 @@ export default function RestaurantDetailBroadcastTab({
                       {date}
                     </span>
                   </h4>
-                  {groupedPast[date].map((b, idx) => (
+                  {groupedPast[date].map((b) => (
                     <li
-                      key={idx}
+                      key={b.broadcast_id}
                       className="rounded-xl p-4 mb-3 flex flex-col gap-2 border border-gray-200 bg-gray-50"
                     >
                       <div className="flex items-center gap-2 mb-1">
@@ -251,9 +250,9 @@ export default function RestaurantDetailBroadcastTab({
           <Button
             scheme="primary"
             onClick={() => {
-              setSelectedTab("restaurant");
+              setRestaurantSubpage("restaurant-home");
+              setSelectedTab("broadcast");
               setStore(storeId);
-              setRestaurantSubpage("schedule-view-broadcasts");
               setIsMypageOpen(true);
             }}
           >

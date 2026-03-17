@@ -1,4 +1,5 @@
 import { FiPlus } from "react-icons/fi";
+import Button from "@/components/common/Button";
 
 interface FloatingRegisterButtonProps {
   onClick: () => void;
@@ -10,12 +11,13 @@ const FloatingRegisterButton = ({
   className = "",
 }: FloatingRegisterButtonProps) => {
   return (
-    <button
+    <Button
       onClick={onClick}
-      className={`w-12 h-12 rounded-full bg-primary5 text-white shadow-lg flex items-center justify-center hover:bg-primary1 transition-all ${className}`}
-    >
-      <FiPlus />
-    </button>
+      scheme="primary"
+      size="floating"
+      icon={<FiPlus />}
+      className={className}
+    />
   );
 };
 
