@@ -29,9 +29,9 @@ const ModalBase = ({
       <div
         className={classNames(
           "bg-white rounded-xl shadow-lg max-h-[90vh] overflow-hidden flex flex-col",
-          { "w-[400px]": type === "auth" },
-          { "w-[850px]": type === "mypage" },
-          { "w-[600px]": type !== "auth" && type !== "mypage" },
+          { "w-modal-auth": type === "auth" },
+          { "w-modal-lg": type === "mypage" },
+          { "w-modal-md": type !== "auth" && type !== "mypage" },
           className
         )}
         onClick={(e) => e.stopPropagation()}

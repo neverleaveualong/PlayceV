@@ -62,7 +62,7 @@ const SearchPage = () => {
     <div className="h-screen bg-white">
       {/* 사이드바 */}
       <aside
-        className="w-[430px] h-screen overflow-y-auto border-r bg-white"
+        className="w-sidebar h-screen overflow-y-auto border-r bg-white"
         style={{
           scrollbarWidth: "none",
           msOverflowStyle: "none",

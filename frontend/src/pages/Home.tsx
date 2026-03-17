@@ -48,7 +48,7 @@ const Home: React.FC = () => {
         </Suspense>
       </div>
       {isMypageOpen && (
-        <Suspense fallback={<div className="fixed right-0 top-0 h-full w-[430px] bg-white z-[100] flex items-center justify-center"><LoadingSpinner /></div>}>
+        <Suspense fallback={<div className="fixed right-0 top-0 h-full w-sidebar bg-white z-[100] flex items-center justify-center"><LoadingSpinner /></div>}>
           <MypageModal onClose={() => handleClose()} />
         </Suspense>
       )}
