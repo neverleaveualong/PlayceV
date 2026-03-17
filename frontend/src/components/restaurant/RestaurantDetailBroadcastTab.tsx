@@ -1,7 +1,7 @@
 import { Fragment, useState, useMemo } from "react";
 import { FiTv, FiChevronDown, FiChevronUp, FiVolume2 } from "react-icons/fi";
 import Button from "@/components/common/Button";
-import type { RestaurantDetail, Broadcast } from "@/types/restaurant.types";
+import type { RestaurantDetail, BroadcastWithId } from "@/types/restaurant.types";
 import EmptyMessage from "./EmptyMessage";
 import useBroadcastStore from "@/stores/broadcastStore";
 import useMypageStore from "@/stores/mypageStore";
@@ -13,11 +13,11 @@ function getKoreanDateString(dateStr: string): string {
   return `${date.getMonth() + 1}월 ${date.getDate()}일`;
 }
 
-function groupByDate(broadcasts: Broadcast[]): Record<string, Broadcast[]> {
+function groupByDate(broadcasts: BroadcastWithId[]): Record<string, BroadcastWithId[]> {
   return broadcasts.reduce((acc, b) => {
     (acc[b.match_date] = acc[b.match_date] || []).push(b);
     return acc;
-  }, {} as Record<string, Broadcast[]>);
+  }, {} as Record<string, BroadcastWithId[]>);
 }
 
 function compareDate(a: string, b: string): number {
@@ -42,9 +42,9 @@ export default function RestaurantDetailBroadcastTab({
 
   const { sortedFutureDates, groupedFuture, sortedPastDates, groupedPast, futureAndToday, past } =
     useMemo(() => {
-      const futureAndToday: Broadcast[] = [];
-      const past: Broadcast[] = [];
-      detail.broadcasts.forEach((b: Broadcast) => {
+      const futureAndToday: BroadcastWithId[] = [];
+      const past: BroadcastWithId[] = [];
+      detail.broadcasts.forEach((b: BroadcastWithId) => {
         if (compareDate(b.match_date, today) >= 0) {
           futureAndToday.push(b);
         } else {
@@ -52,9 +52,9 @@ export default function RestaurantDetailBroadcastTab({
         }
       });
 
-      const groupedFuture: Record<string, Broadcast[]> =
+      const groupedFuture: Record<string, BroadcastWithId[]> =
         groupByDate(futureAndToday);
-      const groupedPast: Record<string, Broadcast[]> = groupByDate(past);
+      const groupedPast: Record<string, BroadcastWithId[]> = groupByDate(past);
 
       const sortedFutureDates: string[] = Object.keys(groupedFuture).sort(
         (a, b) => compareDate(a, b)

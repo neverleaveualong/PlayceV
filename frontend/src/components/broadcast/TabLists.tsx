@@ -120,7 +120,7 @@ const TabList = ({ tabRef, itemRefs, scrollToDate }: TabListProps) => {
 
       <div className="mt-3 space-y-1 border-t">
         {broadcastsForSelectedDate.length > 0 ? (
-          broadcastsForSelectedDate.map((b, index) => {
+          broadcastsForSelectedDate.map((b) => {
             return (
               <div
                 key={b.broadcast_id}

@@ -1,6 +1,6 @@
-import type { Broadcast } from "./broadcast";
+import type { Broadcast, BroadcastWithId } from "./broadcast";
 
-export type { Broadcast };
+export type { Broadcast, BroadcastWithId };
 
 export type RestaurantBasic = {
   store_id: number;
@@ -23,7 +23,7 @@ export interface RestaurantDetail {
   type: string;
   img_urls: string[];
   description: string;
-  broadcasts: Broadcast[];
+  broadcasts: BroadcastWithId[];
   is_owner?: boolean;
   lat: number;
   lng: number;
