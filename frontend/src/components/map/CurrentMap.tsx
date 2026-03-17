@@ -43,7 +43,7 @@ function GoToCurrentLocationButton({ mapRef }: GoToCurrentLocationButtonProps) {
         group fixed bottom-24 right-12 z-20
         p-4 rounded-full bg-primary5 text-white shadow-md border border-primary5
         hover:bg-white hover:border-primary5 hover:text-primary5 transition-colors
-        disabled:opacity-60 disabled:cursor-not-allowed
+        disabled:opacity-60 disabled:cursor-not-allowed disabled:pointer-events-none
       "
       onClick={handleClick}
       disabled={isLocating}
