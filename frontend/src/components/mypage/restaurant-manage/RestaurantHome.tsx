@@ -32,7 +32,11 @@ const RestaurantHome = () => {
           scheme="primary"
           size="semi"
           icon={<FiPlus />}
-          onClick={() => setRestaurantSubpage("restaurant-register")}
+          onClick={() => {
+            setRestaurantEditId(null);
+            setRestaurantEditName(null);
+            setRestaurantSubpage("restaurant-register");
+          }}
         >
           식당 등록
         </Button>
@@ -56,7 +60,7 @@ const RestaurantHome = () => {
               />
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-2">
-                  <span className="block text-lg font-semibold text-gray-900 truncate">
+                  <span className="block text-base font-semibold text-gray-900 truncate">
                     {store.store_name}
                   </span>
                 </div>

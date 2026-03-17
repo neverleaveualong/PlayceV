@@ -32,7 +32,7 @@ const BroadcastStoreList = ({ onSelectStore }: BroadcastStoreListProps) => {
             className="w-16 h-16 rounded-lg object-cover border border-gray-200 bg-gray-100"
           />
           <div className="flex-1 min-w-0">
-            <span className="block text-lg font-semibold text-gray-900 truncate">
+            <span className="block text-base font-semibold text-gray-900 truncate">
               {store.store_name}
             </span>
             <span className="text-gray-500 text-sm truncate mt-1 block">
