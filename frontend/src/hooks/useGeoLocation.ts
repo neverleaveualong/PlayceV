@@ -8,24 +8,6 @@ export const useGeoLocation = (options = {}) => {
   const { addToast } = useToastStore();
   const [error, setError] = useState("");
 
-  const handleSuccess = (pos: GeolocationPosition) => {
-    const { latitude, longitude } = pos.coords;
-    initPosition({ lat: latitude, lng: longitude });
-  };
-
-  const handleError = (err: GeolocationPositionError) => {
-    setError(err.message);
-    initPosition(CITY_STATION);
-
-    if (err.code === err.PERMISSION_DENIED) {
-      addToast("위치 권한이 거부되었습니다. 기본 위치(서울)로 표시합니다.", "info");
-    } else if (err.code === err.TIMEOUT) {
-      addToast("위치를 가져오는 데 시간이 초과되었습니다.", "info");
-    } else {
-      addToast("위치를 가져올 수 없어 기본 위치로 표시합니다.", "info");
-    }
-  };
-
   useEffect(() => {
     const { geolocation } = navigator;
 
@@ -37,7 +19,26 @@ export const useGeoLocation = (options = {}) => {
     }
 
     addToast("현재 위치를 찾고 있어요...", "info");
-    geolocation.getCurrentPosition(handleSuccess, handleError, options);
+
+    geolocation.getCurrentPosition(
+      (pos) => {
+        const { latitude, longitude } = pos.coords;
+        initPosition({ lat: latitude, lng: longitude });
+      },
+      (err) => {
+        setError(err.message);
+        initPosition(CITY_STATION);
+
+        if (err.code === err.PERMISSION_DENIED) {
+          addToast("위치 권한이 거부되었습니다. 기본 위치(서울)로 표시합니다.", "info");
+        } else if (err.code === err.TIMEOUT) {
+          addToast("위치를 가져오는 데 시간이 초과되었습니다.", "info");
+        } else {
+          addToast("위치를 가져올 수 없어 기본 위치로 표시합니다.", "info");
+        }
+      },
+      options
+    );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

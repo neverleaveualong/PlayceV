@@ -12,23 +12,15 @@ export interface MypageProps {
 }
 
 const MypageModal = ({ onClose }: MypageProps) => {
-  const { selectedTab, setSelectedTab, setRestaurantSubpage } =
-    useMypageStore();
-
-  const handleClose = () => {
-    setRestaurantSubpage("restaurant-home");
-    setSelectedTab("profile");
-    onClose();
-  };
+  const { selectedTab, setSelectedTab } = useMypageStore();
   const { data, isLoading, isError } = useUserInfo();
   const user = data?.data;
 
   return (
     <ModalBase
-      onClose={handleClose}
+      onClose={onClose}
       type="mypage"
       hideHeader
-      className="bg-gray-400"
     >
       <div className="flex h-modal-h w-full bg-white rounded-xl overflow-hidden">
         {/* 왼쪽 사이드바 */}
@@ -49,16 +41,16 @@ const MypageModal = ({ onClose }: MypageProps) => {
                   name={user.name}
                   nickname={user.nickname}
                   phone={user.phone}
-                  onClose={handleClose}
+                  onClose={onClose}
                 />
               )}
             </>
           )}
           {selectedTab === "restaurant" && (
-            <RestaurantManager onClose={handleClose} />
+            <RestaurantManager onClose={onClose} />
           )}
           {selectedTab === "broadcast" && (
-            <BroadcastManager onClose={handleClose} />
+            <BroadcastManager onClose={onClose} />
           )}
         </div>
       </div>

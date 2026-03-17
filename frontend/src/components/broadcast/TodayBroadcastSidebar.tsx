@@ -111,9 +111,9 @@ const TodayBroadcastSidebar = memo(function TodayBroadcastSidebar() {
             {filtered.length === 0 ? (
               <EmptyMessage message="오늘 중계되는 경기가 없습니다." />
             ) : (
-              filtered.map((game, idx) => (
+              filtered.map((game) => (
                 <li
-                  key={idx}
+                  key={`${game.store_id}-${game.match_time}-${game.league}`}
                   className="bg-white rounded-xl border border-gray-200 px-4 py-3 mb-3 flex items-center gap-4 cursor-pointer hover:bg-primary3/30 transition-colors"
                   onClick={() => handleOpenDetail(game.store_id)}
                 >

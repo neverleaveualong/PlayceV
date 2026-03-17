@@ -17,19 +17,12 @@ const MypageModal = lazy(() => import("@/components/mypage/MypageModal"));
 
 const Home: React.FC = () => {
   const { position, isRefreshBtnOn } = useMapStore();
-  const { isMypageOpen, setIsMypageOpen, setRestaurantSubpage, setSelectedTab } =
-    useMypageStore();
+  const { isMypageOpen, setIsMypageOpen } = useMypageStore();
 
   const geolocationOptions = {
     enableHighAccuracy: true,
     timeout: 1000 * 10,
     maximumAge: 1000 * 3600 * 24,
-  };
-
-  const handleClose = () => {
-    setIsMypageOpen(false);
-    setRestaurantSubpage("restaurant-home");
-    setSelectedTab("profile");
   };
 
   useGeoLocation(geolocationOptions);
@@ -49,7 +42,7 @@ const Home: React.FC = () => {
       </div>
       {isMypageOpen && (
         <Suspense fallback={<div className="fixed right-0 top-0 h-full w-sidebar bg-white z-[100] flex items-center justify-center"><LoadingSpinner /></div>}>
-          <MypageModal onClose={() => handleClose()} />
+          <MypageModal onClose={() => setIsMypageOpen(false)} />
         </Suspense>
       )}
     </div>
