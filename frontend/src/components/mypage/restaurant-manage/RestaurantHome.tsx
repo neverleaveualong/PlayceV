@@ -42,9 +42,9 @@ const RestaurantHome = () => {
       ) : (
         <ul>
           {stores.map((store) => (
-            <div
+            <li
               key={store.store_id}
-              className="flex items-center gap-4 p-3 border-b border-gray-100 last:border-b-0 hover:bg-primary4 hover:cursor-pointer"
+              className="list-none flex items-center gap-4 p-3 border-b border-gray-100 last:border-b-0 hover:bg-primary4 hover:cursor-pointer"
               onClick={() => {
                 openDetail(store.store_id);
               }}
@@ -86,7 +86,7 @@ const RestaurantHome = () => {
                 hoverColor="red-50"
                 title="삭제"
               ></Button>
-            </div>
+            </li>
           ))}
         </ul>
       )}
