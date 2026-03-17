@@ -5,16 +5,14 @@ export interface UserInfoProps {
   name: string;
   nickname: string;
   phone: string;
-  onClose?: () => void; // 닫기 콜백
+  onClose?: () => void;
 }
 
 const UserInfo = ({ email, name, nickname, phone, onClose }: UserInfoProps) => {
   return (
-    <div className="px-2">
+    <div>
       <SectionHeader title="내 정보" onClose={onClose} />
-
-      {/* 사용자 정보 표시 */}
-      <div className="flex flex-col gap-2">
+      <div className="flex flex-col gap-3 mt-2">
         <InfoRow label="이메일" value={email} />
         <InfoRow label="이름" value={name} />
         <InfoRow label="닉네임" value={nickname} />
@@ -25,9 +23,9 @@ const UserInfo = ({ email, name, nickname, phone, onClose }: UserInfoProps) => {
 };
 
 const InfoRow = ({ label, value }: { label: string; value: string }) => (
-  <div className="flex items-center">
-    <span className="px-4 w-[100px] text-gray-600 text-sm mb-1">{label}</span>
-    <span>{value}</span>
+  <div className="flex items-center py-2 border-b border-gray-100 last:border-b-0">
+    <span className="w-24 text-sm text-gray-500 flex-shrink-0">{label}</span>
+    <span className="text-sm text-gray-900">{value}</span>
   </div>
 );
 

@@ -12,8 +12,8 @@ export interface MypageProps {
 }
 
 const MypageModal = ({ onClose }: MypageProps) => {
-  const { selectedTab, setSelectedTab } = useMypageStore();
-  const { setRestaurantSubpage } = useMypageStore();
+  const { selectedTab, setSelectedTab, setRestaurantSubpage } =
+    useMypageStore();
 
   const handleClose = () => {
     setRestaurantSubpage("restaurant-home");
@@ -32,15 +32,16 @@ const MypageModal = ({ onClose }: MypageProps) => {
     >
       <div className="flex h-modal-h w-full bg-white rounded-xl overflow-hidden">
         {/* 왼쪽 사이드바 */}
-        <div className="w-[30%] h-full bg-primary4 flex-shrink-0">
+        <div className="w-[220px] h-full bg-primary4 flex-shrink-0 border-r border-gray-200">
           <Sidebar selected={selectedTab} onSelect={setSelectedTab} />
         </div>
         {/* 오른쪽 콘텐츠 영역 */}
-        <div className="relative w-[70%] h-full p-6 overflow-y-auto">
-          {/* 콘텐츠 */}
+        <div className="relative flex-1 h-full p-6 overflow-y-auto">
           {selectedTab === "profile" && (
             <>
-              {isLoading && <LoadingSpinner message="프로필을 불러오는 중..." />}
+              {isLoading && (
+                <LoadingSpinner message="프로필을 불러오는 중..." />
+              )}
               {isError && <p>유저 정보를 불러오지 못했습니다.</p>}
               {user && (
                 <UserInfo
@@ -48,20 +49,16 @@ const MypageModal = ({ onClose }: MypageProps) => {
                   name={user.name}
                   nickname={user.nickname}
                   phone={user.phone}
-                  onClose={onClose}
+                  onClose={handleClose}
                 />
               )}
             </>
           )}
           {selectedTab === "restaurant" && (
-            <div>
-              <RestaurantManager onClose={onClose} />
-            </div>
+            <RestaurantManager onClose={handleClose} />
           )}
           {selectedTab === "broadcast" && (
-            <div>
-              <BroadcastManager onClose={handleClose} />
-            </div>
+            <BroadcastManager onClose={handleClose} />
           )}
         </div>
       </div>
