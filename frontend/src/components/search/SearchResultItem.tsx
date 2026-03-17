@@ -17,7 +17,7 @@ const SearchResultItem: FC<SearchResultItemProps> = memo(function SearchResultIt
 
   return (
     <div
-      className="w-full hover:bg-primary4 transition-colors cursor-pointer border-b border-gray-200"
+      className="w-full hover:bg-primary3/30 transition-colors cursor-pointer border-b border-gray-200"
       onClick={onClick}
     >
       <div className="flex justify-between items-center px-4 py-3">
@@ -40,7 +40,7 @@ const SearchResultItem: FC<SearchResultItemProps> = memo(function SearchResultIt
         <img
           src={imgUrl}
           alt={`${storeName} 썸네일`}
-          className="w-[100px] h-[90px] object-cover rounded-md ml-4 flex-shrink-0"
+          className="w-20 h-20 object-cover rounded-lg ml-4 flex-shrink-0"
         />
       </div>
     </div>

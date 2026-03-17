@@ -12,8 +12,8 @@ interface MypageState {
   setIsMypageOpen: (mypage: boolean) => void;
   setSelectedTab: (tab: TabType) => void;
   setRestaurantSubpage: (subpage: ExtendedSubpage) => void;
-  setRestaurantEditId: (restaurant: number) => void;
-  setRestaurantEditName: (restaurant: string) => void;
+  setRestaurantEditId: (restaurant: number | null) => void;
+  setRestaurantEditName: (restaurant: string | null) => void;
 }
 
 const useMypageStore = create<MypageState>((set) => ({
@@ -23,7 +23,17 @@ const useMypageStore = create<MypageState>((set) => ({
   restaurantEditId: null,
   restaurantEditName: null,
   setIsMypageOpen: (mypage) => {
-    set({ isMypageOpen: mypage });
+    if (mypage) {
+      set({ isMypageOpen: true });
+    } else {
+      set({
+        isMypageOpen: false,
+        selectedTab: "profile",
+        restaurantSubpage: "restaurant-home",
+        restaurantEditId: null,
+        restaurantEditName: null,
+      });
+    }
   },
   setSelectedTab: (tab) => {
     set({ selectedTab: tab });
