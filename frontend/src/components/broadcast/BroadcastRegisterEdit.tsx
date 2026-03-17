@@ -77,7 +77,7 @@ const BroadcastRegisterEdit = (props: BroadcastRegisterEditProps) => {
     }
   }, [props.mode, reset]);
 
-  // ⑥ 수정 모드 진입 시 기존 데이터로 폼 채우기
+  // ⑥ 수정 모드 진입 시 기존 데이터로 폼 채우기 (sportId 먼저)
   useEffect(() => {
     if (props.mode !== "edit" || props.broadcastId == null) return;
 
@@ -94,18 +94,31 @@ const BroadcastRegisterEdit = (props: BroadcastRegisterEditProps) => {
       setIsTeamCompetition(sportMatch.isTeamCompetition);
     }
 
-    const leagueMatch = leagues.find((l) => l.name === target.league);
-
     reset({
       date: dayjs(target.match_date),
       time: dayjs(target.match_time, "HH:mm"),
       sportId: sportMatch?.id ?? null,
-      leagueId: leagueMatch?.id ?? null,
+      leagueId: null,
       team1: target.team_one,
       team2: target.team_two,
       note: target.etc,
     });
-  }, [props.mode, props.broadcastId, broadcastLists, sports, leagues, reset, addToast]);
+  }, [props.mode, props.broadcastId, broadcastLists, sports, reset, addToast]);
+
+  // ⑥-2 leagues 로딩 완료 후 leagueId 세팅
+  useEffect(() => {
+    if (props.mode !== "edit" || props.broadcastId == null || leagues.length === 0) return;
+
+    const target = broadcastLists.find(
+      (b) => b.broadcast_id === props.broadcastId
+    );
+    if (!target) return;
+
+    const leagueMatch = leagues.find((l) => l.name === target.league);
+    if (leagueMatch) {
+      setValue("leagueId", leagueMatch.id);
+    }
+  }, [props.mode, props.broadcastId, broadcastLists, leagues, setValue]);
 
   // ⑦ submit — 유효성 통과한 경우만 실행
   const onSubmit = async (data: BroadcastFormValues) => {
@@ -239,7 +252,7 @@ const BroadcastRegisterEdit = (props: BroadcastRegisterEditProps) => {
             }
             {...register("team1")}
             disabled={!isTeamCompetition}
-            className="w-full border px-3 py-2 rounded hover:border-primary5 focus:border-primary5 focus:ring-1 focus:ring-primary1 focus:outline-none"
+            className="w-full border px-3 py-2 rounded-lg hover:border-primary5 focus:border-primary5 focus:ring-1 focus:ring-primary1 focus:outline-none"
           />
         </div>
         <div className="flex-1 min-w-[180px]">
@@ -252,7 +265,7 @@ const BroadcastRegisterEdit = (props: BroadcastRegisterEditProps) => {
             }
             {...register("team2")}
             disabled={!isTeamCompetition}
-            className="w-full border px-3 py-2 rounded hover:border-primary5 focus:border-primary5 focus:ring-1 focus:ring-primary1 focus:outline-none"
+            className="w-full border px-3 py-2 rounded-lg hover:border-primary5 focus:border-primary5 focus:ring-1 focus:ring-primary1 focus:outline-none"
           />
         </div>
       </div>
@@ -261,7 +274,7 @@ const BroadcastRegisterEdit = (props: BroadcastRegisterEditProps) => {
         <label className="block mb-1 font-semibold text-mainText">기타</label>
         <textarea
           {...register("note")}
-          className="w-full border px-3 py-2 rounded hover:border-primary5 focus:border-primary5 focus:ring-1 focus:ring-primary1 focus:outline-none"
+          className="w-full border px-3 py-2 rounded-lg hover:border-primary5 focus:border-primary5 focus:ring-1 focus:ring-primary1 focus:outline-none"
           rows={3}
         />
       </div>

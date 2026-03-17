@@ -19,12 +19,17 @@ const SidebarItem = ({ icon, label, active, onClick }: SidebarItemProps) => {
   return (
     <button
       onClick={onClick}
-      className={`flex items-center gap-3 w-full h-[40px] px-4 rounded-lg text-left
-        transition-colors duration-150
-        ${active ? "bg-primary2" : "bg-transparent"}
-        hover:bg-primary2`}
+      className={`flex items-center gap-3 w-full px-4 py-3 rounded-lg text-left text-sm font-medium
+        transition-all duration-150
+        ${
+          active
+            ? "bg-white text-primary5 shadow-sm"
+            : "text-gray-600 hover:bg-primary3/40"
+        }`}
     >
-      <span>{icon}</span>
+      <span className="text-base flex-shrink-0 w-5 flex items-center justify-center">
+        {icon}
+      </span>
       <span>{label}</span>
     </button>
   );
@@ -34,8 +39,8 @@ const Sidebar = ({ selected, onSelect }: SidebarProps) => {
   const { setRestaurantSubpage } = useMypageStore();
   const { resetYMD } = useBroadcastStore();
   return (
-    <div className="w-full h-full bg-primary4 px-4 py-10 flex flex-col gap-2">
-      <div className="flex flex-col gap-2 mt-1">
+    <div className="w-full h-full bg-primary4 px-3 py-6 flex flex-col">
+      <nav className="flex flex-col gap-1">
         <SidebarItem
           icon={<FaUserEdit />}
           label="내 정보"
@@ -62,7 +67,7 @@ const Sidebar = ({ selected, onSelect }: SidebarProps) => {
             resetYMD();
           }}
         />
-      </div>
+      </nav>
     </div>
   );
 };

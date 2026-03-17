@@ -101,12 +101,10 @@ const PlayceMap: React.FC = () => {
         {/* 현위치로 이동 버튼 - 반드시 Map과 같은 div 내에서 absolute로! */}
         <GoToCurrentLocationButton mapRef={mapRef} />
         {selectedStoreId && (
-          <div className="fixed left-0 top-0 h-full w-[430px] z-[9999] shadow-2xl bg-white">
-            <RestaurantDetailComponent
-              storeId={selectedStoreId}
-              onClose={closeDetail}
-            />
-          </div>
+          <RestaurantDetailComponent
+            storeId={selectedStoreId}
+            onClose={closeDetail}
+          />
         )}
       </div>
     </>

@@ -74,7 +74,7 @@ const TodayBroadcastSidebar = memo(function TodayBroadcastSidebar() {
   );
 
   return (
-    <section className="w-full bg-white px-5 pt-1 pb-10 rounded-2xl border border-gray-100">
+    <section className="w-full bg-white px-4 py-4 rounded-xl border border-gray-100">
       <div className="flex items-center gap-2 mb-1">
         <FiTv className="text-primary1 text-xl" />
         <span className="text-lg font-bold">오늘의 중계일정</span>
@@ -98,7 +98,7 @@ const TodayBroadcastSidebar = memo(function TodayBroadcastSidebar() {
                 className={`px-3 pb-1 text-sm font-semibold rounded-t-lg border-b-2 ${
                   selectedSport === sport
                     ? "border-primary5 text-primary5 bg-primary4"
-                    : "border-transparent text-gray-400 hover:text-primary5 hover:bg-primary4/50"
+                    : "border-transparent text-gray-400 hover:text-primary5 hover:bg-primary3/50"
                 } transition-colors`}
                 style={{ background: "none" }}
               >
@@ -111,10 +111,10 @@ const TodayBroadcastSidebar = memo(function TodayBroadcastSidebar() {
             {filtered.length === 0 ? (
               <EmptyMessage message="오늘 중계되는 경기가 없습니다." />
             ) : (
-              filtered.map((game, idx) => (
+              filtered.map((game) => (
                 <li
-                  key={idx}
-                  className="bg-white rounded-xl border border-gray-200 px-4 py-3 mb-3 flex items-center gap-4 cursor-pointer hover:bg-primary4 transition-colors"
+                  key={`${game.store_id}-${game.match_time}-${game.league}`}
+                  className="bg-white rounded-xl border border-gray-200 px-4 py-3 mb-3 flex items-center gap-4 cursor-pointer hover:bg-primary3/30 transition-colors"
                   onClick={() => handleOpenDetail(game.store_id)}
                 >
                   <img
