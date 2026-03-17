@@ -20,7 +20,7 @@ const BroadcastStoreList = ({ onSelectStore }: BroadcastStoreListProps) => {
       {stores.map((store) => (
         <li
           key={store.store_id}
-          className="flex items-center gap-4 p-3 border-b border-gray-100 last:border-b-0 hover:bg-primary4 hover:cursor-pointer"
+          className="flex items-center gap-4 p-4 border-b border-gray-100 last:border-b-0 hover:bg-primary3/30 cursor-pointer transition-colors"
           onClick={() => {
             setStore(store.store_id);
             onSelectStore();

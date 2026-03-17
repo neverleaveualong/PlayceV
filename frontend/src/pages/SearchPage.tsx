@@ -101,14 +101,14 @@ const SearchPage = () => {
         {activeTab === "search" ? (
           <>
             {/* 검색 영역 */}
-            <div className="bg-primary4 px-3 py-3 space-y-2">
+            <div className="bg-primary4 px-4 py-4 space-y-2">
               <div>
                 <SearchInput className="w-full" />
               </div>
               <div>
                 <button
                   onClick={() => setShowRegionModal(true)}
-                  className="flex items-center justify-between w-full px-4 py-2 border rounded bg-white text-gray-700 text-sm shadow-sm hover:border-primary1 min-w-0"
+                  className="flex items-center justify-between w-full px-4 py-2 border rounded-lg bg-white text-gray-700 text-sm shadow-sm hover:border-primary5 min-w-0"
                 >
                   <span
                     className="truncate block text-left min-w-0"
@@ -130,7 +130,7 @@ const SearchPage = () => {
               <div>
                 <button
                   onClick={() => setShowSportModal(true)}
-                  className="flex items-center justify-between w-full px-4 py-2 border rounded bg-white text-gray-700 text-sm shadow-sm hover:border-primary1 min-w-0"
+                  className="flex items-center justify-between w-full px-4 py-2 border rounded-lg bg-white text-gray-700 text-sm shadow-sm hover:border-primary5 min-w-0"
                 >
                   <span
                     className="truncate block text-left min-w-0"

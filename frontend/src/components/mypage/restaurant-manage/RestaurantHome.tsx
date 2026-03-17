@@ -44,7 +44,7 @@ const RestaurantHome = () => {
           {stores.map((store) => (
             <li
               key={store.store_id}
-              className="list-none flex items-center gap-4 p-3 border-b border-gray-100 last:border-b-0 hover:bg-primary4 hover:cursor-pointer"
+              className="list-none flex items-center gap-4 p-4 border-b border-gray-100 last:border-b-0 hover:bg-primary3/30 cursor-pointer transition-colors"
               onClick={() => {
                 openDetail(store.store_id);
               }}
