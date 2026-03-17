@@ -5,16 +5,19 @@ import TabList from "./TabLists";
 import Calendar from "./Calendar";
 import useBroadcastStore, { dateInfo } from "@/stores/broadcastStore";
 import getDaysInMonth, { getToday } from "@/utils/dateUtils";
-import useMypageStore from "@/stores/mypageStore";
 import FloatingRegisterButton from "./FloatingRegisterButton";
 import useDateScroll from "@/hooks/useDateScroll";
+import Button from "@/components/common/Button";
 
 const CALENDAR_RANGE_MONTHS = 2;
 
-const BroadcastView = () => {
+interface BroadcastViewProps {
+  onRegister?: () => void;
+}
+
+const BroadcastView = ({ onRegister }: BroadcastViewProps = {}) => {
   const rangeStart = new Date(dateInfo.year, dateInfo.month - 1 - CALENDAR_RANGE_MONTHS);
   const rangeEnd = new Date(dateInfo.year, dateInfo.month - 1 + CALENDAR_RANGE_MONTHS);
-  const { setRestaurantSubpage } = useMypageStore();
   const { tabRef, itemRefs, scrollToDate } = useDateScroll();
 
   const {
@@ -53,8 +56,9 @@ const BroadcastView = () => {
   return (
     <div className="flex flex-col pl-2 h-full">
       <div className="flex text-[28px] items-center justify-between mb-3 gap-3">
-        <button
-          className="text-[16px] px-2 py-1 rounded bg-primary1 text-mainText hover:bg-primary5 hover:text-white transition"
+        <Button
+          scheme="secondary"
+          size="semi"
           onClick={() => {
             setYear(todayYear);
             setMonth(todayMonth);
@@ -66,7 +70,7 @@ const BroadcastView = () => {
           }}
         >
           오늘
-        </button>
+        </Button>
 
         <div className="flex items-center gap-3">
           <button
@@ -96,14 +100,16 @@ const BroadcastView = () => {
           </button>
         </div>
 
-        <button
+        <Button
+          scheme="custom"
+          size="icon"
           className="text-[25px]"
           onClick={() => {
             setViewOption(viewOption === "tab" ? "calendar" : "tab");
           }}
         >
           {viewOption === "tab" ? <FaRegCalendarAlt /> : <FaBars />}
-        </button>
+        </Button>
       </div>
 
       <div className="relative h-full w-full">
@@ -115,10 +121,12 @@ const BroadcastView = () => {
           )}
         </div>
       </div>
-      <FloatingRegisterButton
-        className={`absolute bottom-10 right-10`}
-        onClick={() => setRestaurantSubpage("broadcast-register")}
-      />
+      {onRegister && (
+        <FloatingRegisterButton
+          className="absolute bottom-10 right-10"
+          onClick={onRegister}
+        />
+      )}
     </div>
   );
 };

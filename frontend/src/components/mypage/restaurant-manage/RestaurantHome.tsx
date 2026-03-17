@@ -1,11 +1,9 @@
 import { useState } from "react";
 import useMypageStore from "@/stores/mypageStore";
-import { FiEdit2, FiTrash2, FiTv } from "react-icons/fi";
+import { FiEdit2, FiPlus, FiTrash2 } from "react-icons/fi";
 import RestaurantDetailComponent from "@/components/restaurant/RestaurantDetail";
 import Button from "@/components/common/Button";
 import ConfirmModal from "@/components/common/ConfirmModal";
-import useBroadcastStore from "@/stores/broadcastStore";
-import FloatingRegisterButton from "@/components/broadcast/FloatingRegisterButton";
 import useToastStore from "@/stores/toastStore";
 import useRestaurantDetail from "@/hooks/useRestaurantDetail";
 import { useMyStores, useDeleteStore } from "@/hooks/useMyStores";
@@ -18,7 +16,6 @@ const RestaurantHome = () => {
   const { selectedStoreId: selectedDetailStoreId, openDetail, closeDetail } = useRestaurantDetail();
   const { setRestaurantSubpage, setRestaurantEditId, setRestaurantEditName } =
     useMypageStore();
-  const { setStore } = useBroadcastStore();
   const { addToast } = useToastStore();
   const [deleteTargetId, setDeleteTargetId] = useState<number | null>(null);
 
@@ -30,6 +27,16 @@ const RestaurantHome = () => {
 
   return (
     <section>
+      <div className="flex justify-end mb-3">
+        <Button
+          scheme="primary"
+          size="semi"
+          icon={<FiPlus />}
+          onClick={() => setRestaurantSubpage("restaurant-register")}
+        >
+          식당 등록
+        </Button>
+      </div>
       {stores.length === 0 ? (
         <EmptyMessage message="등록된 식당이 없습니다." />
       ) : (
@@ -60,17 +67,6 @@ const RestaurantHome = () => {
               <Button
                 onClick={(e) => {
                   e.stopPropagation();
-                  setStore(store.store_id);
-                  setRestaurantSubpage("schedule-view-broadcasts");
-                }}
-                scheme="storeCircle"
-                icon={<FiTv className="text-primary5 text-xl" />}
-                hoverColor="gray-100"
-                title="중계 관리"
-              ></Button>
-              <Button
-                onClick={(e) => {
-                  e.stopPropagation();
                   setRestaurantEditId(store.store_id);
                   setRestaurantEditName(store.store_name);
                   setRestaurantSubpage("restaurant-edit");
@@ -94,10 +90,6 @@ const RestaurantHome = () => {
           ))}
         </ul>
       )}
-      <FloatingRegisterButton
-        className={`absolute bottom-10 right-10`}
-        onClick={() => setRestaurantSubpage("restaurant-register")}
-      />
       {/* 상세보기 */}
       {selectedDetailStoreId && (
         <RestaurantDetailComponent

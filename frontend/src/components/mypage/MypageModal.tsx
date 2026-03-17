@@ -1,6 +1,7 @@
 import Sidebar from "@/components/mypage/Sidebar";
 import UserInfo from "./UserInfo";
 import RestaurantManager from "./restaurant-manage/RestaurantManager";
+import BroadcastManager from "./broadcast-manage/BroadcastManager";
 import useMypageStore from "@/stores/mypageStore";
 import { useUserInfo } from "@/hooks/useUser";
 import ModalBase from "@/components/common/ModalBase";
@@ -55,6 +56,11 @@ const MypageModal = ({ onClose }: MypageProps) => {
           {selectedTab === "restaurant" && (
             <div>
               <RestaurantManager onClose={onClose} />
+            </div>
+          )}
+          {selectedTab === "broadcast" && (
+            <div>
+              <BroadcastManager onClose={handleClose} />
             </div>
           )}
         </div>

@@ -8,6 +8,7 @@ import useToastStore from "@/stores/toastStore";
 import SelectInput from "@/components/common/SelectInput";
 import type { BroadcastRegisterEditProps } from "@/types/broadcastForm";
 import useMypageStore from "@/stores/mypageStore";
+import Button from "@/components/common/Button";
 import useBroadcasts from "@/hooks/useBroadcasts";
 import { useSports } from "@/hooks/useSports";
 import { useLeagues } from "@/hooks/useLeagues";
@@ -266,23 +267,25 @@ const BroadcastRegisterEdit = (props: BroadcastRegisterEditProps) => {
       </div>
 
       <div className="flex justify-end gap-2 mt-4">
-        <button
+        <Button
           type="button"
+          scheme="ghost"
+          size="medium"
           onClick={() => {
             reset();
             setRestaurantSubpage("schedule-view-broadcasts");
           }}
-          className="px-4 py-2 rounded bg-gray-100"
         >
           취소
-        </button>
-        <button
+        </Button>
+        <Button
           type="submit"
-          disabled={isSubmitting}
-          className={`px-4 py-2 rounded bg-primary5 text-white ${isSubmitting ? "opacity-60 cursor-not-allowed" : ""}`}
+          scheme="primary"
+          size="medium"
+          isLoading={isSubmitting}
         >
-          {isSubmitting ? "처리 중..." : props.mode === "edit" ? "수정" : "등록"}
-        </button>
+          {props.mode === "edit" ? "수정" : "등록"}
+        </Button>
       </div>
     </form>
   );

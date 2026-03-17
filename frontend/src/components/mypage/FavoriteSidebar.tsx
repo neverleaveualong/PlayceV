@@ -6,6 +6,7 @@ import useRestaurantDetail from "@/hooks/useRestaurantDetail";
 import { useFavorites, useRemoveFavorite } from "@/hooks/useFavorites";
 import LoadingSpinner from "@/components/common/LoadingSpinner";
 import EmptyMessage from "@/components/restaurant/EmptyMessage";
+import Button from "@/components/common/Button";
 
 export default function FavoriteSidebar() {
   const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
@@ -33,12 +34,13 @@ export default function FavoriteSidebar() {
           <br />
           중계 일정을 빠르게 확인할 수 있어요
         </p>
-        <button
+        <Button
           onClick={() => setIsLoginModalOpen(true)}
-          className="mt-2 px-6 py-2 bg-primary5 text-white rounded-lg font-semibold text-sm hover:brightness-95 transition"
+          scheme="primary"
+          size="semi"
         >
           로그인하고 시작하기
-        </button>
+        </Button>
       </div>
     );
   }

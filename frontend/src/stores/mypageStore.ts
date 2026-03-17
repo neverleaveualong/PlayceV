@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import type { ExtendedSubpage } from "@/types/restaurant-manage.types";
 
-type TabType = "profile" | "restaurant";
+type TabType = "profile" | "restaurant" | "broadcast";
 
 interface MypageState {
   isMypageOpen: boolean;

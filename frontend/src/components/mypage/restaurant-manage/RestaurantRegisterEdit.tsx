@@ -15,6 +15,7 @@ import ImageUrlInputList from "./ImageUrlInputList";
 import type { MenuItem } from "@/types/restaurant.types";
 import { getApiErrorMessage } from "@/utils/apiErrorStatusMessage";
 import useToastStore from "@/stores/toastStore";
+import Button from "@/components/common/Button";
 import { useQueryClient } from "@tanstack/react-query";
 
 // ① 폼 값 타입 정의
@@ -265,12 +266,9 @@ const RestaurantRegisterEdit = ({ mode }: StoreFormModalProps) => {
         )}
 
         <div className="flex justify-end gap-2 mt-4">
-          <button
-            type="submit"
-            className="px-4 py-2 rounded bg-primary5 text-white font-bold"
-          >
+          <Button type="submit" scheme="primary" size="medium">
             {mode === "edit" ? "수정" : "등록"}
-          </button>
+          </Button>
         </div>
       </form>
     </div>
