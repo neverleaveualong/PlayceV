@@ -136,7 +136,7 @@ const RestaurantRegisterEdit = ({ mode }: StoreFormModalProps) => {
             가게명 <span className="text-red-500">*</span>
           </label>
           <input
-            className="w-full border rounded px-3 py-2"
+            className="w-full border rounded-lg px-3 py-2"
             {...register("store_name", { required: "가게명을 입력해주세요" })}
           />
           <ErrorMessage message={errors.store_name?.message} />
@@ -149,7 +149,7 @@ const RestaurantRegisterEdit = ({ mode }: StoreFormModalProps) => {
               사업자등록번호 <span className="text-red-500">*</span>
             </label>
             <input
-              className="w-full border rounded px-3 py-2"
+              className="w-full border rounded-lg px-3 py-2"
               {...register("business_number", { required: "사업자등록번호를 입력해주세요" })}
             />
             <ErrorMessage message={errors.business_number?.message} />
@@ -163,7 +163,7 @@ const RestaurantRegisterEdit = ({ mode }: StoreFormModalProps) => {
           </label>
           <div className="flex gap-3">
             <input
-              className="w-full border rounded px-3 py-2"
+              className="w-full border rounded-lg px-3 py-2"
               {...register("address", { required: "주소를 입력해주세요" })}
               readOnly={true}
             />
@@ -180,7 +180,7 @@ const RestaurantRegisterEdit = ({ mode }: StoreFormModalProps) => {
             전화번호 <span className="text-red-500">*</span>
           </label>
           <input
-            className="w-full border rounded px-3 py-2"
+            className="w-full border rounded-lg px-3 py-2"
             {...register("phone", { required: "전화번호를 입력해주세요" })}
           />
           <ErrorMessage message={errors.phone?.message} />
@@ -192,7 +192,7 @@ const RestaurantRegisterEdit = ({ mode }: StoreFormModalProps) => {
             영업시간 <span className="text-red-500">*</span>
           </label>
           <input
-            className="w-full border rounded px-3 py-2"
+            className="w-full border rounded-lg px-3 py-2"
             {...register("opening_hours", { required: "영업시간을 입력해주세요" })}
           />
           <ErrorMessage message={errors.opening_hours?.message} />
@@ -204,7 +204,7 @@ const RestaurantRegisterEdit = ({ mode }: StoreFormModalProps) => {
             업종 <span className="text-red-500">*</span>
           </label>
           <input
-            className="w-full border rounded px-3 py-2"
+            className="w-full border rounded-lg px-3 py-2"
             {...register("type", { required: "업종을 입력해주세요" })}
           />
           <ErrorMessage message={errors.type?.message} />
@@ -217,7 +217,7 @@ const RestaurantRegisterEdit = ({ mode }: StoreFormModalProps) => {
         <div>
           <label className="block mb-1 font-semibold text-gray-700">소개</label>
           <textarea
-            className="w-full border rounded px-3 py-2"
+            className="w-full border rounded-lg px-3 py-2"
             {...register("description")}
             rows={3}
             placeholder="식당을 소개해 주세요 (선택)"

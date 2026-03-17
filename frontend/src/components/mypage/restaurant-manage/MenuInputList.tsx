@@ -33,7 +33,7 @@ const MenuInputList = ({ menus, setMenus, error }: MenuInputListProps) => {
           <div key={idx} className="flex gap-2">
             <input
               className={classNames(
-                "border rounded px-3 py-2",
+                "border rounded-lg px-3 py-2",
                 menus.length > 1 ? "w-[60%]" : "w-[65%]"
               )}
               placeholder={`메뉴 ${idx + 1}`}
@@ -42,7 +42,7 @@ const MenuInputList = ({ menus, setMenus, error }: MenuInputListProps) => {
             />
             <input
               className={classNames(
-                "border rounded px-3 py-2",
+                "border rounded-lg px-3 py-2",
                 menus.length > 1 ? "w-[27%]" : "w-[35%]"
               )}
               placeholder={`가격`}

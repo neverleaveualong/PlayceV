@@ -239,7 +239,7 @@ const BroadcastRegisterEdit = (props: BroadcastRegisterEditProps) => {
             }
             {...register("team1")}
             disabled={!isTeamCompetition}
-            className="w-full border px-3 py-2 rounded hover:border-primary5 focus:border-primary5 focus:ring-1 focus:ring-primary1 focus:outline-none"
+            className="w-full border px-3 py-2 rounded-lg hover:border-primary5 focus:border-primary5 focus:ring-1 focus:ring-primary1 focus:outline-none"
           />
         </div>
         <div className="flex-1 min-w-[180px]">
@@ -252,7 +252,7 @@ const BroadcastRegisterEdit = (props: BroadcastRegisterEditProps) => {
             }
             {...register("team2")}
             disabled={!isTeamCompetition}
-            className="w-full border px-3 py-2 rounded hover:border-primary5 focus:border-primary5 focus:ring-1 focus:ring-primary1 focus:outline-none"
+            className="w-full border px-3 py-2 rounded-lg hover:border-primary5 focus:border-primary5 focus:ring-1 focus:ring-primary1 focus:outline-none"
           />
         </div>
       </div>
@@ -261,7 +261,7 @@ const BroadcastRegisterEdit = (props: BroadcastRegisterEditProps) => {
         <label className="block mb-1 font-semibold text-mainText">기타</label>
         <textarea
           {...register("note")}
-          className="w-full border px-3 py-2 rounded hover:border-primary5 focus:border-primary5 focus:ring-1 focus:ring-primary1 focus:outline-none"
+          className="w-full border px-3 py-2 rounded-lg hover:border-primary5 focus:border-primary5 focus:ring-1 focus:ring-primary1 focus:outline-none"
           rows={3}
         />
       </div>

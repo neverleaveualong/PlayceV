@@ -37,7 +37,7 @@ const RestaurantCardList = memo(function RestaurantCardList({
               (compact
                 ? "flex items-center gap-3 p-3 border-b border-gray-100 last:border-0"
                 : "flex items-center gap-4 p-3") +
-              " cursor-pointer hover:bg-primary4 transition-colors"
+              " cursor-pointer hover:bg-primary3/30 transition-colors"
             }
             onClick={
               showDetail && onDetail
@@ -50,7 +50,7 @@ const RestaurantCardList = memo(function RestaurantCardList({
               alt={store.store_name}
               className={
                 compact
-                  ? "w-[60px] h-[60px] rounded object-cover bg-gray-200 border border-gray-100"
+                  ? "w-14 h-14 rounded-lg object-cover bg-gray-200 border border-gray-100"
                   : "w-16 h-16 rounded-lg object-cover border border-gray-100 shadow-sm"
               }
             />
