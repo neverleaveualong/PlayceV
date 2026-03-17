@@ -1,4 +1,3 @@
-import BroadcastView from "@/components/broadcast/BroadcastView";
 import RestaurantHome from "@/components/mypage/restaurant-manage/RestaurantHome";
 import RestaurantRegisterEdit from "@/components/mypage/restaurant-manage/RestaurantRegisterEdit";
 
@@ -17,11 +16,6 @@ export const menuItems = [
     key: "restaurant-edit",
     label: "식당 수정",
     component: () => <RestaurantRegisterEdit mode="edit" />,
-  },
-  {
-    key: "schedule-view-broadcasts",
-    label: "중계 일정 관리",
-    component: () => <BroadcastView />,
   },
 ] as const;
 
