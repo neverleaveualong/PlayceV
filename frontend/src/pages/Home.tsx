@@ -41,7 +41,7 @@ const Home: React.FC = () => {
         {position && <Map />}
         {isRefreshBtnOn && <SpotRefreshButton />}
         <AuthHeader />
-        <Suspense fallback={null}>
+        <Suspense fallback={<LoadingSpinner />}>
           <LoginModal />
           <SignupModal />
           <PasswordResetRequestModal />
