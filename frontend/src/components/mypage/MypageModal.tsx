@@ -30,7 +30,7 @@ const MypageModal = ({ onClose }: MypageProps) => {
       hideHeader
       className="bg-gray-400"
     >
-      <div className="flex h-[600px] w-full bg-white rounded-xl overflow-hidden ">
+      <div className="flex h-modal-h w-full bg-white rounded-xl overflow-hidden">
         {/* 왼쪽 사이드바 */}
         <div className="w-[30%] h-full bg-primary4 flex-shrink-0">
           <Sidebar selected={selectedTab} onSelect={setSelectedTab} />
