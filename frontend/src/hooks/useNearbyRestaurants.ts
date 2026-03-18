@@ -1,17 +1,13 @@
 import { useQuery } from "@tanstack/react-query";
 import { searchNearby } from "@/api/map.api";
 import type { RestaurantBasic } from "@/types/restaurant.types";
+import type { Bounds } from "@/types/map";
 
-const useNearbyRestaurants = (
-  lat: number,
-  lng: number,
-  radius: number,
-  enabled = true
-) => {
+const useNearbyRestaurants = (bounds: Bounds, enabled = true) => {
   return useQuery<RestaurantBasic[]>({
-    queryKey: ["nearbyRestaurants", lat, lng, radius],
+    queryKey: ["nearbyRestaurants", bounds.swLat, bounds.swLng, bounds.neLat, bounds.neLng],
     queryFn: async () => {
-      const res = await searchNearby({ lat, lng, radius });
+      const res = await searchNearby(bounds);
       return res.data;
     },
     enabled,

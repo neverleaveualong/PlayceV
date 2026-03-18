@@ -136,13 +136,8 @@ function BroadcastCard({
 
 const TodayBroadcastSidebar = memo(function TodayBroadcastSidebar() {
   const myPosition = useMapStore((state) => state.myPosition);
-  const searchPosition = useMapStore((state) => state.searchPosition);
-  const radius = useMapStore((state) => state.radius);
-  const { data: restaurants = [], isLoading } = useNearbyRestaurants(
-    searchPosition.lat,
-    searchPosition.lng,
-    radius
-  );
+  const bounds = useMapStore((state) => state.bounds);
+  const { data: restaurants = [], isLoading } = useNearbyRestaurants(bounds);
   const { selectedStoreId, openDetail, closeDetail } = useRestaurantDetail();
   const { dateString: today } = getToday();
 

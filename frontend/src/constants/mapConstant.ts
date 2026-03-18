@@ -3,4 +3,10 @@ export const CITY_STATION = {
   lng: 126.97558,
 };
 
-export const SEARCHNEARBY_RADIUS = 5;
+// 초기 bounds: 시청역 기준 약 5km 범위
+export const INITIAL_BOUNDS = {
+  swLat: 37.51868,
+  swLng: 126.93058,
+  neLat: 37.60868,
+  neLng: 127.02058,
+};
