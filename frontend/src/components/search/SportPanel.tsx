@@ -11,7 +11,7 @@ const SportPanel = () => {
     useSportStore();
   const { data: sports = [], isLoading: sportsLoading } = useSports();
   const selectedSportId = sports.find((s) => s.name === sport)?.id;
-  const { data: leagues = [] } = useLeagues(selectedSportId);
+  const { data: leagues = [], isLoading: leaguesLoading } = useLeagues(selectedSportId);
 
   const handleLeagueClick = (leagueName: string) => {
     const updated = getUpdatedLeagueSelection(
@@ -48,7 +48,7 @@ const SportPanel = () => {
 
         {/* 리그 */}
         <div className="w-1/2 overflow-y-auto">
-          {leagues.length === 0 ? (
+          {!sport ? (
             <div className="flex flex-col items-center justify-center h-full gap-2 text-gray-400">
               <FiTv className="text-xl text-gray-300" />
               <p className="text-xs text-center">
@@ -57,6 +57,8 @@ const SportPanel = () => {
                 리그가 표시됩니다
               </p>
             </div>
+          ) : leaguesLoading ? (
+            <LoadingSpinner />
           ) : (
             leagues.map((l) => {
               const isChecked = selectedLeagues.some(
