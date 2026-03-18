@@ -76,14 +76,12 @@ const TodayBroadcastSidebar = memo(function TodayBroadcastSidebar() {
   return (
     <section className="w-full">
       {/* 헤더 */}
-      <div className="flex items-center gap-2.5 mb-1">
-        <div className="w-8 h-8 rounded-lg bg-primary4 flex items-center justify-center">
-          <FiTv className="text-primary5 text-sm" />
+      <div className="flex flex-col items-center text-center py-3 mb-2">
+        <div className="w-10 h-10 rounded-full bg-primary4 flex items-center justify-center mb-2.5">
+          <FiTv className="text-primary5 text-lg" />
         </div>
-        <div>
-          <h3 className="text-sm font-bold text-gray-800">오늘의 중계일정</h3>
-          <p className="text-xs text-gray-400">주변 가게의 중계만 보여드려요</p>
-        </div>
+        <h3 className="text-sm font-bold text-gray-800">오늘의 중계일정</h3>
+        <p className="text-xs text-gray-400 mt-0.5">주변 가게의 중계만 보여드려요</p>
       </div>
 
       {isLoading ? (
@@ -93,7 +91,7 @@ const TodayBroadcastSidebar = memo(function TodayBroadcastSidebar() {
       ) : (
         <>
           {/* 종목 탭 — pill 스타일 */}
-          <nav className="flex gap-1.5 mb-4 mt-4">
+          <nav className="flex justify-center gap-2 mb-4">
             {SPORTS.map((sport) => (
               <button
                 key={sport}
