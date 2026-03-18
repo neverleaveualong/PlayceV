@@ -40,19 +40,23 @@ function GoToCurrentLocationButton({ mapRef }: GoToCurrentLocationButtonProps) {
     <button
       type="button"
       className="
-        group fixed bottom-24 right-12 z-20
-        p-4 rounded-full bg-primary5 text-white shadow-md border border-primary5
-        hover:bg-white hover:border-primary5 hover:text-primary5 transition-colors
-        disabled:opacity-60 disabled:cursor-not-allowed disabled:pointer-events-none
+        fixed bottom-8 right-4 z-20
+        w-12 h-12 rounded-full
+        bg-white/90 backdrop-blur-sm border border-gray-200
+        shadow-lg
+        flex items-center justify-center
+        hover:bg-white hover:border-primary5 hover:shadow-xl
+        transition-all
+        disabled:opacity-50 disabled:pointer-events-none
       "
       onClick={handleClick}
       disabled={isLocating}
       aria-label="현위치로 이동"
     >
       {isLocating ? (
-        <AiOutlineLoading3Quarters className="text-white group-hover:text-primary5 text-2xl animate-spin" />
+        <AiOutlineLoading3Quarters className="text-primary5 text-xl animate-spin" />
       ) : (
-        <IoLocateOutline className="text-white group-hover:text-primary5 text-2xl transition-colors" />
+        <IoLocateOutline className="text-gray-600 text-xl" />
       )}
     </button>
   );

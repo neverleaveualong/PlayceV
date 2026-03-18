@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import type { RestaurantBasic } from "@/types/restaurant.types";
 import { CustomOverlayMap } from "react-kakao-maps-sdk";
-import { FiStar, FiMapPin, FiX } from "react-icons/fi";
+import { FiStar, FiMapPin, FiX, FiClock, FiTv } from "react-icons/fi";
 import { FaStar } from "react-icons/fa";
 import Button from "@/components/common/Button";
 import useFavoriteToggle from "@/hooks/useFavoriteToggle";
@@ -19,11 +19,13 @@ const PlayceModal = ({
   onDetailClick,
   onClose,
 }: PlayceModalProps) => {
-  const { isFavorite, toggleFavorite, isPending: isFavoritePending } = useFavoriteToggle(
-    restaurant?.store_id ?? 0
-  );
+  const { isFavorite, toggleFavorite, isPending: isFavoritePending } =
+    useFavoriteToggle(restaurant?.store_id ?? 0);
 
-  const isInvalid = !restaurant || typeof restaurant.lat !== "number" || typeof restaurant.lng !== "number";
+  const isInvalid =
+    !restaurant ||
+    typeof restaurant.lat !== "number" ||
+    typeof restaurant.lng !== "number";
 
   useEffect(() => {
     if (isInvalid) onClose?.();
@@ -48,157 +50,118 @@ const PlayceModal = ({
         )
     : null;
 
-  const yAnchor = upcomingBroadcast ? 1.22 : 1.27;
-
   return (
     <CustomOverlayMap
       position={{ lat: restaurant.lat, lng: restaurant.lng }}
-      yAnchor={yAnchor}
+      yAnchor={1.15}
     >
-      <div
-        className="relative flex flex-row w-[440px] max-w-full min-h-[170px] bg-white border border-gray-200 shadow-lg px-4 py-5 font-pretendard text-[15px] items-end"
-        style={{ boxSizing: "border-box" }}
-      >
-        {/* 닫기 버튼 */}
+      <div className="relative w-[360px] bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden font-pretendard">
+        {/* 닫기 */}
         <button
           onClick={onClose}
-          className="absolute top-3 right-3 bg-white rounded-full p-1.5 border border-gray-200 shadow-sm z-10"
+          className="absolute top-3 right-3 z-10 w-7 h-7 rounded-full bg-black/10 backdrop-blur-sm flex items-center justify-center hover:bg-black/20 transition-colors"
           aria-label="닫기"
-          style={{ border: "none" }}
         >
-          <FiX className="text-gray-500 text-[21px]" />
+          <FiX className="text-white text-sm" />
         </button>
-        {/* 꼬리 */}
-        <div
-          className="absolute left-1/2 -bottom-[15px] -translate-x-1/2 w-0 h-0 z-20 pointer-events-none"
-          style={{
-            borderLeft: "15px solid transparent",
-            borderRight: "15px solid transparent",
-            borderTop: "15px solid #fff",
-            filter: "drop-shadow(0 2px 4px rgba(0,0,0,0.10))",
-          }}
-        />
-        <div
-          className="absolute left-1/2 -bottom-[17px] -translate-x-1/2 w-0 h-0 z-10 pointer-events-none"
-          style={{
-            borderLeft: "16px solid transparent",
-            borderRight: "16px solid transparent",
-            borderTop: "16px solid #e5e7eb",
-          }}
-        />
 
-        {/* 좌측: 정보+버튼 */}
-        <div className="flex flex-col flex-1 min-w-0 pr-5">
-          {/* 정보 */}
-          <div>
-            <div className="flex items-center gap-2 mb-1">
-              <span
-                className="text-[17px] font-bold text-gray-900 break-all"
-                style={{
-                  maxWidth: "165px",
-                  wordBreak: "keep-all",
-                  lineHeight: 1.2,
-                }}
-              >
-                {restaurant.store_name || "가게명 없음"}
-              </span>
-              <span className="text-xs bg-gray-200 text-gray-700 px-2 py-0.5 rounded font-medium">
-                {restaurant.type}
-              </span>
+        {/* 이미지 */}
+        <div className="relative h-32 bg-gray-100">
+          <img
+            src={restaurant.main_img || defaultImage}
+            alt={restaurant.store_name || "가게 이미지"}
+            className="w-full h-full object-cover"
+            loading="lazy"
+          />
+          {/* 즐겨찾기 */}
+          <button
+            onMouseDown={(e) => e.stopPropagation()}
+            onClick={(e) => { e.stopPropagation(); toggleFavorite(); }}
+            disabled={isFavoritePending}
+            className={`absolute bottom-3 right-3 w-9 h-9 rounded-full bg-white/90 backdrop-blur-sm shadow flex items-center justify-center transition-all ${
+              isFavoritePending ? "opacity-50" : "hover:scale-110"
+            }`}
+            aria-label={isFavorite ? "즐겨찾기 해제" : "즐겨찾기 추가"}
+          >
+            {isFavorite ? (
+              <FaStar className="text-yellow-400 text-base" />
+            ) : (
+              <FiStar className="text-gray-400 text-base" />
+            )}
+          </button>
+        </div>
+
+        {/* 콘텐츠 */}
+        <div className="p-4">
+          {/* 가게 정보 */}
+          <div className="flex items-start justify-between mb-2">
+            <div className="min-w-0">
+              <div className="flex items-center gap-2">
+                <h3 className="text-base font-bold text-gray-900 truncate">
+                  {restaurant.store_name || "가게명 없음"}
+                </h3>
+                <span className="text-[10px] bg-gray-100 text-gray-600 px-1.5 py-0.5 rounded-md font-medium flex-shrink-0">
+                  {restaurant.type}
+                </span>
+              </div>
+              <div className="flex items-center gap-1 text-xs text-gray-500 mt-1">
+                <FiMapPin className="text-[11px] flex-shrink-0" />
+                <span className="truncate">{restaurant.address || "주소 정보 없음"}</span>
+              </div>
             </div>
-            <div className="flex items-center gap-1 text-xs text-gray-500 mb-1">
-              <FiMapPin className="text-[15px] text-gray-400 mr-0.5" />
-              <span className="truncate">
-                {restaurant.address || "주소 정보 없음"}
-              </span>
-            </div>
-            {/* 중계 정보 */}
-            <div className="bg-gray-50 rounded p-2 mb-2 w-full text-xs">
-              {upcomingBroadcast ? (
-                <>
-                  <div className="font-bold text-primary5 mb-1">중계 일정</div>
-                  <div className="space-y-0.5">
-                    <div className="flex">
-                      <div className="w-[38px] text-gray-500 text-right shrink-0">
-                        종목
-                      </div>
-                      <div className="flex-1 pl-2 font-semibold text-gray-800">
-                        {upcomingBroadcast.sport}
-                      </div>
-                    </div>
-                    <div className="flex">
-                      <div className="w-[38px] text-gray-500 text-right shrink-0">
-                        경기
-                      </div>
-                      <div
-                        className="flex-1 pl-2 font-semibold text-gray-800"
-                        style={{ wordBreak: "keep-all", whiteSpace: "normal" }}
-                      >
+          </div>
+
+          {/* 중계 정보 */}
+          {upcomingBroadcast ? (
+            <div className="bg-primary4/40 rounded-xl px-3.5 py-3 mb-3">
+              <div className="flex items-center gap-1.5 mb-2">
+                <FiTv className="text-primary5 text-xs" />
+                <span className="text-[11px] font-bold text-primary5">다음 중계</span>
+              </div>
+              <div className="space-y-1">
+                <div className="flex items-center gap-2 text-xs">
+                  <span className="text-gray-600 font-medium">
+                    {upcomingBroadcast.team_one && upcomingBroadcast.team_two ? (
+                      <>
                         {upcomingBroadcast.team_one}
-                        <span className="mx-1 text-gray-400">vs</span>
+                        <span className="text-gray-400 mx-1">vs</span>
                         {upcomingBroadcast.team_two}
-                      </div>
-                    </div>
-                    <div className="flex">
-                      <div className="w-[38px] text-gray-500 text-right shrink-0">
-                        일시
-                      </div>
-                      <div className="flex-1 pl-2 font-semibold text-gray-800">
-                        {upcomingBroadcast.match_date}{" "}
-                        {upcomingBroadcast.match_time}
-                      </div>
-                    </div>
-                  </div>
-                </>
-              ) : (
-                <div className="text-gray-400 text-center py-2 text-sm">
-                  예정된 중계 일정이 없습니다
+                      </>
+                    ) : (
+                      upcomingBroadcast.sport
+                    )}
+                  </span>
+                  <span className="text-[10px] bg-white rounded-full px-1.5 py-0.5 text-gray-500">
+                    {upcomingBroadcast.league}
+                  </span>
                 </div>
-              )}
+                <div className="flex items-center gap-1 text-[11px] text-gray-500">
+                  <FiClock className="text-[10px]" />
+                  {upcomingBroadcast.match_date} {upcomingBroadcast.match_time}
+                </div>
+              </div>
             </div>
-          </div>
-          {/* 버튼 & 즐겨찾기 */}
-          <div className="flex flex-row gap-2 items-center mt-auto">
-            <Button
-              size="small"
-              scheme="custom"
-              onMouseDown={(e) => e.stopPropagation()}
-              onClick={(e) => { e.stopPropagation(); toggleFavorite(); }}
-              disabled={isFavoritePending}
-              className={`flex items-center justify-center w-[40px] h-[40px] p-0 rounded-full border-none shadow-none focus:outline-none ${isFavoritePending ? "opacity-50 cursor-not-allowed" : ""}`}
-              style={{ flexShrink: 0 }}
-              aria-label={isFavorite ? "즐겨찾기 해제" : "즐겨찾기 추가"}
-            >
-              {isFavorite ? (
-                <FaStar className="text-yellow-400 text-[22px]" />
-              ) : (
-                <FiStar className="text-gray-400 text-[22px]" />
-              )}
-            </Button>
-            <Button
-              size="small"
-              scheme="apply"
-              onMouseDown={(e) => e.stopPropagation()}
-              onClick={handleDetailClick}
-              className="flex-1 min-w-0 !h-[40px] text-[15px] px-0 rounded"
-            >
-              상세보기
-            </Button>
-          </div>
+          ) : (
+            <div className="bg-gray-50 rounded-xl px-3.5 py-3 mb-3 text-center">
+              <p className="text-xs text-gray-400">예정된 중계 일정이 없습니다</p>
+            </div>
+          )}
+
+          {/* 상세보기 버튼 */}
+          <Button
+            scheme="primary"
+            fullWidth
+            size="semi"
+            className="rounded-xl"
+            onMouseDown={(e) => e.stopPropagation()}
+            onClick={handleDetailClick}
+          >
+            상세보기
+          </Button>
         </div>
 
-        <div className="flex flex-col justify-end items-end h-full min-h-[120px] w-[136px] pl-0">
-          <div className="w-[136px] h-[136px] rounded-lg overflow-hidden bg-gray-100 self-end shadow">
-            <img
-              src={restaurant.main_img || defaultImage}
-              alt={restaurant.store_name || "가게 이미지"}
-              className="w-full h-full object-cover"
-              width={136}
-              height={136}
-              loading="lazy"
-            />
-          </div>
-        </div>
+        {/* 꼬리 */}
+        <div className="absolute left-1/2 -bottom-2 -translate-x-1/2 w-4 h-4 bg-white border-r border-b border-gray-100 rotate-45" />
       </div>
     </CustomOverlayMap>
   );
