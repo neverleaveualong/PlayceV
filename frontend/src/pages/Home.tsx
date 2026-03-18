@@ -45,7 +45,7 @@ const Home: React.FC = () => {
         {/* 토글 버튼 — 사이드바 우측 모서리 중앙에 고정 */}
         <button
           onClick={toggleSidebar}
-          className="absolute top-1/2 -translate-y-1/2 -right-4 z-30
+          className="absolute top-1/2 -translate-y-1/2 -right-5 z-30
             w-5 h-16 bg-white border border-l-0 border-gray-200
             rounded-r-lg shadow-md
             flex items-center justify-center
