@@ -1,6 +1,6 @@
-import { useState, memo } from "react";
+import { useState, useCallback, memo } from "react";
 import type { RestaurantDetail } from "@/types/restaurant.types";
-import { FiX } from "react-icons/fi";
+import { FiX, FiChevronLeft, FiChevronRight } from "react-icons/fi";
 import EmptyMessage from "./EmptyMessage";
 
 const RestaurantDetailPhotoTab = memo(function RestaurantDetailPhotoTab({
@@ -9,10 +9,28 @@ const RestaurantDetailPhotoTab = memo(function RestaurantDetailPhotoTab({
   detail: RestaurantDetail;
 }) {
   const images = detail.img_urls || [];
-  const [modalImg, setModalImg] = useState<string | null>(null);
+  const [modalIndex, setModalIndex] = useState<number | null>(null);
+
+  const handlePrev = useCallback(
+    (e: React.MouseEvent) => {
+      e.stopPropagation();
+      if (modalIndex === null) return;
+      setModalIndex(modalIndex > 0 ? modalIndex - 1 : images.length - 1);
+    },
+    [modalIndex, images.length]
+  );
+
+  const handleNext = useCallback(
+    (e: React.MouseEvent) => {
+      e.stopPropagation();
+      if (modalIndex === null) return;
+      setModalIndex(modalIndex < images.length - 1 ? modalIndex + 1 : 0);
+    },
+    [modalIndex, images.length]
+  );
 
   if (images.length === 0) {
-    return <EmptyMessage message="사진정보가 없습니다." />;
+    return <EmptyMessage message="등록된 사진이 없습니다." />;
   }
 
   return (
@@ -23,33 +41,69 @@ const RestaurantDetailPhotoTab = memo(function RestaurantDetailPhotoTab({
             key={idx}
             src={url}
             alt={`${detail.store_name} 사진 ${idx + 1}`}
-            className="w-full h-40 object-cover rounded-lg shadow cursor-pointer transition-transform hover:scale-105"
+            className="w-full h-40 object-cover rounded-lg shadow cursor-pointer
+              transition-transform hover:scale-105"
             loading="lazy"
-            onClick={() => setModalImg(url)}
+            onClick={() => setModalIndex(idx)}
           />
         ))}
       </div>
-      {modalImg && (
+
+      {/* 전체화면 모달 */}
+      {modalIndex !== null && (
         <div
-          className="fixed inset-0 z-[9999] bg-black/80 flex items-center justify-center"
-          onClick={() => setModalImg(null)}
+          className="fixed inset-0 z-[9999] bg-black/85 flex items-center justify-center"
+          onClick={() => setModalIndex(null)}
         >
-          <div className="relative">
-            <img
-              src={modalImg}
-              alt="전체보기"
-              className="max-w-[90vw] max-h-[90vh] object-contain select-none"
-              style={{ boxShadow: "none", border: "none", background: "none" }}
-              onClick={(e) => e.stopPropagation()}
-            />
+          {/* 닫기 */}
+          <button
+            onClick={() => setModalIndex(null)}
+            className="absolute top-6 right-6 bg-white/90 rounded-full p-2 shadow
+              hover:bg-white transition z-20"
+            aria-label="닫기"
+          >
+            <FiX className="text-gray-700 text-lg" />
+          </button>
+
+          {/* 이전 */}
+          {images.length > 1 && (
             <button
-              onClick={() => setModalImg(null)}
-              className="absolute top-6 right-6 bg-white/90 rounded-full p-2 shadow hover:bg-orange-50 transition z-20"
-              aria-label="닫기"
+              onClick={handlePrev}
+              className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/90 rounded-full p-3 shadow-lg
+                hover:bg-white transition z-20"
+              aria-label="이전 사진"
             >
-              <FiX className="text-primary5 text-lg" />
+              <FiChevronLeft className="text-gray-700 text-xl" />
             </button>
-          </div>
+          )}
+
+          {/* 이미지 */}
+          <img
+            src={images[modalIndex]}
+            alt={`${detail.store_name} 사진 ${modalIndex + 1}`}
+            className="max-w-[85vw] max-h-[85vh] object-contain select-none rounded-lg"
+            onClick={(e) => e.stopPropagation()}
+          />
+
+          {/* 다음 */}
+          {images.length > 1 && (
+            <button
+              onClick={handleNext}
+              className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/90 rounded-full p-3 shadow-lg
+                hover:bg-white transition z-20"
+              aria-label="다음 사진"
+            >
+              <FiChevronRight className="text-gray-700 text-xl" />
+            </button>
+          )}
+
+          {/* 인디케이터 */}
+          {images.length > 1 && (
+            <div className="absolute bottom-6 left-1/2 -translate-x-1/2 bg-black/60 text-white text-sm
+              px-4 py-1.5 rounded-full">
+              {modalIndex + 1} / {images.length}
+            </div>
+          )}
         </div>
       )}
     </div>
