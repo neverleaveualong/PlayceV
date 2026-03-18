@@ -35,23 +35,26 @@ const SearchResultList = ({
 
   return (
     <div>
-      <div className="flex justify-between border-b px-3 py-2 h-10">
-        <p className="text-gray-600 leading-[1] flex items-center h-full">
+      <div className="flex justify-between border-b border-gray-200 bg-gray-50 px-4 py-2.5">
+        <p className="text-sm font-medium text-gray-700 flex items-center">
           검색 결과
         </p>
-        <div className="flex items-center gap-2 h-full">
+        <div className="flex items-center gap-1">
           <button
-            className={`text-sm px-2 leading-[1] h-full flex items-center ${
-              sort === "distance" ? "text-primary5 font-bold" : "text-gray-400"
+            className={`text-sm px-2.5 py-1 rounded-md transition-colors ${
+              sort === "distance"
+                ? "text-primary5 font-bold bg-white shadow-sm"
+                : "text-gray-500 hover:text-gray-700 hover:bg-gray-100"
             }`}
             onClick={handleSortByDistance}
           >
             거리순
           </button>
-          <div className="w-px h-4 bg-gray-300" />
           <button
-            className={`text-sm px-2 leading-[1] h-full flex items-center ${
-              sort === "datetime" ? "text-primary5 font-bold" : "text-gray-400"
+            className={`text-sm px-2.5 py-1 rounded-md transition-colors ${
+              sort === "datetime"
+                ? "text-primary5 font-bold bg-white shadow-sm"
+                : "text-gray-500 hover:text-gray-700 hover:bg-gray-100"
             }`}
             onClick={handleSortByDatetime}
           >
@@ -60,7 +63,7 @@ const SearchResultList = ({
         </div>
       </div>
 
-      <div className="">
+      <div>
         {isSearching ? (
           <div className="py-12"><LoadingSpinner message="검색 중..." /></div>
         ) : sortedResults.length === 0 ? (

@@ -4,11 +4,13 @@ import { CITY_STATION, SEARCHNEARBY_RADIUS } from "@/constants/mapConstant";
 
 interface MapState {
   position: latlng;
+  myPosition: latlng;
   searchPosition: latlng;
   openedModal: number;
   radius: number;
   isRefreshBtnOn: boolean;
   zoomLevel: number;
+  isSidebarOpen: boolean;
   setPosition: (pos: latlng) => void;
   initPosition: (pos: latlng) => void;
   search: (radius: number) => void;
@@ -16,20 +18,23 @@ interface MapState {
   closeModal: () => void;
   setRefreshBtn: (button: boolean) => void;
   setZoomLevel: (zoom: number) => void;
+  toggleSidebar: () => void;
 }
 
 const useMapStore = create<MapState>((set, get) => ({
   position: CITY_STATION,
+  myPosition: CITY_STATION,
   searchPosition: CITY_STATION,
   openedModal: -1,
   radius: SEARCHNEARBY_RADIUS,
   isRefreshBtnOn: false,
   zoomLevel: 3,
+  isSidebarOpen: true,
   setPosition: (pos) => {
     set({ position: pos });
   },
   initPosition: (pos) => {
-    set({ position: pos, searchPosition: pos });
+    set({ position: pos, myPosition: pos, searchPosition: pos });
   },
   search: (radius) => {
     set({ searchPosition: get().position, radius, isRefreshBtnOn: false });
@@ -45,6 +50,9 @@ const useMapStore = create<MapState>((set, get) => ({
   },
   setZoomLevel: (zoom) => {
     set({ zoomLevel: zoom });
+  },
+  toggleSidebar: () => {
+    set((state) => ({ isSidebarOpen: !state.isSidebarOpen }));
   },
 }));
 

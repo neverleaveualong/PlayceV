@@ -21,12 +21,12 @@ const RestaurantDetailMenuTab = memo(function RestaurantDetailMenuTab({
             }`}
           >
             <div className="flex items-center gap-3 min-w-0">
-              <FaUtensils className="text-primary1 text-lg flex-shrink-0" />
+              <FaUtensils className="text-primary5 text-base flex-shrink-0" />
               <span className="font-medium text-gray-700 truncate">
                 {menu.name}
               </span>
             </div>
-            <span className="text-gray-500 font-semibold text-base flex-shrink-0 ml-2">
+            <span className="text-gray-800 font-semibold text-sm flex-shrink-0 ml-2">
               {Number(menu.price).toLocaleString()}원
             </span>
           </li>
