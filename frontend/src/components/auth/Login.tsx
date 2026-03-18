@@ -53,12 +53,13 @@ const LoginModal = () => {
         <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
           {/* 이메일 */}
           <fieldset>
-            <label className="text-xs font-semibold text-gray-600 mb-1.5 block">
+            <label htmlFor="login-email" className="text-xs font-semibold text-gray-600 mb-1.5 block">
               이메일
             </label>
             <div className="relative">
               <FiMail className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 text-sm" />
               <input
+                id="login-email"
                 type="email"
                 placeholder="example@email.com"
                 className="w-full pl-10 pr-4 py-2.5 text-sm border border-gray-200 rounded-lg
@@ -72,12 +73,13 @@ const LoginModal = () => {
 
           {/* 비밀번호 */}
           <fieldset>
-            <label className="text-xs font-semibold text-gray-600 mb-1.5 block">
+            <label htmlFor="login-password" className="text-xs font-semibold text-gray-600 mb-1.5 block">
               비밀번호
             </label>
             <div className="relative">
               <FiLock className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 text-sm" />
               <input
+                id="login-password"
                 type="password"
                 placeholder="비밀번호를 입력하세요"
                 className="w-full pl-10 pr-4 py-2.5 text-sm border border-gray-200 rounded-lg
