@@ -7,7 +7,7 @@ import { useGeoLocation } from "@/hooks/useGeoLocation";
 import useMapStore from "@/stores/mapStore";
 import useMypageStore from "@/stores/mypageStore";
 import SearchPage from "./SearchPage";
-import { FiChevronRight } from "react-icons/fi";
+import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
 
 const LoginModal = lazy(() => import("@/components/auth/Login"));
 const SignupModal = lazy(() => import("@/components/auth/Signup"));
@@ -31,13 +31,33 @@ const Home: React.FC = () => {
 
   return (
     <div className="flex h-screen overflow-hidden">
-      {/* 사이드바 */}
-      <div
-        className={`flex-shrink-0 transition-all duration-300 ease-in-out ${
-          isSidebarOpen ? "w-sidebar" : "w-0"
-        } overflow-hidden`}
-      >
-        <SearchPage />
+      {/* 사이드바 + 토글 버튼을 하나로 묶음 */}
+      <div className="relative flex-shrink-0">
+        {/* 사이드바 */}
+        <div
+          className={`transition-all duration-300 ease-in-out overflow-hidden ${
+            isSidebarOpen ? "w-sidebar" : "w-0"
+          }`}
+        >
+          <SearchPage />
+        </div>
+
+        {/* 토글 버튼 — 사이드바 우측 모서리 중앙에 고정 */}
+        <button
+          onClick={toggleSidebar}
+          className="absolute top-1/2 -translate-y-1/2 -right-4 z-30
+            w-4 h-12 bg-white border border-l-0 border-gray-200
+            rounded-r-md shadow-sm
+            flex items-center justify-center
+            hover:bg-primary4 transition-colors"
+          aria-label={isSidebarOpen ? "사이드바 닫기" : "사이드바 열기"}
+        >
+          {isSidebarOpen ? (
+            <FiChevronLeft className="text-gray-400 text-sm" />
+          ) : (
+            <FiChevronRight className="text-gray-400 text-sm" />
+          )}
+        </button>
       </div>
 
       {/* 지도 영역 */}
@@ -46,26 +66,13 @@ const Home: React.FC = () => {
         {isRefreshBtnOn && <SpotRefreshButton />}
         <AuthHeader />
 
-        {/* 사이드바 열기 버튼 */}
-        {!isSidebarOpen && (
-          <button
-            onClick={toggleSidebar}
-            className="fixed left-0 top-1/2 -translate-y-1/2 z-30
-              bg-white shadow-lg border border-gray-200
-              rounded-r-lg px-1 py-6
-              hover:bg-primary4 transition-colors"
-            aria-label="사이드바 열기"
-          >
-            <FiChevronRight className="text-gray-500 text-lg" />
-          </button>
-        )}
-
         <Suspense fallback={<LoadingSpinner />}>
           <LoginModal />
           <SignupModal />
           <PasswordResetRequestModal />
         </Suspense>
       </div>
+
       {isMypageOpen && (
         <Suspense
           fallback={
