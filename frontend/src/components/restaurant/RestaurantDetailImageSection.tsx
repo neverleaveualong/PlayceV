@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { FaStar } from "react-icons/fa";
 import { FiStar } from "react-icons/fi";
 import type { RestaurantDetail } from "@/types/restaurant.types";
@@ -42,7 +43,8 @@ const RestaurantDetailImageSection = ({
   isFavoritePending = false,
   onToggleFavorite,
 }: RestaurantDetailImageSectionProps) => {
-  const hasImage = detail.img_urls && detail.img_urls.length > 0;
+  const [imgError, setImgError] = useState(false);
+  const hasImage = detail.img_urls && detail.img_urls.length > 0 && !imgError;
 
   if (!hasImage) {
     return (
@@ -70,6 +72,7 @@ const RestaurantDetailImageSection = ({
         src={detail.img_urls[0]}
         alt={detail.store_name}
         className="w-full h-full object-cover"
+        onError={() => setImgError(true)}
       />
 
       {/* 하단 그라데이션 */}
