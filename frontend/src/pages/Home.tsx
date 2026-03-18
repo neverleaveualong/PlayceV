@@ -31,9 +31,8 @@ const Home: React.FC = () => {
 
   return (
     <div className="flex h-screen overflow-hidden">
-      {/* 사이드바 + 토글 버튼을 하나로 묶음 */}
-      <div className="relative flex-shrink-0">
-        {/* 사이드바 */}
+      {/* 사이드바 + 토글 버튼 */}
+      <div className="flex flex-shrink-0">
         <div
           className={`transition-all duration-300 ease-in-out overflow-hidden ${
             isSidebarOpen ? "w-sidebar" : "w-0"
@@ -41,15 +40,12 @@ const Home: React.FC = () => {
         >
           <SearchPage />
         </div>
-
-        {/* 토글 버튼 — 사이드바 우측 모서리 중앙에 고정 */}
         <button
           onClick={toggleSidebar}
-          className="absolute top-1/2 -translate-y-1/2 -right-5 z-30
-            w-5 h-16 bg-white border border-l-0 border-gray-200
+          className="self-center w-5 h-16 bg-white border border-l-0 border-gray-200
             rounded-r-lg shadow-md
             flex items-center justify-center
-            hover:bg-primary4 transition-colors"
+            hover:bg-primary4 transition-colors z-30"
           aria-label={isSidebarOpen ? "사이드바 닫기" : "사이드바 열기"}
         >
           {isSidebarOpen ? (
