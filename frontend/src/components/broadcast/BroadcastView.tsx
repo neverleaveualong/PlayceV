@@ -54,62 +54,47 @@ const BroadcastView = ({ onRegister }: BroadcastViewProps = {}) => {
   const { year: todayYear, month: todayMonth, date: todayDate } = getToday();
 
   return (
-    <div className="flex flex-col pl-2 h-full">
-      <div className="flex text-[28px] items-center justify-between mb-3 gap-3">
-        <Button
-          scheme="secondary"
-          size="semi"
+    <div className="flex flex-col h-full">
+      {/* 날짜 네비게이션 */}
+      <div className="flex items-center justify-between mb-4">
+        <button
           onClick={() => {
             setYear(todayYear);
             setMonth(todayMonth);
             setDate(todayDate);
-
-            setTimeout(() => {
-              scrollToDate(todayDate);
-            }, 0);
+            setTimeout(() => scrollToDate(todayDate), 0);
           }}
+          className="px-3 py-1.5 text-xs font-semibold rounded-full border border-gray-200 text-darkgray hover:border-primary5 hover:text-primary5 transition-colors"
         >
           오늘
-        </Button>
+        </button>
 
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-1">
           <button
-            className="hover:cursor-pointer text-[35px] disabled:text-lightgray"
+            className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-100 text-gray-500 disabled:text-gray-300 disabled:hover:bg-transparent transition-colors"
             onClick={handleLeft}
-            disabled={
-              !isInRange(
-                month > 1 ? year : year - 1,
-                month > 1 ? month - 1 : 12
-              )
-            }
+            disabled={!isInRange(month > 1 ? year : year - 1, month > 1 ? month - 1 : 12)}
           >
-            <MdKeyboardArrowLeft />
+            <MdKeyboardArrowLeft className="text-xl" />
           </button>
-          {year}.{month < 10 ? `0${month}` : month}
+          <span className="text-base font-bold text-mainText min-w-[80px] text-center">
+            {year}.{month < 10 ? `0${month}` : month}
+          </span>
           <button
-            className="hover:cursor-pointer text-[35px] disabled:text-lightgray"
+            className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-100 text-gray-500 disabled:text-gray-300 disabled:hover:bg-transparent transition-colors"
             onClick={handleRight}
-            disabled={
-              !isInRange(
-                month < 12 ? year : year + 1,
-                month < 12 ? month + 1 : 1
-              )
-            }
+            disabled={!isInRange(month < 12 ? year : year + 1, month < 12 ? month + 1 : 1)}
           >
-            <MdKeyboardArrowRight />
+            <MdKeyboardArrowRight className="text-xl" />
           </button>
         </div>
 
-        <Button
-          scheme="custom"
-          size="icon"
-          className="text-[25px]"
-          onClick={() => {
-            setViewOption(viewOption === "tab" ? "calendar" : "tab");
-          }}
+        <button
+          onClick={() => setViewOption(viewOption === "tab" ? "calendar" : "tab")}
+          className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-100 text-darkgray transition-colors"
         >
-          {viewOption === "tab" ? <FaRegCalendarAlt /> : <FaBars />}
-        </Button>
+          {viewOption === "tab" ? <FaRegCalendarAlt className="text-base" /> : <FaBars className="text-base" />}
+        </button>
       </div>
 
       <div className="relative h-full w-full">
