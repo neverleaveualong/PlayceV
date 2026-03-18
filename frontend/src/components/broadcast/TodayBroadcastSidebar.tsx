@@ -81,7 +81,7 @@ const TodayBroadcastSidebar = memo(function TodayBroadcastSidebar() {
           <FiTv className="text-primary5" />
           <span className="text-sm font-semibold text-gray-700">오늘의 중계</span>
         </div>
-        <span className="text-[11px] text-gray-400">주변 가게만 표시</span>
+        <span className="text-[11px] text-gray-400">지도에서 탐색한 가게만</span>
       </div>
 
       {isLoading ? (
