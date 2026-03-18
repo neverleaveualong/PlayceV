@@ -4,6 +4,7 @@ import { useState } from "react";
 import { getUpdatedRegionSelection } from "@/utils/regionUtils";
 import Tag from "@/components/common/Tag";
 import LoadingSpinner from "@/components/common/LoadingSpinner";
+import { FiMapPin } from "react-icons/fi";
 
 const RegionPanel = () => {
   const [selectedBigRegionName, setSelectedBigRegionName] =
@@ -19,43 +20,48 @@ const RegionPanel = () => {
 
   const handleSmallRegionClick = (smallName: string) => {
     if (!selectedBigRegionName) return;
-
     const updated = getUpdatedRegionSelection(
       selectedRegions,
       selectedBigRegionName,
       smallName
     );
-
     setSelectedRegions(updated);
   };
 
   return (
-    <div className="flex flex-col max-h-[500px]">
-      <div className="flex divide-x overflow-hidden border-b h-[300px]">
-        <div className="w-1/2 overflow-y-auto scrollbar-hide">
+    <div className="flex flex-col">
+      <div className="flex overflow-hidden rounded-lg border border-gray-200 h-[280px]">
+        {/* 시/도 */}
+        <div className="w-1/2 overflow-y-auto bg-gray-50 border-r border-gray-200">
           {bigRegionsLoading ? (
             <LoadingSpinner />
-          ) : bigRegions.map((region) => (
-            <div
-              key={region.id}
-              onClick={() => setSelectedBigRegionName(region.name)}
-              className={`p-3 cursor-pointer hover:bg-gray-100
-                ${
+          ) : (
+            bigRegions.map((region) => (
+              <button
+                key={region.id}
+                onClick={() => setSelectedBigRegionName(region.name)}
+                className={`w-full text-left px-4 py-2.5 text-sm transition-colors ${
                   region.name === selectedBigRegionName
-                    ? "font-bold text-primary5"
-                    : ""
+                    ? "bg-white text-primary5 font-semibold border-r-2 border-primary5"
+                    : "text-gray-600 hover:bg-gray-100"
                 }`}
-            >
-              {region.name}
-            </div>
-          ))}
+              >
+                {region.name}
+              </button>
+            ))
+          )}
         </div>
 
-        <div className="w-1/2 overflow-y-auto max-h-full">
+        {/* 구/군 */}
+        <div className="w-1/2 overflow-y-auto">
           {selectedBigRegionName === "" ? (
-            <div className="flex flex-col justify-center items-center h-full text-gray-400 text-center">
-              <p>지역을 선택하면</p>
-              <p>상세 지역을 확인할 수 있습니다</p>
+            <div className="flex flex-col items-center justify-center h-full gap-2 text-gray-400">
+              <FiMapPin className="text-xl text-gray-300" />
+              <p className="text-xs text-center">
+                시/도를 선택하면
+                <br />
+                상세 지역이 표시됩니다
+              </p>
             </div>
           ) : smallRegions.length === 0 ? (
             <LoadingSpinner />
@@ -70,12 +76,29 @@ const RegionPanel = () => {
               return (
                 <label
                   key={sub.id}
-                  className="flex items-center justify-between p-3 hover:bg-gray-50 cursor-pointer"
+                  className={`flex items-center justify-between px-4 py-2.5 cursor-pointer transition-colors text-sm ${
+                    isChecked
+                      ? "bg-primary4/50 text-primary5 font-medium"
+                      : "text-gray-600 hover:bg-gray-50"
+                  }`}
                 >
                   <span>{sub.name}</span>
+                  <div
+                    className={`w-4 h-4 rounded border flex items-center justify-center transition-colors ${
+                      isChecked
+                        ? "bg-primary5 border-primary5"
+                        : "border-gray-300"
+                    }`}
+                  >
+                    {isChecked && (
+                      <svg className="w-3 h-3 text-white" viewBox="0 0 12 12" fill="none">
+                        <path d="M2 6L5 9L10 3" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                      </svg>
+                    )}
+                  </div>
                   <input
                     type="checkbox"
-                    className="accent-primary1"
+                    className="sr-only"
                     checked={isChecked}
                     onChange={() => handleSmallRegionClick(sub.name)}
                   />
@@ -86,8 +109,9 @@ const RegionPanel = () => {
         </div>
       </div>
 
+      {/* 선택된 태그 */}
       {selectedRegions.length > 0 && (
-        <div className="flex flex-wrap gap-2 p-3 border-gray-200">
+        <div className="flex flex-wrap gap-1.5 pt-3">
           {selectedRegions.map((r) => {
             const label =
               r.smallRegion === "전체"
