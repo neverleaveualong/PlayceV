@@ -2,7 +2,6 @@ import { lazy, Suspense } from "react";
 import LoadingSpinner from "@/components/common/LoadingSpinner";
 import AuthHeader from "@/components/auth/AuthHeader";
 import Map from "@/components/map/PlayceMap";
-import SpotRefreshButton from "@/components/map/SpotRefreshButton";
 import { useGeoLocation } from "@/hooks/useGeoLocation";
 import useMapStore from "@/stores/mapStore";
 import useMypageStore from "@/stores/mypageStore";
@@ -17,7 +16,7 @@ const PasswordResetRequestModal = lazy(
 const MypageModal = lazy(() => import("@/components/mypage/MypageModal"));
 
 const Home: React.FC = () => {
-  const { position, isRefreshBtnOn, isSidebarOpen, toggleSidebar } =
+  const { position, isSidebarOpen, toggleSidebar } =
     useMapStore();
   const { isMypageOpen, setIsMypageOpen } = useMypageStore();
 
@@ -61,7 +60,6 @@ const Home: React.FC = () => {
       {/* 지도 영역 */}
       <div className="relative flex-1 h-screen">
         {position && <Map />}
-        {isRefreshBtnOn && <SpotRefreshButton />}
         <AuthHeader />
 
         <Suspense fallback={<LoadingSpinner />}>
