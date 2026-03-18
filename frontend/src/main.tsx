@@ -1,8 +1,8 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
+import "antd/dist/reset.css";
 import "./index.css";
 import App from "@/App";
-import "antd/dist/reset.css";
 import { ConfigProvider } from "antd";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 

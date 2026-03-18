@@ -4,6 +4,8 @@ import RestaurantManager from "./restaurant-manage/RestaurantManager";
 import BroadcastManager from "./broadcast-manage/BroadcastManager";
 import useMypageStore from "@/stores/mypageStore";
 import { useUserInfo } from "@/hooks/useUser";
+import { useMyStores } from "@/hooks/useMyStores";
+import { useFavorites } from "@/hooks/useFavorites";
 import ModalBase from "@/components/common/ModalBase";
 import LoadingSpinner from "@/components/common/LoadingSpinner";
 
@@ -14,6 +16,8 @@ export interface MypageProps {
 const MypageModal = ({ onClose }: MypageProps) => {
   const { selectedTab, setSelectedTab } = useMypageStore();
   const { data, isLoading, isError } = useUserInfo();
+  const { data: stores } = useMyStores();
+  const { data: favorites } = useFavorites();
   const user = data?.data;
 
   return (
@@ -28,7 +32,7 @@ const MypageModal = ({ onClose }: MypageProps) => {
           <Sidebar selected={selectedTab} onSelect={setSelectedTab} />
         </div>
         {/* 오른쪽 콘텐츠 영역 */}
-        <div className="relative flex-1 h-full p-6 overflow-y-auto">
+        <div className="relative flex-1 h-full p-5 overflow-y-auto">
           {selectedTab === "profile" && (
             <>
               {isLoading && (
@@ -41,6 +45,8 @@ const MypageModal = ({ onClose }: MypageProps) => {
                   name={user.name}
                   nickname={user.nickname}
                   phone={user.phone}
+                  storeCount={stores?.length ?? 0}
+                  favoriteCount={favorites?.length ?? 0}
                   onClose={onClose}
                 />
               )}
