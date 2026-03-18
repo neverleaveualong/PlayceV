@@ -18,7 +18,7 @@ const RestaurantDetailImageSection = ({
   const hasImage = detail.img_urls && detail.img_urls.length > 0;
 
   return (
-    <div className="w-full h-56 bg-gray-100 relative overflow-hidden">
+    <div className="w-full h-52 bg-gray-100 relative overflow-hidden">
       {hasImage ? (
         <img
           src={detail.img_urls[0]}
@@ -32,14 +32,14 @@ const RestaurantDetailImageSection = ({
         </div>
       )}
 
-      {/* 그라데이션 오버레이 */}
-      <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent pointer-events-none" />
+      {/* 하단 그라데이션 */}
+      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent pointer-events-none" />
 
       {/* 즐겨찾기 버튼 */}
       <button
         onClick={onToggleFavorite}
         disabled={isFavoritePending}
-        className={`absolute left-4 top-4 bg-white/90 backdrop-blur-sm rounded-full p-2.5 shadow-md
+        className={`absolute left-4 top-4 bg-white/90 backdrop-blur-sm rounded-full p-2 shadow-md
           hover:bg-white hover:scale-110 transition-all z-10
           ${isFavoritePending ? "opacity-50 cursor-not-allowed" : ""}`}
         aria-label={isFavorite ? "즐겨찾기 해제" : "즐겨찾기 추가"}
@@ -47,9 +47,23 @@ const RestaurantDetailImageSection = ({
         {isFavorite ? (
           <FaStar className="text-yellow-400 text-lg" />
         ) : (
-          <FiStar className="text-gray-600 text-lg" />
+          <FiStar className="text-gray-500 text-lg" />
         )}
       </button>
+
+      {/* 가게명 + 카테고리 오버레이 */}
+      <div className="absolute bottom-0 left-0 right-0 px-5 pb-4 z-10">
+        <div className="flex items-center gap-2 mb-1">
+          {detail.type && (
+            <span className="text-[11px] bg-white/20 backdrop-blur-sm text-white px-2 py-0.5 rounded-full font-medium">
+              {detail.type}
+            </span>
+          )}
+        </div>
+        <h2 className="text-xl font-bold text-white drop-shadow-md">
+          {detail.store_name}
+        </h2>
+      </div>
     </div>
   );
 };

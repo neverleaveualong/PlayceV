@@ -21,23 +21,24 @@ const RestaurantDetailMenuTab = memo(function RestaurantDetailMenuTab({
   }
 
   return (
-    <ul className="flex flex-col">
+    <div className="rounded-xl border border-gray-100 divide-y divide-gray-100">
       {menus.map((menu, idx) => (
-        <li
+        <div
           key={idx}
-          className={`flex items-center justify-between gap-3 px-4 py-3.5
-            ${idx !== menus.length - 1 ? "border-b border-gray-100" : ""}`}
+          className="flex items-center justify-between gap-3 px-4 py-3.5"
         >
           <div className="flex items-center gap-3 min-w-0">
-            <FaUtensils className="text-primary5 text-sm flex-shrink-0" />
+            <div className="w-8 h-8 rounded-lg bg-primary4/50 flex items-center justify-center flex-shrink-0">
+              <FaUtensils className="text-primary5 text-xs" />
+            </div>
             <span className="font-medium text-gray-800 truncate">{menu.name}</span>
           </div>
-          <span className="text-gray-600 font-semibold text-sm flex-shrink-0 ml-2">
+          <span className="text-primary5 font-bold text-sm flex-shrink-0">
             {formatPrice(menu.price)}
           </span>
-        </li>
+        </div>
       ))}
-    </ul>
+    </div>
   );
 });
 
