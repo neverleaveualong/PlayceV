@@ -78,7 +78,7 @@ const PlayceModal = ({
             onMouseDown={(e) => e.stopPropagation()}
             onClick={(e) => { e.stopPropagation(); toggleFavorite(); }}
             disabled={isFavoritePending}
-            className={`absolute bottom-3 right-3 w-9 h-9 rounded-full bg-white/90 backdrop-blur-sm shadow flex items-center justify-center transition-all ${
+            className={`absolute top-3 left-3 w-9 h-9 rounded-full bg-white/90 backdrop-blur-sm shadow flex items-center justify-center transition-all ${
               isFavoritePending ? "opacity-50" : "hover:scale-110"
             }`}
             aria-label={isFavorite ? "즐겨찾기 해제" : "즐겨찾기 추가"}
