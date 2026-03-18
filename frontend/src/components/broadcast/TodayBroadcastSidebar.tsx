@@ -60,12 +60,12 @@ function BroadcastCard({
   return (
     <li
       onClick={onClick}
-      className={`group rounded-2xl p-3 cursor-pointer transition-all ${
+      className={`group rounded-2xl p-3 cursor-pointer transition-all duration-150 ${
         isLive
-          ? "bg-red-50/60 border border-red-100 hover:shadow-md hover:border-red-200"
+          ? "bg-red-50/60 border border-red-100 hover:bg-red-50"
           : isEnded
           ? "bg-white border border-gray-100 opacity-60"
-          : "bg-white border border-gray-100 hover:shadow-md hover:border-primary2"
+          : "bg-white border border-gray-100 hover:bg-primary4/30"
       }`}
     >
       {/* 상단: 가게 정보 */}

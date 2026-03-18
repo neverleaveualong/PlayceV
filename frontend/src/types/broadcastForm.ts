@@ -12,6 +12,5 @@ export interface CreateBroadcastPayload {
 export interface BroadcastRegisterEditProps {
   mode: "create" | "edit";
   broadcastId?: number;
-  onClose: () => void;
   storeId: number;
 }

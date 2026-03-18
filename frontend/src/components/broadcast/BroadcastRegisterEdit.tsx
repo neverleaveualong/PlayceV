@@ -14,7 +14,6 @@ import { useSports } from "@/hooks/useSports";
 import { useLeagues } from "@/hooks/useLeagues";
 import { useQueryClient } from "@tanstack/react-query";
 
-// ① 폼 값 타입 정의
 interface BroadcastFormValues {
   date: Dayjs | null;
   time: Dayjs | null;
@@ -25,6 +24,9 @@ interface BroadcastFormValues {
   note: string;
 }
 
+const INPUT =
+  "w-full border border-gray-200 rounded-xl px-3.5 py-2.5 text-sm text-mainText placeholder-gray-400 hover:border-primary5 focus:border-primary5 focus:outline-none focus:ring-2 focus:ring-primary1 transition-colors";
+
 const BroadcastRegisterEdit = (props: BroadcastRegisterEditProps) => {
   const storeId = useBroadcastStore((state) => state.storeId);
   const { data: broadcastLists = [] } = useBroadcasts(storeId);
@@ -34,7 +36,6 @@ const BroadcastRegisterEdit = (props: BroadcastRegisterEditProps) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const addToast = useToastStore((state) => state.addToast);
 
-  // ② useForm — broadcastFormStore를 대체
   const {
     register,
     handleSubmit,
@@ -54,14 +55,10 @@ const BroadcastRegisterEdit = (props: BroadcastRegisterEditProps) => {
     },
   });
 
-  // ③ watch — sportId 값을 실시간 감시 (종목↔리그 연동)
   const sportId = watch("sportId");
-
-  // ④ React Query 훅 — fetchSports/fetchLeagues 직접 호출 제거
   const { data: sports = [] } = useSports();
   const { data: leagues = [] } = useLeagues(sportId ?? undefined);
 
-  // ⑤ 등록 모드 진입 시 폼 초기화
   useEffect(() => {
     if (props.mode === "create") {
       reset({
@@ -77,7 +74,6 @@ const BroadcastRegisterEdit = (props: BroadcastRegisterEditProps) => {
     }
   }, [props.mode, reset]);
 
-  // ⑥ 수정 모드 진입 시 기존 데이터로 폼 채우기 (sportId 먼저)
   useEffect(() => {
     if (props.mode !== "edit" || props.broadcastId == null) return;
 
@@ -105,7 +101,6 @@ const BroadcastRegisterEdit = (props: BroadcastRegisterEditProps) => {
     });
   }, [props.mode, props.broadcastId, broadcastLists, sports, reset, addToast]);
 
-  // ⑥-2 leagues 로딩 완료 후 leagueId 세팅
   useEffect(() => {
     if (props.mode !== "edit" || props.broadcastId == null || leagues.length === 0) return;
 
@@ -120,7 +115,6 @@ const BroadcastRegisterEdit = (props: BroadcastRegisterEditProps) => {
     }
   }, [props.mode, props.broadcastId, broadcastLists, leagues, setValue]);
 
-  // ⑦ submit — 유효성 통과한 경우만 실행
   const onSubmit = async (data: BroadcastFormValues) => {
     if (!data.date || !data.time || !data.sportId || !data.leagueId) {
       addToast("필수 정보를 모두 입력해주세요.", "error");
@@ -155,49 +149,48 @@ const BroadcastRegisterEdit = (props: BroadcastRegisterEditProps) => {
     }
   };
 
-  // ⑧ JSX — Controller로 DatePicker/TimePicker/SelectInput 연결
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-      <div className="flex gap-4">
-        <div className="flex-1 min-w-[180px]">
-          <label className="block mb-1 font-semibold text-mainText">
-            날짜 <span className="text-red-500">*</span>
-          </label>
-          <Controller
-            name="date"
-            control={control}
-            render={({ field }) => (
-              <DatePicker
-                className="w-full py-2 border-gray-200"
-                value={field.value}
-                onChange={(v) => v && field.onChange(v)}
-                getPopupContainer={(trigger) => trigger.parentNode as HTMLElement}
-              />
-            )}
-          />
+    <form onSubmit={handleSubmit(onSubmit)} className="space-y-3">
+      {/* 경기 일시 */}
+      <Section title="경기 일시">
+        <div className="grid grid-cols-2 gap-3">
+          <Field label="날짜" required>
+            <Controller
+              name="date"
+              control={control}
+              render={({ field }) => (
+                <DatePicker
+                  className="!w-full !rounded-xl !border-gray-200 !py-2 hover:!border-primary5"
+                  value={field.value}
+                  onChange={(v) => v && field.onChange(v)}
+                  placeholder="날짜 선택"
+                  getPopupContainer={(trigger) => trigger.parentNode as HTMLElement}
+                />
+              )}
+            />
+          </Field>
+          <Field label="시간" required>
+            <Controller
+              name="time"
+              control={control}
+              render={({ field }) => (
+                <TimePicker
+                  className="!w-full !rounded-xl !border-gray-200 !py-2 hover:!border-primary5"
+                  format="HH:mm"
+                  value={field.value}
+                  onChange={field.onChange}
+                  placeholder="시간 선택"
+                  getPopupContainer={(trigger) => trigger.parentNode as HTMLElement}
+                />
+              )}
+            />
+          </Field>
         </div>
-        <div className="flex-1 min-w-[180px]">
-          <label className="block mb-1 font-semibold text-mainText">
-            시간 <span className="text-red-500">*</span>
-          </label>
-          <Controller
-            name="time"
-            control={control}
-            render={({ field }) => (
-              <TimePicker
-                className="w-full py-2 border-gray-200"
-                format="HH:mm"
-                value={field.value}
-                onChange={field.onChange}
-                getPopupContainer={(trigger) => trigger.parentNode as HTMLElement}
-              />
-            )}
-          />
-        </div>
-      </div>
+      </Section>
 
-      <div className="flex gap-4">
-        <div className="flex-1 min-w-[180px]">
+      {/* 종목 · 리그 */}
+      <Section title="종목 · 리그">
+        <div className="grid grid-cols-2 gap-3">
           <Controller
             name="sportId"
             control={control}
@@ -222,8 +215,6 @@ const BroadcastRegisterEdit = (props: BroadcastRegisterEditProps) => {
               />
             )}
           />
-        </div>
-        <div className="flex-1 min-w-[180px]">
           <Controller
             name="leagueId"
             control={control}
@@ -239,69 +230,85 @@ const BroadcastRegisterEdit = (props: BroadcastRegisterEditProps) => {
             )}
           />
         </div>
-      </div>
+      </Section>
 
-      <div className="flex gap-4">
-        <div className="flex-1 min-w-[180px]">
-          <label className="block mb-1 font-semibold text-mainText">팀 1</label>
-          <input
-            placeholder={
-              isTeamCompetition
-                ? "팀 이름을 입력해주세요."
-                : "팀 입력이 필요하지 않습니다."
-            }
-            {...register("team1")}
-            disabled={!isTeamCompetition}
-            className="w-full border px-3 py-2 rounded-lg hover:border-primary5 focus:border-primary5 focus:ring-1 focus:ring-primary1 focus:outline-none"
-          />
+      {/* 팀 정보 */}
+      <Section title="팀 정보">
+        <div className="grid grid-cols-2 gap-3">
+          <Field label="홈팀">
+            <input
+              placeholder={isTeamCompetition ? "홈팀 이름" : "입력 불필요"}
+              {...register("team1")}
+              disabled={!isTeamCompetition}
+              className={`${INPUT} disabled:bg-gray-50 disabled:text-gray-400`}
+            />
+          </Field>
+          <Field label="원정팀">
+            <input
+              placeholder={isTeamCompetition ? "원정팀 이름" : "입력 불필요"}
+              {...register("team2")}
+              disabled={!isTeamCompetition}
+              className={`${INPUT} disabled:bg-gray-50 disabled:text-gray-400`}
+            />
+          </Field>
         </div>
-        <div className="flex-1 min-w-[180px]">
-          <label className="block mb-1 font-semibold text-mainText">팀 2</label>
-          <input
-            placeholder={
-              isTeamCompetition
-                ? "팀 이름을 입력해주세요."
-                : "팀 입력이 필요하지 않습니다."
-            }
-            {...register("team2")}
-            disabled={!isTeamCompetition}
-            className="w-full border px-3 py-2 rounded-lg hover:border-primary5 focus:border-primary5 focus:ring-1 focus:ring-primary1 focus:outline-none"
+        {!isTeamCompetition && (
+          <p className="text-xs text-darkgray mt-1">
+            개인 종목은 팀 입력이 필요하지 않습니다
+          </p>
+        )}
+      </Section>
+
+      {/* 추가 정보 */}
+      <Section title="추가 정보">
+        <Field label="메모">
+          <textarea
+            {...register("note")}
+            className={`${INPUT} resize-none`}
+            rows={2}
+            placeholder="특이사항을 입력하세요 (선택)"
           />
-        </div>
-      </div>
+        </Field>
+      </Section>
 
-      <div>
-        <label className="block mb-1 font-semibold text-mainText">기타</label>
-        <textarea
-          {...register("note")}
-          className="w-full border px-3 py-2 rounded-lg hover:border-primary5 focus:border-primary5 focus:ring-1 focus:ring-primary1 focus:outline-none"
-          rows={3}
-        />
-      </div>
-
-      <div className="flex justify-end gap-2 mt-4">
-        <Button
-          type="button"
-          scheme="ghost"
-          size="medium"
-          onClick={() => {
-            reset();
-            setRestaurantSubpage("schedule-view-broadcasts");
-          }}
-        >
-          취소
-        </Button>
-        <Button
-          type="submit"
-          scheme="primary"
-          size="medium"
-          isLoading={isSubmitting}
-        >
-          {props.mode === "edit" ? "수정" : "등록"}
-        </Button>
-      </div>
+      {/* 제출 버튼 */}
+      <Button
+        type="submit"
+        scheme="primary"
+        size="medium"
+        fullWidth
+        className="!py-2.5 rounded-xl"
+        isLoading={isSubmitting}
+      >
+        {props.mode === "edit" ? "수정 완료" : "중계 일정 등록하기"}
+      </Button>
     </form>
   );
 };
+
+const Section = ({ title, children }: { title: string; children: React.ReactNode }) => (
+  <div className="rounded-xl border border-gray-100 bg-white px-4 py-3 shadow-sm space-y-2.5">
+    <h3 className="text-sm font-bold text-mainText">{title}</h3>
+    {children}
+  </div>
+);
+
+const Field = ({
+  label,
+  required,
+  children,
+}: {
+  label: string;
+  required?: boolean;
+  children: React.ReactNode;
+}) => (
+  <div>
+    <label className="block mb-1 text-xs font-semibold text-darkgray">
+      {label}
+      {required && <span className="text-red-500 ml-0.5">*</span>}
+    </label>
+    {children}
+  </div>
+);
 
 export default BroadcastRegisterEdit;
