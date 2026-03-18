@@ -1,5 +1,5 @@
 import { FaStar } from "react-icons/fa";
-import { FiStar, FiX, FiImage } from "react-icons/fi";
+import { FiStar, FiImage } from "react-icons/fi";
 import type { RestaurantDetail } from "@/types/restaurant.types";
 
 interface RestaurantDetailImageSectionProps {
@@ -7,7 +7,6 @@ interface RestaurantDetailImageSectionProps {
   isFavorite: boolean;
   isFavoritePending?: boolean;
   onToggleFavorite: () => void;
-  onClose: () => void;
 }
 
 const RestaurantDetailImageSection = ({
@@ -15,7 +14,6 @@ const RestaurantDetailImageSection = ({
   isFavorite,
   isFavoritePending = false,
   onToggleFavorite,
-  onClose,
 }: RestaurantDetailImageSectionProps) => {
   const hasImage = detail.img_urls && detail.img_urls.length > 0;
 
@@ -41,7 +39,7 @@ const RestaurantDetailImageSection = ({
       <button
         onClick={onToggleFavorite}
         disabled={isFavoritePending}
-        className={`absolute left-4 top-4 bg-white/90 backdrop-blur-sm rounded-full p-2.5 shadow-md
+        className={`absolute right-4 bottom-4 bg-white/90 backdrop-blur-sm rounded-full p-2.5 shadow-md
           hover:bg-white hover:scale-110 transition-all z-10
           ${isFavoritePending ? "opacity-50 cursor-not-allowed" : ""}`}
         aria-label={isFavorite ? "즐겨찾기 해제" : "즐겨찾기 추가"}
@@ -51,16 +49,6 @@ const RestaurantDetailImageSection = ({
         ) : (
           <FiStar className="text-gray-600 text-lg" />
         )}
-      </button>
-
-      {/* 닫기 버튼 */}
-      <button
-        onClick={onClose}
-        className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm rounded-full p-2.5 shadow-md
-          hover:bg-white hover:scale-110 transition-all z-10"
-        aria-label="상세보기 닫기"
-      >
-        <FiX className="text-gray-600 text-lg" />
       </button>
     </div>
   );

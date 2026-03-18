@@ -63,13 +63,12 @@ export default function RestaurantDetailComponent({
 
   return (
     <aside className={ASIDE_BASE}>
-      <RestaurantDetailHeader />
+      <RestaurantDetailHeader onClose={onClose} />
       <RestaurantDetailImageSection
         detail={detail}
         isFavorite={isFavorite}
         isFavoritePending={isFavoritePending}
         onToggleFavorite={toggleFavorite}
-        onClose={onClose}
       />
       <RestaurantDetailTabs
         currentTab={currentTab}
