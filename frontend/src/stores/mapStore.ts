@@ -56,10 +56,7 @@ const useMapStore = create<MapState>((set, get) => ({
     set({ zoomLevel: zoom });
   },
   toggleSidebar: () => {
-    set((state) => ({
-      isSidebarOpen: !state.isSidebarOpen,
-      selectedStoreId: state.isSidebarOpen ? null : state.selectedStoreId,
-    }));
+    set((state) => ({ isSidebarOpen: !state.isSidebarOpen }));
   },
   openDetail: (storeId) => {
     set({ selectedStoreId: storeId, isSidebarOpen: true });
