@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { FaStar } from "react-icons/fa";
-import { FiStar } from "react-icons/fi";
+import { FiStar, FiImage } from "react-icons/fi";
 import type { RestaurantDetail } from "@/types/restaurant.types";
 
 interface RestaurantDetailImageSectionProps {
@@ -37,26 +37,32 @@ const FavoriteButton = ({
   </button>
 );
 
-const NoImageHeader = ({
+const NoImagePlaceholder = ({
   detail,
   isFavorite,
   isFavoritePending = false,
   onToggleFavorite,
 }: RestaurantDetailImageSectionProps) => (
-  <div className="px-5 py-4 flex items-center justify-between border-b border-gray-100">
-    <div>
-      {detail.type && (
-        <span className="text-[11px] bg-primary4 text-primary5 px-2 py-0.5 rounded-full font-medium">
-          {detail.type}
-        </span>
-      )}
-      <h2 className="text-xl font-bold text-gray-900 mt-1">{detail.store_name}</h2>
-    </div>
+  <div className="w-full h-52 bg-gray-100 relative overflow-hidden flex items-center justify-center">
+    <FiImage className="text-5xl text-gray-300" />
+
     <FavoriteButton
       isFavorite={isFavorite}
       isFavoritePending={isFavoritePending}
       onToggleFavorite={onToggleFavorite}
+      className="absolute left-4 top-4 z-10"
     />
+
+    <div className="absolute bottom-0 left-0 right-0 px-5 pb-4 z-10">
+      {detail.type && (
+        <span className="text-[11px] bg-gray-200 text-gray-500 px-2 py-0.5 rounded-full font-medium">
+          {detail.type}
+        </span>
+      )}
+      <h2 className="text-xl font-bold text-gray-600 mt-1">
+        {detail.store_name}
+      </h2>
+    </div>
   </div>
 );
 
@@ -69,13 +75,13 @@ const RestaurantDetailImageSection = (props: RestaurantDetailImageSectionProps) 
   const [imgError, setImgError] = useState(false);
 
   if (!imgUrl || imgError) {
-    return <NoImageHeader {...props} />;
+    return <NoImagePlaceholder {...props} />;
   }
 
   return (
     <>
       {/* 이미지 로드 전에는 텍스트 헤더를 보여줌 */}
-      {!imgLoaded && <NoImageHeader {...props} />}
+      {!imgLoaded && <NoImagePlaceholder {...props} />}
 
       {/* 이미지 (로드 전에는 숨김, 로드 성공하면 표시) */}
       <div className={`w-full h-52 bg-gray-100 relative overflow-hidden ${!imgLoaded ? "hidden" : ""}`}>
