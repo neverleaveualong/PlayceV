@@ -1,5 +1,5 @@
 import { useState, useMemo, useEffect, useCallback, memo } from "react";
-import { FiTv, FiMapPin, FiClock } from "react-icons/fi";
+import { FiTv, FiMapPin, FiClock, FiChevronDown } from "react-icons/fi";
 import useMapStore from "@/stores/mapStore";
 import RestaurantDetailComponent from "@/components/restaurant/RestaurantDetail";
 import useRestaurantDetail from "@/hooks/useRestaurantDetail";
@@ -165,6 +165,9 @@ const TodayBroadcastSidebar = memo(function TodayBroadcastSidebar() {
     [todayBroadcasts]
   );
   const [selectedSport, setSelectedSport] = useState<string>("");
+  const [showEnded, setShowEnded] = useState(false);
+  const [visibleCount, setVisibleCount] = useState(5);
+  const INITIAL_COUNT = 5;
 
   useEffect(() => {
     if (!SPORTS.includes(selectedSport)) {
@@ -172,6 +175,12 @@ const TodayBroadcastSidebar = memo(function TodayBroadcastSidebar() {
       else setSelectedSport("");
     }
   }, [SPORTS, selectedSport]);
+
+  // 종목 탭 바뀌면 더보기 초기화
+  useEffect(() => {
+    setVisibleCount(INITIAL_COUNT);
+    setShowEnded(false);
+  }, [selectedSport]);
 
   const sportCounts = useMemo(() => {
     const counts: Record<string, number> = {};
@@ -181,10 +190,27 @@ const TodayBroadcastSidebar = memo(function TodayBroadcastSidebar() {
     return counts;
   }, [todayBroadcasts]);
 
-  const filtered = useMemo(
-    () => todayBroadcasts.filter((b) => b.sport === selectedSport),
-    [todayBroadcasts, selectedSport]
+  // 정렬: LIVE → 곧 시작(시간순) → 종료
+  const filtered = useMemo(() => {
+    const sportFiltered = todayBroadcasts.filter((b) => b.sport === selectedSport);
+    return sportFiltered.sort((a, b) => {
+      const sa = getMatchStatus(a.match_time);
+      const sb = getMatchStatus(b.match_time);
+      const order = (s: string) => (s === "live" ? 0 : s === "종료" ? 2 : 1);
+      if (order(sa) !== order(sb)) return order(sa) - order(sb);
+      return a.match_time.localeCompare(b.match_time);
+    });
+  }, [todayBroadcasts, selectedSport]);
+
+  const activeGames = useMemo(
+    () => filtered.filter((g) => getMatchStatus(g.match_time) !== "종료"),
+    [filtered]
   );
+  const endedGames = useMemo(
+    () => filtered.filter((g) => getMatchStatus(g.match_time) === "종료"),
+    [filtered]
+  );
+  const visibleActive = activeGames.slice(0, visibleCount);
 
   const handleOpenDetail = useCallback(
     (storeId: number) => openDetail(storeId),
@@ -238,20 +264,58 @@ const TodayBroadcastSidebar = memo(function TodayBroadcastSidebar() {
           </div>
 
           {/* 경기 리스트 */}
-          <ul className="space-y-2">
-            {filtered.length === 0 ? (
-              <EmptyMessage message="선택한 종목의 경기가 없습니다." />
-            ) : (
-              filtered.map((game) => (
-                <BroadcastCard
-                  key={`${game.store_id}-${game.match_time}-${game.league}`}
-                  game={game}
-                  searchPosition={searchPosition}
-                  onClick={() => handleOpenDetail(game.store_id)}
-                />
-              ))
-            )}
-          </ul>
+          {activeGames.length === 0 && endedGames.length === 0 ? (
+            <EmptyMessage message="선택한 종목의 경기가 없습니다." />
+          ) : (
+            <>
+              <ul className="space-y-2">
+                {visibleActive.map((game) => (
+                  <BroadcastCard
+                    key={`${game.store_id}-${game.match_time}-${game.league}`}
+                    game={game}
+                    searchPosition={searchPosition}
+                    onClick={() => handleOpenDetail(game.store_id)}
+                  />
+                ))}
+              </ul>
+
+              {/* 더보기 */}
+              {activeGames.length > visibleCount && (
+                <button
+                  onClick={() => setVisibleCount((c) => c + 5)}
+                  className="w-full mt-2 py-2 text-xs text-gray-500 hover:text-primary5 flex items-center justify-center gap-1 transition-colors"
+                >
+                  <FiChevronDown />
+                  {activeGames.length - visibleCount}개 더보기
+                </button>
+              )}
+
+              {/* 종료된 경기 */}
+              {endedGames.length > 0 && (
+                <div className="mt-3">
+                  <button
+                    onClick={() => setShowEnded(!showEnded)}
+                    className="w-full py-2 text-[11px] text-gray-400 hover:text-gray-600 flex items-center justify-center gap-1 border-t border-gray-100 transition-colors"
+                  >
+                    종료된 경기 {endedGames.length}개
+                    <FiChevronDown className={`transition-transform ${showEnded ? "rotate-180" : ""}`} />
+                  </button>
+                  {showEnded && (
+                    <ul className="space-y-2 mt-2">
+                      {endedGames.map((game) => (
+                        <BroadcastCard
+                          key={`${game.store_id}-${game.match_time}-${game.league}`}
+                          game={game}
+                          searchPosition={searchPosition}
+                          onClick={() => handleOpenDetail(game.store_id)}
+                        />
+                      ))}
+                    </ul>
+                  )}
+                </div>
+              )}
+            </>
+          )}
         </>
       )}
 
