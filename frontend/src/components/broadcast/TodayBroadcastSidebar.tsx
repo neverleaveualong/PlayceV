@@ -217,7 +217,7 @@ const TodayBroadcastSidebar = memo(function TodayBroadcastSidebar() {
   const visibleActive = activeGames.slice(0, visibleCount);
 
   const handleOpenDetail = useCallback(
-    (storeId: number) => openDetail(storeId),
+    (storeId: number) => openDetail(storeId, "중계"),
     [openDetail]
   );
 

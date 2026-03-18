@@ -11,7 +11,7 @@ import RestaurantDetailPhotoTab from "./RestaurantDetailPhotoTab";
 import useMapStore from "@/stores/mapStore";
 import LoadingSpinner from "@/components/common/LoadingSpinner";
 
-type Tab = "홈" | "메뉴" | "사진" | "중계";
+type Tab = "홈" | "중계" | "메뉴" | "사진";
 
 interface RestaurantDetailComponentProps {
   storeId: number;
@@ -24,7 +24,10 @@ export default function RestaurantDetailComponent({
   storeId,
   onClose,
 }: RestaurantDetailComponentProps) {
-  const [currentTab, setCurrentTab] = useState<Tab>("홈");
+  const detailInitialTab = useMapStore((s) => s.detailInitialTab);
+  const [currentTab, setCurrentTab] = useState<Tab>(
+    (detailInitialTab as Tab) || "홈"
+  );
   const { data: detail, isLoading: loading, error } = useStoreDetail(storeId);
   const { setPosition, setRefreshBtn } = useMapStore();
   const { isFavorite, toggleFavorite, isPending: isFavoritePending } = useFavoriteToggle(storeId);
@@ -74,7 +77,7 @@ export default function RestaurantDetailComponent({
         currentTab={currentTab}
         setCurrentTab={setCurrentTab}
       />
-      <div className="flex-1 p-5 text-base overflow-y-auto">
+      <div className="flex-1 px-5 pt-5 pb-3 text-base overflow-y-auto">
         {currentTab === "홈" && <RestaurantDetailHomeTab detail={detail} />}
         {currentTab === "메뉴" && <RestaurantDetailMenuTab detail={detail} />}
         {currentTab === "사진" && <RestaurantDetailPhotoTab detail={detail} />}

@@ -62,10 +62,10 @@ export default function RestaurantDetailHomeTab({
   }
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-2">
       {/* 설명 */}
       {detail.description && (
-        <p className="text-gray-600 text-sm leading-relaxed">{detail.description}</p>
+        <p className="text-gray-600 text-sm leading-normal">{detail.description}</p>
       )}
 
       {detail.is_owner && (
@@ -78,7 +78,7 @@ export default function RestaurantDetailHomeTab({
       {infoItems.length > 0 && (
         <div className="rounded-xl border border-gray-100 divide-y divide-gray-100">
           {infoItems.map((item, idx) => (
-            <div key={idx} className="flex items-center gap-3 px-4 py-3">
+            <div key={idx} className={`flex items-center gap-3 px-4 py-3 ${idx === 0 ? "pt-2.5" : ""}`}>
               <span className="text-primary5 text-base flex-shrink-0">{item.icon}</span>
               {item.content}
             </div>
