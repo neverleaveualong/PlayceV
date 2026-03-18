@@ -15,8 +15,10 @@ type Tab = "홈" | "메뉴" | "사진" | "중계";
 
 interface RestaurantDetailComponentProps {
   storeId: number;
-  onClose?: () => void;
+  onClose: () => void;
 }
+
+const ASIDE_BASE = "fixed left-0 top-0 h-full w-sidebar z-[100] bg-white shadow-2xl border-r border-gray-100 flex flex-col font-pretendard animate-slide-in-left";
 
 export default function RestaurantDetailComponent({
   storeId,
@@ -33,11 +35,9 @@ export default function RestaurantDetailComponent({
     setRefreshBtn(false);
   }, [detail, setPosition, setRefreshBtn]);
 
-
-
   if (loading) {
     return (
-      <aside className="fixed left-0 top-0 h-full w-sidebar z-[100] bg-white shadow-2xl border-r border-gray-100 flex flex-col font-pretendard animate-slide-in-left">
+      <aside className={ASIDE_BASE}>
         <div className="flex-1 flex items-center justify-center">
           <LoadingSpinner message="식당 정보를 불러오는 중..." />
         </div>
@@ -47,16 +47,22 @@ export default function RestaurantDetailComponent({
 
   if (error || !detail) {
     return (
-      <aside className="fixed left-0 top-0 h-full w-sidebar z-[100] bg-white shadow-2xl border-r border-gray-100 flex flex-col font-pretendard animate-slide-in-left">
-        <div className="flex-1 flex items-center justify-center text-red-500">
-          {error ? "상세 정보를 불러오지 못했습니다." : "오류"}
+      <aside className={ASIDE_BASE}>
+        <div className="flex-1 flex flex-col items-center justify-center gap-3 text-gray-400">
+          <span className="text-lg">정보를 불러올 수 없습니다</span>
+          <button
+            onClick={onClose}
+            className="text-sm text-primary5 hover:underline"
+          >
+            닫기
+          </button>
         </div>
       </aside>
     );
   }
 
   return (
-    <aside className="fixed left-0 top-0 h-full w-sidebar z-[100] bg-white shadow-2xl border-r border-gray-100 flex flex-col font-pretendard animate-slide-in-left">
+    <aside className={ASIDE_BASE}>
       <RestaurantDetailHeader />
       <RestaurantDetailImageSection
         detail={detail}
@@ -69,15 +75,12 @@ export default function RestaurantDetailComponent({
         currentTab={currentTab}
         setCurrentTab={setCurrentTab}
       />
-      <div className="flex-1 p-6 text-base overflow-y-auto">
+      <div className="flex-1 p-5 text-base overflow-y-auto">
         {currentTab === "홈" && <RestaurantDetailHomeTab detail={detail} />}
         {currentTab === "메뉴" && <RestaurantDetailMenuTab detail={detail} />}
         {currentTab === "사진" && <RestaurantDetailPhotoTab detail={detail} />}
         {currentTab === "중계" && (
-          <RestaurantDetailBroadcastTab
-            detail={detail}
-            storeId={storeId}
-          />
+          <RestaurantDetailBroadcastTab detail={detail} storeId={storeId} />
         )}
       </div>
     </aside>
