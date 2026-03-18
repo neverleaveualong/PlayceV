@@ -29,6 +29,7 @@ const searchService = {
       type: store.type,
       main_img: store.images[0]?.imgUrl ?? null,
       address: store.address,
+      opening_hours: store.openingHours,
       lat: store.lat,
       lng: store.lng,
       broadcasts: store.broadcasts.map((b) => ({
