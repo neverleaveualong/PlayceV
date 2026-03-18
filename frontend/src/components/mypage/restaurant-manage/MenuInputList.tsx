@@ -1,4 +1,5 @@
 import classNames from "classnames";
+import { FiPlus, FiX } from "react-icons/fi";
 import type { MenuItem } from "@/types/restaurant.types";
 import ErrorMessage from "@/components/common/ErrorMessage";
 
@@ -7,6 +8,9 @@ interface MenuInputListProps {
   setMenus: (menus: MenuItem[]) => void;
   error?: string;
 }
+
+const inputStyle =
+  "border border-gray-200 rounded-xl px-3.5 py-2.5 text-sm text-mainText placeholder-gray-400 hover:border-primary5 focus:border-primary5 focus:outline-none focus:ring-2 focus:ring-primary1 transition-colors";
 
 const MenuInputList = ({ menus, setMenus, error }: MenuInputListProps) => {
   const handleMenuNameChange = (idx: number, name: string) => {
@@ -25,16 +29,13 @@ const MenuInputList = ({ menus, setMenus, error }: MenuInputListProps) => {
 
   return (
     <div>
-      <label className="block mb-1 font-semibold text-gray-700">
-        메뉴 <span className="text-red-500">*</span>
-      </label>
       <div className="space-y-2">
         {menus.map((menu, idx) => (
-          <div key={idx} className="flex gap-2">
+          <div key={idx} className="flex items-center gap-2">
             <input
               className={classNames(
-                "border rounded-lg px-3 py-2",
-                menus.length > 1 ? "w-[60%]" : "w-[65%]"
+                inputStyle,
+                menus.length > 1 ? "w-[58%]" : "w-[63%]"
               )}
               placeholder={`메뉴 ${idx + 1}`}
               value={menu.name}
@@ -42,10 +43,10 @@ const MenuInputList = ({ menus, setMenus, error }: MenuInputListProps) => {
             />
             <input
               className={classNames(
-                "border rounded-lg px-3 py-2",
-                menus.length > 1 ? "w-[27%]" : "w-[35%]"
+                inputStyle,
+                menus.length > 1 ? "w-[28%]" : "w-[37%]"
               )}
-              placeholder={`가격`}
+              placeholder="가격"
               value={menu.price}
               onChange={(e) => handleMenuPriceChange(idx, e.target.value)}
             />
@@ -53,9 +54,9 @@ const MenuInputList = ({ menus, setMenus, error }: MenuInputListProps) => {
               <button
                 type="button"
                 onClick={() => removeMenu(idx)}
-                className="px-2 text-red-500"
+                className="w-7 h-7 flex items-center justify-center rounded-full hover:bg-red-50 text-gray-400 hover:text-red-500 transition-colors flex-shrink-0"
               >
-                삭제
+                <FiX className="text-sm" />
               </button>
             )}
           </div>
@@ -63,9 +64,10 @@ const MenuInputList = ({ menus, setMenus, error }: MenuInputListProps) => {
         <button
           type="button"
           onClick={addMenu}
-          className="mt-1 text-primary5 text-sm"
+          className="flex items-center gap-1 text-sm text-primary5 font-medium hover:underline mt-1"
         >
-          + 메뉴 추가
+          <FiPlus className="text-xs" />
+          메뉴 추가
         </button>
       </div>
       <ErrorMessage message={error} />
