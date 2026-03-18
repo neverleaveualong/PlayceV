@@ -8,6 +8,7 @@ export type RestaurantBasic = {
   type: string;
   main_img: string;
   address: string;
+  opening_hours?: string;
   lat: number;
   lng: number;
   broadcasts: Broadcast[];
