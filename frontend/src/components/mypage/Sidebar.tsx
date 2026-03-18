@@ -55,7 +55,10 @@ const Sidebar = ({ selected, onSelect }: SidebarProps) => {
           icon={<FaStore />}
           label="식당 관리"
           active={selected === "restaurant"}
-          onClick={() => onSelect("restaurant")}
+          onClick={() => {
+            onSelect("restaurant");
+            setRestaurantSubpage("restaurant-home");
+          }}
         />
         <SidebarItem
           icon={<FaTv />}

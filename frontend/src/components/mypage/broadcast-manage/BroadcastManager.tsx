@@ -1,13 +1,11 @@
 import { FaArrowLeft } from "react-icons/fa";
 import useMypageStore from "@/stores/mypageStore";
 import useBroadcastStore from "@/stores/broadcastStore";
-import SectionHeader from "@/components/common/SectionHeader";
 import BroadcastRegister from "@/components/broadcast/BroadcastRegister";
 import BroadcastEdit from "@/components/broadcast/BroadcastEdit";
 import BroadcastStoreList from "./BroadcastStoreList";
 import BroadcastView from "@/components/broadcast/BroadcastView";
 import { useState, useEffect } from "react";
-import type { MypageProps } from "@/components/mypage/MypageModal";
 
 type BroadcastSubpage =
   | "store-list"
@@ -15,14 +13,18 @@ type BroadcastSubpage =
   | "broadcast-register"
   | "broadcast-edit";
 
-const BroadcastManager = ({ onClose }: MypageProps) => {
-  const { storeId, resetYMD } = useBroadcastStore();
+const BroadcastManager = () => {
+  const { resetYMD, resetStore } = useBroadcastStore();
   const { restaurantSubpage, setRestaurantSubpage } = useMypageStore();
-  const [subpage, setSubpage] = useState<BroadcastSubpage>(
-    storeId ? "schedule-view" : "store-list"
-  );
+  const [subpage, setSubpage] = useState<BroadcastSubpage>("store-list");
 
-  // BroadcastRegisterEdit/TabLists 내부에서 setRestaurantSubpage를 호출하므로 동기화
+  useEffect(() => {
+    resetStore();
+    resetYMD();
+    setRestaurantSubpage("restaurant-home");
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   useEffect(() => {
     if (restaurantSubpage === "schedule-view-broadcasts") {
       setSubpage("schedule-view");
@@ -54,34 +56,37 @@ const BroadcastManager = ({ onClose }: MypageProps) => {
     setSubpage("broadcast-register");
   };
 
+  const isSubpage = subpage !== "store-list";
+
   return (
-    <div className="px-2">
-      <SectionHeader
-        title={titleMap[subpage]}
-        onClose={onClose}
-        leftAction={
-          subpage !== "store-list" && (
-            <FaArrowLeft
-              className="hover:cursor-pointer hover:text-primary5"
-              onClick={handleBack}
-            />
-          )
-        }
-      />
+    <div>
+      {/* 헤더 */}
+      <div className="flex items-center gap-3 mb-4">
+        {isSubpage && (
+          <button
+            onClick={handleBack}
+            className="p-1.5 rounded-lg text-darkgray hover:text-primary5 hover:bg-primary4/30 transition-colors"
+          >
+            <FaArrowLeft className="text-sm" />
+          </button>
+        )}
+        <h2 className="text-xl font-semibold text-mainText">
+          {titleMap[subpage]}
+        </h2>
+      </div>
+
       <div>
         {subpage === "store-list" && (
-          <BroadcastStoreList
-            onSelectStore={() => setSubpage("schedule-view")}
-          />
+          <BroadcastStoreList onSelectStore={() => setSubpage("schedule-view")} />
         )}
         {subpage === "schedule-view" && (
           <BroadcastView onRegister={handleRegister} />
         )}
         {subpage === "broadcast-register" && (
-          <BroadcastRegister onClose={onClose} />
+          <BroadcastRegister />
         )}
         {subpage === "broadcast-edit" && (
-          <BroadcastEdit onClose={onClose} />
+          <BroadcastEdit />
         )}
       </div>
     </div>
