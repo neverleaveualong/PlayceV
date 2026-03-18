@@ -3,6 +3,7 @@ import { Map } from "react-kakao-maps-sdk";
 import useMapStore from "@/stores/mapStore";
 import PlayceMapMarker from "./PlayceMapMarker";
 import PlayceModal from "./PlayceModal";
+import SpotRefreshButton from "./SpotRefreshButton";
 import RestaurantDetailComponent from "@/components/restaurant/RestaurantDetail";
 import useRestaurantDetail from "@/hooks/useRestaurantDetail";
 import useToastStore from "@/stores/toastStore";
@@ -12,25 +13,21 @@ import type { RestaurantBasic } from "@/types/restaurant.types";
 import { CITY_STATION } from "@/constants/mapConstant";
 
 const PlayceMap: React.FC = () => {
+  const isSidebarOpen = useMapStore((state) => state.isSidebarOpen);
   const position = useMapStore((state) => state.position);
-  const searchPosition = useMapStore((state) => state.searchPosition);
-  const radius = useMapStore((state) => state.radius);
+  const bounds = useMapStore((state) => state.bounds);
   const openedModal = useMapStore((state) => state.openedModal);
+  const isRefreshBtnOn = useMapStore((state) => state.isRefreshBtnOn);
   const zoomLevel = useMapStore((state) => state.zoomLevel);
   const setPosition = useMapStore((state) => state.setPosition);
   const closeModal = useMapStore((state) => state.closeModal);
   const setRefreshBtn = useMapStore((state) => state.setRefreshBtn);
   const setZoomLevel = useMapStore((state) => state.setZoomLevel);
 
-  const { data: restaurants = [] } = useNearbyRestaurants(
-    searchPosition.lat,
-    searchPosition.lng,
-    radius
-  );
+  const { data: restaurants = [] } = useNearbyRestaurants(bounds);
 
   const { selectedStoreId, openDetail, closeDetail } = useRestaurantDetail();
 
-  // 반드시 null 포함!
   const mapRef = useRef<kakao.maps.Map | null>(null);
 
   useEffect(() => {
@@ -41,6 +38,15 @@ const PlayceMap: React.FC = () => {
       }
     }
   }, [zoomLevel]);
+
+  // 사이드바 토글 시 맵 크기 재조정
+  useEffect(() => {
+    if (!mapRef.current) return;
+    const timer = setTimeout(() => {
+      mapRef.current?.relayout();
+    }, 310);
+    return () => clearTimeout(timer);
+  }, [isSidebarOpen]);
 
   const getCurPosition = () => {
     const map = mapRef.current;
@@ -67,7 +73,6 @@ const PlayceMap: React.FC = () => {
     [setZoomLevel]
   );
 
-  // 상세보기 오픈 시 storeId만 저장
   const handleDetailClick = (restaurant: RestaurantBasic) => {
     openDetail(restaurant.store_id);
   };
@@ -98,7 +103,9 @@ const PlayceMap: React.FC = () => {
             />
           )}
         </Map>
-        {/* 현위치로 이동 버튼 - 반드시 Map과 같은 div 내에서 absolute로! */}
+        {isRefreshBtnOn && openedModal === -1 && (
+          <SpotRefreshButton mapRef={mapRef} />
+        )}
         <GoToCurrentLocationButton mapRef={mapRef} />
         {selectedStoreId && (
           <RestaurantDetailComponent

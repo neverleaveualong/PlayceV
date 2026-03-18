@@ -1,11 +1,6 @@
 import { requestHandler } from "./http";
+import type { Bounds } from "@/types/map";
 
-export interface SearchNearbyProps {
-  lat: number;
-  lng: number;
-  radius: number;
-}
-
-export const searchNearby = (data: SearchNearbyProps) => {
+export const searchNearby = (data: Bounds) => {
   return requestHandler("get", "/search/nearby", data);
 };
