@@ -9,6 +9,7 @@ import EmptyMessage from "@/components/restaurant/EmptyMessage";
 import type { Broadcast } from "@/types/restaurant.types";
 import { formatTimeShort } from "@/utils/formatTime";
 import { getToday } from "@/utils/dateUtils";
+import { getDistanceFromLatLon } from "@/utils/distanceUtils";
 
 const TodayBroadcastSidebar = memo(function TodayBroadcastSidebar() {
   const searchPosition = useMapStore((state) => state.searchPosition);
@@ -27,6 +28,8 @@ const TodayBroadcastSidebar = memo(function TodayBroadcastSidebar() {
     main_img: string | null;
     address: string;
     type: string;
+    lat: number;
+    lng: number;
   };
 
   const todayBroadcasts = useMemo(() => {
@@ -41,6 +44,8 @@ const TodayBroadcastSidebar = memo(function TodayBroadcastSidebar() {
             main_img: store.main_img,
             address: store.address,
             type: store.type,
+            lat: store.lat,
+            lng: store.lng,
           });
         }
       });
@@ -80,6 +85,22 @@ const TodayBroadcastSidebar = memo(function TodayBroadcastSidebar() {
     },
     [openDetail]
   );
+
+  // LIVE / 다음 경기 판단
+  const getMatchStatus = (matchTime: string) => {
+    const now = new Date();
+    const [h, m] = matchTime.split(":").map(Number);
+    const matchStart = new Date(now.getFullYear(), now.getMonth(), now.getDate(), h, m);
+    const matchEnd = new Date(matchStart.getTime() + 2 * 60 * 60 * 1000); // 약 2시간
+
+    if (now >= matchStart && now <= matchEnd) return "live";
+    if (matchStart > now) {
+      const diffMin = Math.floor((matchStart.getTime() - now.getTime()) / 60000);
+      if (diffMin <= 60) return `${diffMin}분 후`;
+      return `${Math.floor(diffMin / 60)}시간 후`;
+    }
+    return "종료";
+  };
 
   const todayDate = new Date();
   const formattedDate = `${todayDate.getFullYear()}.${String(todayDate.getMonth() + 1).padStart(2, "0")}.${String(todayDate.getDate()).padStart(2, "0")}`;
@@ -129,46 +150,71 @@ const TodayBroadcastSidebar = memo(function TodayBroadcastSidebar() {
             {filtered.length === 0 ? (
               <EmptyMessage message="오늘 중계되는 경기가 없습니다." />
             ) : (
-              filtered.map((game) => (
-                <li
-                  key={`${game.store_id}-${game.match_time}-${game.league}`}
-                  className="rounded-xl border border-gray-100 p-3.5 flex items-center gap-3 cursor-pointer hover:border-primary1 hover:shadow-sm transition-all"
-                  onClick={() => handleOpenDetail(game.store_id)}
-                >
-                  <img
-                    src={game.main_img || "/noimg.png"}
-                    alt={game.store_name}
-                    className="w-11 h-11 rounded-lg object-cover bg-gray-100 flex-shrink-0"
-                  />
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-2 mb-0.5">
-                      <span className="text-sm font-semibold text-gray-800 truncate">
-                        {game.store_name}
-                      </span>
-                      <span className="text-[10px] bg-primary4 text-primary5 rounded-full px-2 py-0.5 flex-shrink-0">
-                        {game.league}
-                      </span>
-                    </div>
-                    <div className="flex items-center gap-1.5 text-xs">
-                      {game.team_one && game.team_two ? (
-                        <>
-                          <span className="font-medium text-gray-700">
-                            {game.team_one}
+              filtered.map((game) => {
+                const status = getMatchStatus(game.match_time);
+                const isLive = status === "live";
+                const distance = getDistanceFromLatLon(
+                  searchPosition.lat, searchPosition.lng,
+                  game.lat, game.lng
+                );
+
+                return (
+                  <li
+                    key={`${game.store_id}-${game.match_time}-${game.league}`}
+                    className={`rounded-xl border p-3.5 flex items-center gap-3 cursor-pointer hover:shadow-sm transition-all bg-white ${
+                      isLive ? "border-red-200 hover:border-red-300" : "border-gray-100 hover:border-primary1"
+                    }`}
+                    onClick={() => handleOpenDetail(game.store_id)}
+                  >
+                    <img
+                      src={game.main_img || "/noimg.png"}
+                      alt={game.store_name}
+                      className="w-11 h-11 rounded-lg object-cover bg-gray-100 flex-shrink-0"
+                    />
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-1.5 mb-0.5">
+                        <span className="text-sm font-semibold text-gray-800 truncate">
+                          {game.store_name}
+                        </span>
+                        <span className="text-[10px] text-gray-400">{distance}km</span>
+                        {isLive && (
+                          <span className="text-[10px] bg-red-500 text-white rounded-full px-1.5 py-0.5 font-bold flex-shrink-0 animate-pulse">
+                            LIVE
                           </span>
-                          <span className="text-gray-300">vs</span>
-                          <span className="font-medium text-gray-700">
-                            {game.team_two}
-                          </span>
-                        </>
-                      ) : null}
-                      <span className="ml-auto text-gray-400 flex-shrink-0">
-                        {formatTimeShort(game.match_time)}
-                      </span>
+                        )}
+                      </div>
+                      <div className="flex items-center gap-1.5 text-xs">
+                        <span className="text-[10px] bg-primary4 text-primary5 rounded-full px-2 py-0.5 flex-shrink-0">
+                          {game.league}
+                        </span>
+                        {game.team_one && game.team_two ? (
+                          <>
+                            <span className="font-medium text-gray-700">
+                              {game.team_one}
+                            </span>
+                            <span className="text-gray-300">vs</span>
+                            <span className="font-medium text-gray-700">
+                              {game.team_two}
+                            </span>
+                          </>
+                        ) : null}
+                      </div>
+                      <div className="flex items-center justify-between mt-1 text-[11px]">
+                        <span className="text-gray-400">
+                          {formatTimeShort(game.match_time)}
+                        </span>
+                        {!isLive && status !== "종료" && (
+                          <span className="text-primary5 font-medium">{status}</span>
+                        )}
+                        {status === "종료" && (
+                          <span className="text-gray-400">종료</span>
+                        )}
+                      </div>
                     </div>
-                  </div>
-                </li>
-              ))
-            )}
+                  </li>
+                );
+              }))
+            }
           </ul>
         </>
       )}
