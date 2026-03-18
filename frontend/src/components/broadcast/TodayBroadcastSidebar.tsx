@@ -10,6 +10,7 @@ import type { Broadcast } from "@/types/restaurant.types";
 import { formatTimeShort } from "@/utils/formatTime";
 import { getToday } from "@/utils/dateUtils";
 import { getDistanceFromLatLon } from "@/utils/distanceUtils";
+import { CITY_STATION } from "@/constants/mapConstant";
 
 type TodayBroadcast = Broadcast & {
   store_name: string;
@@ -36,23 +37,26 @@ const getMatchStatus = (matchTime: string) => {
   return "종료";
 };
 
+type BroadcastWithStatus = TodayBroadcast & { _status: string };
+
 /** 경기 카드 */
 function BroadcastCard({
   game,
   userPosition,
   onClick,
 }: {
-  game: TodayBroadcast;
+  game: BroadcastWithStatus;
   userPosition: { lat: number; lng: number };
   onClick: () => void;
 }) {
-  const status = getMatchStatus(game.match_time);
+  const status = game._status;
   const isLive = status === "live";
   const isEnded = status === "종료";
-  const distance = getDistanceFromLatLon(
-    userPosition.lat, userPosition.lng,
-    game.lat, game.lng
-  );
+  const isGpsAvailable =
+    userPosition.lat !== CITY_STATION.lat || userPosition.lng !== CITY_STATION.lng;
+  const distance = isGpsAvailable
+    ? getDistanceFromLatLon(userPosition.lat, userPosition.lng, game.lat, game.lng)
+    : null;
 
   return (
     <li
@@ -85,10 +89,12 @@ function BroadcastCard({
             )}
           </div>
           <div className="flex items-center gap-2 text-[11px] text-gray-400 mt-0.5">
-            <span className="flex items-center gap-0.5">
-              <FiMapPin className="text-[10px]" />
-              {distance}km
-            </span>
+            {distance !== null && (
+              <span className="flex items-center gap-0.5">
+                <FiMapPin className="text-[10px]" />
+                {distance}km
+              </span>
+            )}
             <span className="flex items-center gap-0.5">
               <FiClock className="text-[10px]" />
               {formatTimeShort(game.match_time)}
@@ -177,11 +183,13 @@ const TodayBroadcastSidebar = memo(function TodayBroadcastSidebar() {
     }
   }, [SPORTS, selectedSport]);
 
+  const effectiveSport = SPORTS.includes(selectedSport) ? selectedSport : SPORTS[0] ?? "";
+
   // 종목 탭 바뀌면 더보기 초기화
   useEffect(() => {
     setVisibleCount(INITIAL_COUNT);
     setShowEnded(false);
-  }, [selectedSport]);
+  }, [effectiveSport]);
 
   const sportCounts = useMemo(() => {
     const counts: Record<string, number> = {};
@@ -191,24 +199,25 @@ const TodayBroadcastSidebar = memo(function TodayBroadcastSidebar() {
     return counts;
   }, [todayBroadcasts]);
 
-  // 정렬: LIVE → 곧 시작(시간순) → 종료
-  const filtered = useMemo(() => {
-    const sportFiltered = todayBroadcasts.filter((b) => b.sport === selectedSport);
-    return sportFiltered.sort((a, b) => {
-      const sa = getMatchStatus(a.match_time);
-      const sb = getMatchStatus(b.match_time);
-      const order = (s: string) => (s === "live" ? 0 : s === "종료" ? 2 : 1);
-      if (order(sa) !== order(sb)) return order(sa) - order(sb);
+  // status를 한 번만 계산 + 정렬: LIVE → 곧 시작(시간순) → 종료
+  const filtered: BroadcastWithStatus[] = useMemo(() => {
+    const withStatus = todayBroadcasts
+      .filter((b) => b.sport === effectiveSport)
+      .map((b) => ({ ...b, _status: getMatchStatus(b.match_time) }));
+    const order = (s: string) => (s === "live" ? 0 : s === "종료" ? 2 : 1);
+    withStatus.sort((a, b) => {
+      if (order(a._status) !== order(b._status)) return order(a._status) - order(b._status);
       return a.match_time.localeCompare(b.match_time);
     });
-  }, [todayBroadcasts, selectedSport]);
+    return withStatus;
+  }, [todayBroadcasts, effectiveSport]);
 
   const activeGames = useMemo(
-    () => filtered.filter((g) => getMatchStatus(g.match_time) !== "종료"),
+    () => filtered.filter((g) => g._status !== "종료"),
     [filtered]
   );
   const endedGames = useMemo(
-    () => filtered.filter((g) => getMatchStatus(g.match_time) === "종료"),
+    () => filtered.filter((g) => g._status === "종료"),
     [filtered]
   );
   const visibleActive = activeGames.slice(0, visibleCount);
@@ -254,7 +263,7 @@ const TodayBroadcastSidebar = memo(function TodayBroadcastSidebar() {
                 key={sport}
                 onClick={() => setSelectedSport(sport)}
                 className={`px-3 py-1.5 text-[11px] font-semibold rounded-full transition-all ${
-                  selectedSport === sport
+                  effectiveSport === sport
                     ? "bg-primary5 text-white shadow-sm"
                     : "bg-white border border-gray-200 text-gray-500 hover:border-primary5 hover:text-primary5"
                 }`}
