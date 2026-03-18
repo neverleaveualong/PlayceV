@@ -2,6 +2,11 @@
 @tailwind components;
 @tailwind utilities;
 
+/* antd/dist/reset.css가 p에 margin-bottom: 1em을 주입하므로 Tailwind preflight 기준으로 재리셋 */
+p {
+  margin: 0;
+}
+
 body {
   @apply font-sans;
 }
