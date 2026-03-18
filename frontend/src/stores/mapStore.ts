@@ -12,6 +12,7 @@ interface MapState {
   zoomLevel: number;
   isSidebarOpen: boolean;
   selectedStoreId: number | null;
+  detailInitialTab: string | null;
   setPosition: (pos: latlng) => void;
   initPosition: (pos: latlng) => void;
   search: (bounds: Bounds) => void;
@@ -20,7 +21,7 @@ interface MapState {
   setRefreshBtn: (button: boolean) => void;
   setZoomLevel: (zoom: number) => void;
   toggleSidebar: () => void;
-  openDetail: (storeId: number) => void;
+  openDetail: (storeId: number, initialTab?: string) => void;
   closeDetail: () => void;
 }
 
@@ -34,6 +35,7 @@ const useMapStore = create<MapState>((set, get) => ({
   zoomLevel: 3,
   isSidebarOpen: true,
   selectedStoreId: null,
+  detailInitialTab: null,
   setPosition: (pos) => {
     set({ position: pos });
   },
@@ -70,11 +72,11 @@ const useMapStore = create<MapState>((set, get) => ({
   toggleSidebar: () => {
     set((state) => ({ isSidebarOpen: !state.isSidebarOpen }));
   },
-  openDetail: (storeId) => {
-    set({ selectedStoreId: storeId, isSidebarOpen: true });
+  openDetail: (storeId, initialTab) => {
+    set({ selectedStoreId: storeId, isSidebarOpen: true, detailInitialTab: initialTab ?? null });
   },
   closeDetail: () => {
-    set({ selectedStoreId: null });
+    set({ selectedStoreId: null, detailInitialTab: null });
   },
 }));
 
