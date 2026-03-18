@@ -39,6 +39,7 @@ const Home: React.FC = () => {
       >
         {selectedStoreId !== null ? (
           <RestaurantDetailComponent
+            key={selectedStoreId}
             storeId={selectedStoreId}
             onClose={closeDetail}
           />
