@@ -8,8 +8,13 @@ const RestaurantDetailPhotoTab = memo(function RestaurantDetailPhotoTab({
 }: {
   detail: RestaurantDetail;
 }) {
-  const images = detail.img_urls || [];
+  const [failedUrls, setFailedUrls] = useState<Set<string>>(new Set());
+  const images = (detail.img_urls || []).filter((url) => !failedUrls.has(url));
   const [modalIndex, setModalIndex] = useState<number | null>(null);
+
+  const handleImgError = (url: string) => {
+    setFailedUrls((prev) => new Set(prev).add(url));
+  };
 
   const handlePrev = useCallback(
     (e: React.MouseEvent) => {
@@ -45,6 +50,7 @@ const RestaurantDetailPhotoTab = memo(function RestaurantDetailPhotoTab({
               ${images.length === 1 ? "h-56" : "h-40"}`}
             loading="lazy"
             onClick={() => setModalIndex(idx)}
+            onError={() => handleImgError(url)}
           />
         ))}
       </div>
