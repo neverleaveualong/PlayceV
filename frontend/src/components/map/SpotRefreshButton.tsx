@@ -15,12 +15,12 @@ const SpotRefreshButton = () => {
       className="
         absolute top-20 left-1/2 -translate-x-1/2 z-10
         flex items-center gap-1.5
-        px-4 py-2 rounded-full
-        bg-white/90 backdrop-blur-sm border border-gray-200
+        px-5 py-2.5 rounded-full
+        bg-primary5 border border-primary5
         shadow-lg
-        text-sm font-medium text-gray-700
-        hover:bg-white hover:border-primary5 hover:text-primary5 hover:shadow-xl
-        transition-all
+        text-sm font-semibold text-white
+        hover:brightness-95 hover:shadow-xl
+        transition-all animate-slide-up
       "
       onClick={() => search(getScaledValue(zoomLevel))}
     >
