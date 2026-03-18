@@ -26,7 +26,7 @@ export default function RestaurantDetailComponent({
 }: RestaurantDetailComponentProps) {
   const [currentTab, setCurrentTab] = useState<Tab>("홈");
   const { data: detail, isLoading: loading, error } = useStoreDetail(storeId);
-  const { setPosition, setRefreshBtn } = useMapStore();
+  const { setPosition, setRefreshBtn, isSidebarOpen } = useMapStore();
   const { isFavorite, toggleFavorite, isPending: isFavoritePending } = useFavoriteToggle(storeId);
 
   useEffect(() => {
@@ -34,6 +34,11 @@ export default function RestaurantDetailComponent({
     setPosition({ lat: detail.lat, lng: detail.lng });
     setRefreshBtn(false);
   }, [detail, setPosition, setRefreshBtn]);
+
+  // 사이드바 닫히면 상세보기도 닫기
+  useEffect(() => {
+    if (!isSidebarOpen) onClose();
+  }, [isSidebarOpen, onClose]);
 
   if (loading) {
     return (
