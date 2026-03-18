@@ -100,59 +100,45 @@ const SearchPage = () => {
         {activeTab === "search" ? (
           <>
             {/* 검색 영역 */}
-            <div className="px-4 py-4 space-y-2 border-b border-gray-100">
-              <div>
-                <SearchInput className="w-full" />
-              </div>
-              <div>
+            <div className="px-4 py-4 space-y-3 border-b border-gray-100">
+              <SearchInput className="w-full" />
+              <div className="flex gap-2">
                 <button
                   onClick={() => setShowRegionModal(true)}
-                  className="flex items-center justify-between w-full px-4 py-2 border rounded-lg bg-white text-gray-700 text-sm shadow-sm hover:border-primary5 min-w-0"
+                  className="flex-1 flex items-center justify-between px-3 py-2 border border-gray-200 rounded-lg bg-gray-50 text-sm hover:border-primary5 hover:bg-white transition-colors min-w-0"
                 >
-                  <span
-                    className="truncate block text-left min-w-0"
-                    title={selectedRegionLabel}
-                  >
+                  <span className="truncate text-gray-600" title={selectedRegionLabel}>
                     {selectedRegionLabel}
                   </span>
-                  <FiChevronDown className="w-4 h-4 text-gray-400 ml-2 flex-shrink-0" />
+                  <FiChevronDown className="w-3.5 h-3.5 text-gray-400 ml-1 flex-shrink-0" />
                 </button>
-                {showRegionModal && (
-                  <RegionModal
-                    onClose={() => setShowRegionModal(false)}
-                    onApply={() => {
-                      setShowRegionModal(false);
-                    }}
-                  />
-                )}
-              </div>
-              <div>
                 <button
                   onClick={() => setShowSportModal(true)}
-                  className="flex items-center justify-between w-full px-4 py-2 border rounded-lg bg-white text-gray-700 text-sm shadow-sm hover:border-primary5 min-w-0"
+                  className="flex-1 flex items-center justify-between px-3 py-2 border border-gray-200 rounded-lg bg-gray-50 text-sm hover:border-primary5 hover:bg-white transition-colors min-w-0"
                 >
-                  <span
-                    className="truncate block text-left min-w-0"
-                    title={selectedSportLabel}
-                  >
+                  <span className="truncate text-gray-600" title={selectedSportLabel}>
                     {selectedSportLabel}
                   </span>
-                  <FiChevronDown className="w-4 h-4 text-gray-400 ml-2 flex-shrink-0" />
+                  <FiChevronDown className="w-3.5 h-3.5 text-gray-400 ml-1 flex-shrink-0" />
                 </button>
-                {showSportModal && (
-                  <SportModal
-                    onClose={() => setShowSportModal(false)}
-                    onApply={() => {
-                      setShowSportModal(false);
-                    }}
-                  />
-                )}
               </div>
+              {showRegionModal && (
+                <RegionModal
+                  onClose={() => setShowRegionModal(false)}
+                  onApply={() => setShowRegionModal(false)}
+                />
+              )}
+              {showSportModal && (
+                <SportModal
+                  onClose={() => setShowSportModal(false)}
+                  onApply={() => setShowSportModal(false)}
+                />
+              )}
               <div className="flex gap-2">
-                <div className="flex-[7]">
+                <div className="flex-1">
                   <SearchButton />
                 </div>
-                <div className="flex-[3]">
+                <div className="w-20">
                   <ResetButton />
                 </div>
               </div>

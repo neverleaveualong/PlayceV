@@ -74,13 +74,16 @@ const TodayBroadcastSidebar = memo(function TodayBroadcastSidebar() {
   );
 
   return (
-    <section className="w-full bg-white px-4 py-4 rounded-xl border border-gray-100">
-      <div className="flex items-center gap-2 mb-1">
-        <FiTv className="text-primary1 text-xl" />
-        <span className="text-lg font-bold">오늘의 중계일정</span>
-      </div>
-      <div className="text-sm text-gray-500 mb-4 font-medium tracking-tight">
-        지도에서 탐색한 가게의 중계일정만 보여드려요
+    <section className="w-full">
+      {/* 헤더 */}
+      <div className="flex items-center gap-2.5 mb-1">
+        <div className="w-8 h-8 rounded-lg bg-primary4 flex items-center justify-center">
+          <FiTv className="text-primary5 text-sm" />
+        </div>
+        <div>
+          <h3 className="text-sm font-bold text-gray-800">오늘의 중계일정</h3>
+          <p className="text-xs text-gray-400">주변 가게의 중계만 보여드려요</p>
+        </div>
       </div>
 
       {isLoading ? (
@@ -89,77 +92,69 @@ const TodayBroadcastSidebar = memo(function TodayBroadcastSidebar() {
         <EmptyMessage message="오늘 중계되는 경기가 없습니다." />
       ) : (
         <>
-          {/* 종목 탭 */}
-          <nav className="flex gap-2 mb-4 border-b border-gray-100 pb-1">
+          {/* 종목 탭 — pill 스타일 */}
+          <nav className="flex gap-1.5 mb-4 mt-4">
             {SPORTS.map((sport) => (
               <button
                 key={sport}
                 onClick={() => setSelectedSport(sport)}
-                className={`px-3 pb-1 text-sm font-semibold rounded-t-lg border-b-2 ${
+                className={`px-3 py-1.5 text-xs font-semibold rounded-full transition-colors ${
                   selectedSport === sport
-                    ? "border-primary5 text-primary5 bg-primary4"
-                    : "border-transparent text-gray-400 hover:text-primary5 hover:bg-primary3/50"
-                } transition-colors`}
-                style={{ background: "none" }}
+                    ? "bg-primary5 text-white shadow-sm"
+                    : "bg-gray-100 text-gray-500 hover:bg-gray-200"
+                }`}
               >
                 {sport}
               </button>
             ))}
           </nav>
-          {/* 카드형 경기 리스트 */}
-          <ul>
+
+          {/* 경기 카드 */}
+          <ul className="space-y-2.5">
             {filtered.length === 0 ? (
               <EmptyMessage message="오늘 중계되는 경기가 없습니다." />
             ) : (
               filtered.map((game) => (
                 <li
                   key={`${game.store_id}-${game.match_time}-${game.league}`}
-                  className="bg-white rounded-xl border border-gray-200 px-4 py-3 mb-3 flex items-center gap-4 cursor-pointer hover:bg-primary3/30 transition-colors"
+                  className="rounded-xl border border-gray-100 p-3.5 flex items-center gap-3 cursor-pointer hover:border-primary1 hover:shadow-sm transition-all"
                   onClick={() => handleOpenDetail(game.store_id)}
                 >
                   <img
                     src={game.main_img || "/noimg.png"}
                     alt={game.store_name}
-                    className="w-12 h-12 rounded-lg object-cover bg-gray-100 flex-shrink-0"
+                    className="w-11 h-11 rounded-lg object-cover bg-gray-100 flex-shrink-0"
                   />
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2 mb-0.5">
-                      <span className="font-bold text-primary5 truncate">
+                      <span className="text-sm font-semibold text-gray-800 truncate">
                         {game.store_name}
                       </span>
-                      <span className="text-xs bg-primary4 text-primary5 rounded px-2 py-0.5 ml-2">
+                      <span className="text-[10px] bg-primary4 text-primary5 rounded-full px-2 py-0.5 flex-shrink-0">
                         {game.league}
                       </span>
                     </div>
-                    <div className="flex items-center gap-2">
+                    <div className="flex items-center gap-1.5 text-xs">
                       {game.team_one && game.team_two ? (
                         <>
-                          <span className="font-semibold text-gray-800">
+                          <span className="font-medium text-gray-700">
                             {game.team_one}
                           </span>
-                          <span className="mx-1 text-xs text-gray-400">vs</span>
-                          <span className="font-semibold text-gray-800">
+                          <span className="text-gray-300">vs</span>
+                          <span className="font-medium text-gray-700">
                             {game.team_two}
                           </span>
                         </>
-                      ) : (
-                        <></>
-                      )}
-                      <span className="ml-auto text-xs text-gray-500">
+                      ) : null}
+                      <span className="ml-auto text-gray-400 flex-shrink-0">
                         {formatTimeShort(game.match_time)}
                       </span>
                     </div>
-                    {game.etc && (
-                      <div className="mt-1 text-xs text-primary5">
-                        {game.etc}
-                      </div>
-                    )}
                   </div>
                 </li>
               ))
             )}
           </ul>
-          <div className="h-8" />
         </>
       )}
 
