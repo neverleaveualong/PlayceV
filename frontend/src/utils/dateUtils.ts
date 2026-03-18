@@ -1,11 +1,10 @@
 export const getToday = () => {
   const today = new Date();
-  return {
-    year: today.getFullYear(),
-    month: today.getMonth() + 1,
-    date: today.getDate(),
-    dateString: today.toISOString().slice(0, 10),
-  };
+  const year = today.getFullYear();
+  const month = today.getMonth() + 1;
+  const date = today.getDate();
+  const dateString = `${year}-${String(month).padStart(2, "0")}-${String(date).padStart(2, "0")}`;
+  return { year, month, date, dateString };
 };
 
 export function getDay(year: number, month: number, day: number) {

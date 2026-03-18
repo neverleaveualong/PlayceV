@@ -24,6 +24,7 @@ export const useGeoLocation = (options = {}) => {
       (pos) => {
         const { latitude, longitude } = pos.coords;
         initPosition({ lat: latitude, lng: longitude });
+        addToast("현재 위치로 이동했어요!", "success");
       },
       (err) => {
         setError(err.message);

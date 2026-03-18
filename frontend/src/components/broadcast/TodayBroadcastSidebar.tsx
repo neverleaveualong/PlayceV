@@ -1,5 +1,5 @@
 import { useState, useMemo, useEffect, useCallback, memo } from "react";
-import { FiTv } from "react-icons/fi";
+import { FiTv, FiMapPin, FiClock, FiChevronDown } from "react-icons/fi";
 import useMapStore from "@/stores/mapStore";
 import RestaurantDetailComponent from "@/components/restaurant/RestaurantDetail";
 import useRestaurantDetail from "@/hooks/useRestaurantDetail";
@@ -9,8 +9,133 @@ import EmptyMessage from "@/components/restaurant/EmptyMessage";
 import type { Broadcast } from "@/types/restaurant.types";
 import { formatTimeShort } from "@/utils/formatTime";
 import { getToday } from "@/utils/dateUtils";
+import { getDistanceFromLatLon } from "@/utils/distanceUtils";
+import { CITY_STATION } from "@/constants/mapConstant";
+
+type TodayBroadcast = Broadcast & {
+  store_name: string;
+  store_id: number;
+  main_img: string | null;
+  address: string;
+  type: string;
+  lat: number;
+  lng: number;
+};
+
+const getMatchStatus = (matchTime: string) => {
+  const now = new Date();
+  const [h, m] = matchTime.split(":").map(Number);
+  const matchStart = new Date(now.getFullYear(), now.getMonth(), now.getDate(), h, m);
+  const matchEnd = new Date(matchStart.getTime() + 2 * 60 * 60 * 1000);
+
+  if (now >= matchStart && now <= matchEnd) return "live";
+  if (matchStart > now) {
+    const diffMin = Math.floor((matchStart.getTime() - now.getTime()) / 60000);
+    if (diffMin <= 60) return `${diffMin}분 후`;
+    return `${Math.floor(diffMin / 60)}시간 후`;
+  }
+  return "종료";
+};
+
+type BroadcastWithStatus = TodayBroadcast & { _status: string };
+
+/** 경기 카드 */
+function BroadcastCard({
+  game,
+  userPosition,
+  onClick,
+}: {
+  game: BroadcastWithStatus;
+  userPosition: { lat: number; lng: number };
+  onClick: () => void;
+}) {
+  const status = game._status;
+  const isLive = status === "live";
+  const isEnded = status === "종료";
+  const isGpsAvailable =
+    userPosition.lat !== CITY_STATION.lat || userPosition.lng !== CITY_STATION.lng;
+  const distance = isGpsAvailable
+    ? getDistanceFromLatLon(userPosition.lat, userPosition.lng, game.lat, game.lng)
+    : null;
+
+  return (
+    <li
+      onClick={onClick}
+      className={`group rounded-2xl p-3 cursor-pointer transition-all ${
+        isLive
+          ? "bg-red-50/60 border border-red-100 hover:shadow-md hover:border-red-200"
+          : isEnded
+          ? "bg-white border border-gray-100 opacity-60"
+          : "bg-white border border-gray-100 hover:shadow-md hover:border-primary2"
+      }`}
+    >
+      {/* 상단: 가게 정보 */}
+      <div className="flex items-center gap-2.5">
+        <img
+          src={game.main_img || "/noimg.png"}
+          alt={game.store_name}
+          className="w-10 h-10 rounded-xl object-cover bg-gray-100 flex-shrink-0"
+        />
+        <div className="flex-1 min-w-0">
+          <div className="flex items-center gap-1.5">
+            <span className="text-[13px] font-semibold text-gray-800 truncate">
+              {game.store_name}
+            </span>
+            {isLive && (
+              <span className="inline-flex items-center gap-0.5 text-[9px] bg-red-500 text-white rounded-full px-1.5 py-px font-bold flex-shrink-0">
+                <span className="w-1 h-1 bg-white rounded-full animate-pulse" />
+                LIVE
+              </span>
+            )}
+          </div>
+          <div className="flex items-center gap-2 text-[11px] text-gray-400 mt-0.5">
+            {distance !== null && (
+              <span className="flex items-center gap-0.5">
+                <FiMapPin className="text-[10px]" />
+                {distance}km
+              </span>
+            )}
+            <span className="flex items-center gap-0.5">
+              <FiClock className="text-[10px]" />
+              {formatTimeShort(game.match_time)}
+            </span>
+          </div>
+        </div>
+        {/* 상태 뱃지 */}
+        <div className="flex-shrink-0">
+          {isLive ? (
+            <span className="text-[10px] text-red-500 font-bold">중계중</span>
+          ) : isEnded ? (
+            <span className="text-[10px] text-gray-400">종료</span>
+          ) : (
+            <span className="text-[10px] text-primary5 font-semibold">{status}</span>
+          )}
+        </div>
+      </div>
+
+      {/* 하단: 경기 정보 */}
+      <div className="mt-2 pt-2 border-t border-gray-100/80">
+        <div className="flex items-center gap-2">
+          <span className="text-[10px] bg-gray-100 text-gray-600 rounded-md px-1.5 py-0.5 font-medium flex-shrink-0">
+            {game.league}
+          </span>
+          {game.team_one && game.team_two ? (
+            <span className="text-xs text-gray-700 truncate">
+              <span className="font-medium">{game.team_one}</span>
+              <span className="text-gray-300 mx-1">vs</span>
+              <span className="font-medium">{game.team_two}</span>
+            </span>
+          ) : (
+            <span className="text-xs text-gray-500">{game.sport}</span>
+          )}
+        </div>
+      </div>
+    </li>
+  );
+}
 
 const TodayBroadcastSidebar = memo(function TodayBroadcastSidebar() {
+  const myPosition = useMapStore((state) => state.myPosition);
   const searchPosition = useMapStore((state) => state.searchPosition);
   const radius = useMapStore((state) => state.radius);
   const { data: restaurants = [], isLoading } = useNearbyRestaurants(
@@ -20,14 +145,6 @@ const TodayBroadcastSidebar = memo(function TodayBroadcastSidebar() {
   );
   const { selectedStoreId, openDetail, closeDetail } = useRestaurantDetail();
   const { dateString: today } = getToday();
-
-  type TodayBroadcast = Broadcast & {
-    store_name: string;
-    store_id: number;
-    main_img: string | null;
-    address: string;
-    type: string;
-  };
 
   const todayBroadcasts = useMemo(() => {
     const result: TodayBroadcast[] = [];
@@ -41,6 +158,8 @@ const TodayBroadcastSidebar = memo(function TodayBroadcastSidebar() {
             main_img: store.main_img,
             address: store.address,
             type: store.type,
+            lat: store.lat,
+            lng: store.lng,
           });
         }
       });
@@ -53,6 +172,9 @@ const TodayBroadcastSidebar = memo(function TodayBroadcastSidebar() {
     [todayBroadcasts]
   );
   const [selectedSport, setSelectedSport] = useState<string>("");
+  const [showEnded, setShowEnded] = useState(false);
+  const [visibleCount, setVisibleCount] = useState(5);
+  const INITIAL_COUNT = 5;
 
   useEffect(() => {
     if (!SPORTS.includes(selectedSport)) {
@@ -61,26 +183,71 @@ const TodayBroadcastSidebar = memo(function TodayBroadcastSidebar() {
     }
   }, [SPORTS, selectedSport]);
 
-  const filtered = useMemo(
-    () => todayBroadcasts.filter((b) => b.sport === selectedSport),
-    [todayBroadcasts, selectedSport]
+  const effectiveSport = SPORTS.includes(selectedSport) ? selectedSport : SPORTS[0] ?? "";
+
+  // 종목 탭 바뀌면 더보기 초기화
+  useEffect(() => {
+    setVisibleCount(INITIAL_COUNT);
+    setShowEnded(false);
+  }, [effectiveSport]);
+
+  const sportCounts = useMemo(() => {
+    const counts: Record<string, number> = {};
+    todayBroadcasts.forEach((b) => {
+      counts[b.sport] = (counts[b.sport] || 0) + 1;
+    });
+    return counts;
+  }, [todayBroadcasts]);
+
+  // status를 한 번만 계산 + 정렬: LIVE → 곧 시작(시간순) → 종료
+  const filtered: BroadcastWithStatus[] = useMemo(() => {
+    const withStatus = todayBroadcasts
+      .filter((b) => b.sport === effectiveSport)
+      .map((b) => ({ ...b, _status: getMatchStatus(b.match_time) }));
+    const order = (s: string) => (s === "live" ? 0 : s === "종료" ? 2 : 1);
+    withStatus.sort((a, b) => {
+      if (order(a._status) !== order(b._status)) return order(a._status) - order(b._status);
+      return a.match_time.localeCompare(b.match_time);
+    });
+    return withStatus;
+  }, [todayBroadcasts, effectiveSport]);
+
+  const activeGames = useMemo(
+    () => filtered.filter((g) => g._status !== "종료"),
+    [filtered]
   );
+  const endedGames = useMemo(
+    () => filtered.filter((g) => g._status === "종료"),
+    [filtered]
+  );
+  const visibleActive = activeGames.slice(0, visibleCount);
 
   const handleOpenDetail = useCallback(
-    (storeId: number) => {
-      openDetail(storeId);
-    },
+    (storeId: number) => openDetail(storeId),
     [openDetail]
   );
 
+  const todayDate = new Date();
+  const formattedDate = `${todayDate.getFullYear()}.${String(todayDate.getMonth() + 1).padStart(2, "0")}.${String(todayDate.getDate()).padStart(2, "0")}`;
+  const dayNames = ["일", "월", "화", "수", "목", "금", "토"];
+  const dayName = dayNames[todayDate.getDay()];
+
   return (
-    <section className="w-full bg-white px-4 py-4 rounded-xl border border-gray-100">
-      <div className="flex items-center gap-2 mb-1">
-        <FiTv className="text-primary1 text-xl" />
-        <span className="text-lg font-bold">오늘의 중계일정</span>
-      </div>
-      <div className="text-sm text-gray-500 mb-4 font-medium tracking-tight">
-        지도에서 탐색한 가게의 중계일정만 보여드려요
+    <section className="w-full">
+      {/* 헤더 */}
+      <div className="mb-4">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <FiTv className="text-primary5" />
+            <span className="text-sm font-bold text-gray-800">오늘의 중계</span>
+          </div>
+          <span className="text-[11px] text-gray-400">
+            {formattedDate} ({dayName})
+          </span>
+        </div>
+        <p className="text-[11px] text-gray-400 mt-1 ml-6">
+          지도 위치 기준 주변 가게 · {todayBroadcasts.length}경기
+        </p>
       </div>
 
       {isLoading ? (
@@ -89,77 +256,76 @@ const TodayBroadcastSidebar = memo(function TodayBroadcastSidebar() {
         <EmptyMessage message="오늘 중계되는 경기가 없습니다." />
       ) : (
         <>
-          {/* 종목 탭 */}
-          <nav className="flex gap-2 mb-4 border-b border-gray-100 pb-1">
+          {/* 종목 필터 */}
+          <div className="flex gap-1.5 mb-3">
             {SPORTS.map((sport) => (
               <button
                 key={sport}
                 onClick={() => setSelectedSport(sport)}
-                className={`px-3 pb-1 text-sm font-semibold rounded-t-lg border-b-2 ${
-                  selectedSport === sport
-                    ? "border-primary5 text-primary5 bg-primary4"
-                    : "border-transparent text-gray-400 hover:text-primary5 hover:bg-primary3/50"
-                } transition-colors`}
-                style={{ background: "none" }}
+                className={`px-3 py-1.5 text-[11px] font-semibold rounded-full transition-all ${
+                  effectiveSport === sport
+                    ? "bg-primary5 text-white shadow-sm"
+                    : "bg-white border border-gray-200 text-gray-500 hover:border-primary5 hover:text-primary5"
+                }`}
               >
-                {sport}
+                {sport} {sportCounts[sport]}
               </button>
             ))}
-          </nav>
-          {/* 카드형 경기 리스트 */}
-          <ul>
-            {filtered.length === 0 ? (
-              <EmptyMessage message="오늘 중계되는 경기가 없습니다." />
-            ) : (
-              filtered.map((game) => (
-                <li
-                  key={`${game.store_id}-${game.match_time}-${game.league}`}
-                  className="bg-white rounded-xl border border-gray-200 px-4 py-3 mb-3 flex items-center gap-4 cursor-pointer hover:bg-primary3/30 transition-colors"
-                  onClick={() => handleOpenDetail(game.store_id)}
-                >
-                  <img
-                    src={game.main_img || "/noimg.png"}
-                    alt={game.store_name}
-                    className="w-12 h-12 rounded-lg object-cover bg-gray-100 flex-shrink-0"
+          </div>
+
+          {/* 경기 리스트 */}
+          {activeGames.length === 0 && endedGames.length === 0 ? (
+            <EmptyMessage message="선택한 종목의 경기가 없습니다." />
+          ) : (
+            <>
+              <ul className="space-y-2">
+                {visibleActive.map((game) => (
+                  <BroadcastCard
+                    key={`${game.store_id}-${game.match_time}-${game.league}`}
+                    game={game}
+                    userPosition={myPosition}
+                    onClick={() => handleOpenDetail(game.store_id)}
                   />
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-2 mb-0.5">
-                      <span className="font-bold text-primary5 truncate">
-                        {game.store_name}
-                      </span>
-                      <span className="text-xs bg-primary4 text-primary5 rounded px-2 py-0.5 ml-2">
-                        {game.league}
-                      </span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      {game.team_one && game.team_two ? (
-                        <>
-                          <span className="font-semibold text-gray-800">
-                            {game.team_one}
-                          </span>
-                          <span className="mx-1 text-xs text-gray-400">vs</span>
-                          <span className="font-semibold text-gray-800">
-                            {game.team_two}
-                          </span>
-                        </>
-                      ) : (
-                        <></>
-                      )}
-                      <span className="ml-auto text-xs text-gray-500">
-                        {formatTimeShort(game.match_time)}
-                      </span>
-                    </div>
-                    {game.etc && (
-                      <div className="mt-1 text-xs text-primary5">
-                        {game.etc}
-                      </div>
-                    )}
-                  </div>
-                </li>
-              ))
-            )}
-          </ul>
-          <div className="h-8" />
+                ))}
+              </ul>
+
+              {/* 더보기 */}
+              {activeGames.length > visibleCount && (
+                <button
+                  onClick={() => setVisibleCount((c) => c + 5)}
+                  className="w-full mt-2 py-2 text-xs text-gray-500 hover:text-primary5 flex items-center justify-center gap-1 transition-colors"
+                >
+                  <FiChevronDown />
+                  {activeGames.length - visibleCount}개 더보기
+                </button>
+              )}
+
+              {/* 종료된 경기 */}
+              {endedGames.length > 0 && (
+                <div className="mt-3">
+                  <button
+                    onClick={() => setShowEnded(!showEnded)}
+                    className="w-full py-2 text-[11px] text-gray-400 hover:text-gray-600 flex items-center justify-center gap-1 border-t border-gray-100 transition-colors"
+                  >
+                    종료된 경기 {endedGames.length}개
+                    <FiChevronDown className={`transition-transform ${showEnded ? "rotate-180" : ""}`} />
+                  </button>
+                  {showEnded && (
+                    <ul className="space-y-2 mt-2">
+                      {endedGames.map((game) => (
+                        <BroadcastCard
+                          key={`${game.store_id}-${game.match_time}-${game.league}`}
+                          game={game}
+                          userPosition={myPosition}
+                          onClick={() => handleOpenDetail(game.store_id)}
+                        />
+                      ))}
+                    </ul>
+                  )}
+                </div>
+              )}
+            </>
+          )}
         </>
       )}
 

@@ -17,7 +17,7 @@ const RestaurantDetailImageSection = ({
   onToggleFavorite,
   onClose,
 }: RestaurantDetailImageSectionProps) => (
-  <div className="w-full h-56 bg-gradient-to-tr via-white to-orange-50 flex items-center justify-center relative">
+  <div className="w-full h-56 bg-gray-100 flex items-center justify-center relative">
     <img
       src={detail.img_urls?.[0] || "/noimg.png"}
       alt={detail.store_name}
@@ -28,7 +28,7 @@ const RestaurantDetailImageSection = ({
       <button
         onClick={onToggleFavorite}
         disabled={isFavoritePending}
-        className={`bg-white/90 rounded-full p-2 shadow hover:bg-orange-50 transition ${isFavoritePending ? "opacity-50 cursor-not-allowed" : ""}`}
+        className={`bg-white/90 rounded-full p-2 shadow hover:bg-primary4 transition ${isFavoritePending ? "opacity-50 cursor-not-allowed" : ""}`}
         aria-label={isFavorite ? "즐겨찾기 해제" : "즐겨찾기 추가"}
       >
         {isFavorite ? (
@@ -42,7 +42,7 @@ const RestaurantDetailImageSection = ({
     {onClose && (
       <button
         onClick={onClose}
-        className="absolute top-6 right-6 bg-white/90 rounded-full p-2 shadow hover:bg-orange-50 transition z-20"
+        className="absolute top-6 right-6 bg-white/90 rounded-full p-2 shadow hover:bg-primary4 transition z-20"
         aria-label="상세보기 닫기"
       >
         <FiX className="text-primary5 text-lg" />

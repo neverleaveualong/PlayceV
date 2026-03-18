@@ -7,6 +7,7 @@ import { useGeoLocation } from "@/hooks/useGeoLocation";
 import useMapStore from "@/stores/mapStore";
 import useMypageStore from "@/stores/mypageStore";
 import SearchPage from "./SearchPage";
+import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
 
 const LoginModal = lazy(() => import("@/components/auth/Login"));
 const SignupModal = lazy(() => import("@/components/auth/Signup"));
@@ -16,7 +17,8 @@ const PasswordResetRequestModal = lazy(
 const MypageModal = lazy(() => import("@/components/mypage/MypageModal"));
 
 const Home: React.FC = () => {
-  const { position, isRefreshBtnOn } = useMapStore();
+  const { position, isRefreshBtnOn, isSidebarOpen, toggleSidebar } =
+    useMapStore();
   const { isMypageOpen, setIsMypageOpen } = useMypageStore();
 
   const geolocationOptions = {
@@ -28,20 +30,53 @@ const Home: React.FC = () => {
   useGeoLocation(geolocationOptions);
 
   return (
-    <div className="flex">
-      <SearchPage />
-      <div className="relative w-full h-screen">
+    <div className="flex h-screen overflow-hidden">
+      {/* 사이드바 + 토글 버튼 */}
+      <div className="flex flex-shrink-0">
+        <div
+          className={`transition-all duration-300 ease-in-out overflow-hidden ${
+            isSidebarOpen ? "w-sidebar" : "w-0"
+          }`}
+        >
+          <SearchPage />
+        </div>
+        <button
+          onClick={toggleSidebar}
+          className="self-center w-5 h-16 bg-white border border-l-0 border-gray-200
+            rounded-r-lg shadow-md
+            flex items-center justify-center
+            hover:bg-primary4 transition-colors z-30"
+          aria-label={isSidebarOpen ? "사이드바 닫기" : "사이드바 열기"}
+        >
+          {isSidebarOpen ? (
+            <FiChevronLeft className="text-gray-500 text-base" />
+          ) : (
+            <FiChevronRight className="text-gray-500 text-base" />
+          )}
+        </button>
+      </div>
+
+      {/* 지도 영역 */}
+      <div className="relative flex-1 h-screen">
         {position && <Map />}
         {isRefreshBtnOn && <SpotRefreshButton />}
         <AuthHeader />
+
         <Suspense fallback={<LoadingSpinner />}>
           <LoginModal />
           <SignupModal />
           <PasswordResetRequestModal />
         </Suspense>
       </div>
+
       {isMypageOpen && (
-        <Suspense fallback={<div className="fixed right-0 top-0 h-full w-sidebar bg-white z-[100] flex items-center justify-center"><LoadingSpinner /></div>}>
+        <Suspense
+          fallback={
+            <div className="fixed right-0 top-0 h-full w-sidebar bg-white z-[100] flex items-center justify-center">
+              <LoadingSpinner />
+            </div>
+          }
+        >
           <MypageModal onClose={() => setIsMypageOpen(false)} />
         </Suspense>
       )}
