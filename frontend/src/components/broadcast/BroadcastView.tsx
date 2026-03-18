@@ -7,7 +7,6 @@ import useBroadcastStore, { dateInfo } from "@/stores/broadcastStore";
 import getDaysInMonth, { getToday } from "@/utils/dateUtils";
 import FloatingRegisterButton from "./FloatingRegisterButton";
 import useDateScroll from "@/hooks/useDateScroll";
-import Button from "@/components/common/Button";
 
 const CALENDAR_RANGE_MONTHS = 2;
 

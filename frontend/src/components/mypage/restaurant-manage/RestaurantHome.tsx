@@ -1,6 +1,6 @@
 import { useState } from "react";
 import useMypageStore from "@/stores/mypageStore";
-import { FiEdit2, FiPlus, FiTrash2, FiMapPin } from "react-icons/fi";
+import { FiPlus, FiTrash2, FiMapPin } from "react-icons/fi";
 import ConfirmModal from "@/components/common/ConfirmModal";
 import useToastStore from "@/stores/toastStore";
 import { useMyStores, useDeleteStore } from "@/hooks/useMyStores";
