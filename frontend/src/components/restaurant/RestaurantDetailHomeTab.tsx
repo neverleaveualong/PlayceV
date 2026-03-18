@@ -10,39 +10,38 @@ export default function RestaurantDetailHomeTab({
   return (
     <div className="flex flex-col gap-4">
       {detail.is_owner && (
-        <div className="flex items-center gap-2 mb-2">
-          <span className="px-2 py-1 bg-primary3 text-primary5 rounded text-xs font-bold">
+        <div className="flex items-center gap-2 mb-1">
+          <span className="px-2.5 py-1 bg-primary5 text-white rounded-md text-xs font-bold">
             내 가게
           </span>
         </div>
       )}
       <h2
         className={classNames(
-          "text-2xl font-bold",
-          detail.description ? "mb-2" : "mb-1"
+          "text-2xl font-bold text-mainText",
+          detail.description ? "mb-1" : "mb-0"
         )}
       >
         {detail.store_name}
       </h2>
       {detail.description && (
-        <p className="mb-2 text-gray-700">{detail.description}</p>
+        <p className="text-gray-600 text-sm leading-relaxed">{detail.description}</p>
       )}
-      <div className="flex items-center gap-2">
-        <FiMapPin className="text-xl" />
-        <span>{detail.address}</span>
+      <div className="flex flex-col gap-3 mt-1">
+        <InfoRow icon={<FiMapPin />} text={detail.address} />
+        <InfoRow icon={<FiClock />} text={detail.opening_hours} />
+        <InfoRow icon={<FiPhone />} text={detail.phone} />
+        <InfoRow icon={<FiFileText />} text={detail.type} />
       </div>
-      <div className="flex items-center gap-2">
-        <FiClock className="text-xl" />
-        <span>{detail.opening_hours}</span>
-      </div>
-      <div className="flex items-center gap-2">
-        <FiPhone className="text-xl" />
-        <span>{detail.phone}</span>
-      </div>
-      <div className="flex items-center gap-2">
-        <FiFileText className="text-xl" />
-        <span>{detail.type}</span>
-      </div>
+    </div>
+  );
+}
+
+function InfoRow({ icon, text }: { icon: React.ReactNode; text: string }) {
+  return (
+    <div className="flex items-center gap-3">
+      <span className="text-primary5 text-lg flex-shrink-0">{icon}</span>
+      <span className="text-sm text-gray-700">{text}</span>
     </div>
   );
 }
