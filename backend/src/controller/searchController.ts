@@ -10,12 +10,13 @@ const searchController = {
     try {
       log("\n📍 [현재 위치 기반 검색] 요청");
 
-      const { lat, lng, radius } = req.query;
+      const { swLat, swLng, neLat, neLng } = req.query;
 
       const result = await searchService.getNearbyStores(
-        Number(lat),
-        Number(lng),
-        Number(radius)
+        Number(swLat),
+        Number(swLng),
+        Number(neLat),
+        Number(neLng)
       );
 
       log("✅ [현재 위치 기반 검색] 성공");
