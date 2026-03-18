@@ -17,7 +17,7 @@ const SelectInput = ({
 }: SelectInputProps) => {
   return (
     <div>
-      <label className="mb-2 block font-semibold text-mainText">
+      <label className="block mb-1.5 text-xs font-semibold text-darkgray">
         {label} <span className="text-red-500">*</span>
       </label>
       <select
@@ -29,9 +29,9 @@ const SelectInput = ({
           onChange(selectedId, selectedName);
         }}
         disabled={disabled}
-        className="w-full p-2 border rounded-md hover:border-primary5 focus:border-primary5 focus:ring-1 focus:ring-primary1 focus:outline-none"
+        className="w-full border border-gray-200 rounded-xl px-3.5 py-2.5 text-sm text-mainText bg-white hover:border-primary5 focus:border-primary5 focus:ring-2 focus:ring-primary1 focus:outline-none transition-colors disabled:bg-gray-50 disabled:text-gray-400 appearance-none"
       >
-        <option value="" className="text-mainText">
+        <option value="" className="text-gray-400">
           {placeholder}
         </option>
         {options.map((o) => (

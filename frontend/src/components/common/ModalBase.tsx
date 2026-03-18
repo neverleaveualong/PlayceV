@@ -24,16 +24,16 @@ const ModalBase = ({
   return createPortal(
     <div
       className={classNames(
-        "fixed inset-0 z-[9999] flex justify-center bg-black bg-opacity-50",
+        "fixed inset-0 z-[9999] flex justify-center bg-black/40 backdrop-blur-[2px]",
         type === "auth"
           ? "items-center py-6 overflow-y-auto"
-          : "items-start pt-[20vh] sm:pt-[12vh]"
+          : "items-center"
       )}
       onClick={type === "auth" ? undefined : onClose}
     >
       <div
         className={classNames(
-          "bg-white rounded-xl shadow-lg flex flex-col relative",
+          "bg-white rounded-2xl shadow-2xl flex flex-col relative",
           type === "auth" ? "max-h-fit" : "max-h-[90vh] overflow-hidden",
           { "w-modal-auth": type === "auth" },
           { "w-modal-lg": type === "mypage" },
@@ -43,8 +43,8 @@ const ModalBase = ({
         onClick={(e) => e.stopPropagation()}
       >
         {!hideHeader && (
-          <div className="flex items-center justify-between">
-            <h2 className="text-lg font-bold text-mainText items-center m-0">
+          <div className="flex items-center justify-between p-5 pb-0">
+            <h2 className="text-lg font-bold text-mainText">
               {title}
             </h2>
             <Button
@@ -60,7 +60,7 @@ const ModalBase = ({
 
         <div
           className={classNames(
-            "overflow-y-auto flex-grow ",
+            "overflow-y-auto flex-grow",
             { "mt-0": type === "mypage" },
             { "mt-5": type !== "mypage" }
           )}
