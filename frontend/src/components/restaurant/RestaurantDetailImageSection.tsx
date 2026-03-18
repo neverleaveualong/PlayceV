@@ -40,7 +40,7 @@ const FavoriteButton = ({
 const NoImageHeader = ({
   detail,
   isFavorite,
-  isFavoritePending,
+  isFavoritePending = false,
   onToggleFavorite,
 }: RestaurantDetailImageSectionProps) => (
   <div className="px-5 py-4 flex items-center justify-between border-b border-gray-100">

@@ -19,8 +19,10 @@ export default function RestaurantDetailHomeTab({
     }
   };
 
-  const infoItems = [
-    detail.address && {
+  const infoItems: { icon: React.ReactNode; content: React.ReactNode }[] = [];
+
+  if (detail.address) {
+    infoItems.push({
       icon: <FiMapPin />,
       content: (
         <div className="flex items-center gap-2 flex-1 min-w-0">
@@ -34,24 +36,30 @@ export default function RestaurantDetailHomeTab({
           </button>
         </div>
       ),
-    },
-    detail.opening_hours && {
+    });
+  }
+  if (detail.opening_hours) {
+    infoItems.push({
       icon: <FiClock />,
       content: <span className="text-sm text-gray-700">{detail.opening_hours}</span>,
-    },
-    detail.phone && {
+    });
+  }
+  if (detail.phone) {
+    infoItems.push({
       icon: <FiPhone />,
       content: (
         <a href={`tel:${detail.phone}`} className="text-sm text-primary5 font-medium hover:underline">
           {detail.phone}
         </a>
       ),
-    },
-    detail.type && {
+    });
+  }
+  if (detail.type) {
+    infoItems.push({
       icon: <FiFileText />,
       content: <span className="text-sm text-gray-700">{detail.type}</span>,
-    },
-  ].filter(Boolean);
+    });
+  }
 
   return (
     <div className="flex flex-col gap-4">
