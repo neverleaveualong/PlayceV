@@ -4,6 +4,7 @@ import { CITY_STATION, SEARCHNEARBY_RADIUS } from "@/constants/mapConstant";
 
 interface MapState {
   position: latlng;
+  myPosition: latlng;
   searchPosition: latlng;
   openedModal: number;
   radius: number;
@@ -22,6 +23,7 @@ interface MapState {
 
 const useMapStore = create<MapState>((set, get) => ({
   position: CITY_STATION,
+  myPosition: CITY_STATION,
   searchPosition: CITY_STATION,
   openedModal: -1,
   radius: SEARCHNEARBY_RADIUS,
@@ -32,7 +34,7 @@ const useMapStore = create<MapState>((set, get) => ({
     set({ position: pos });
   },
   initPosition: (pos) => {
-    set({ position: pos, searchPosition: pos });
+    set({ position: pos, myPosition: pos, searchPosition: pos });
   },
   search: (radius) => {
     set({ searchPosition: get().position, radius, isRefreshBtnOn: false });

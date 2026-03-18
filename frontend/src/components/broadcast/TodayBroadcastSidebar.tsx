@@ -129,7 +129,7 @@ function BroadcastCard({
 }
 
 const TodayBroadcastSidebar = memo(function TodayBroadcastSidebar() {
-  const position = useMapStore((state) => state.position);
+  const myPosition = useMapStore((state) => state.myPosition);
   const searchPosition = useMapStore((state) => state.searchPosition);
   const radius = useMapStore((state) => state.radius);
   const { data: restaurants = [], isLoading } = useNearbyRestaurants(
@@ -274,7 +274,7 @@ const TodayBroadcastSidebar = memo(function TodayBroadcastSidebar() {
                   <BroadcastCard
                     key={`${game.store_id}-${game.match_time}-${game.league}`}
                     game={game}
-                    userPosition={position}
+                    userPosition={myPosition}
                     onClick={() => handleOpenDetail(game.store_id)}
                   />
                 ))}
@@ -307,7 +307,7 @@ const TodayBroadcastSidebar = memo(function TodayBroadcastSidebar() {
                         <BroadcastCard
                           key={`${game.store_id}-${game.match_time}-${game.league}`}
                           game={game}
-                          userPosition={position}
+                          userPosition={myPosition}
                           onClick={() => handleOpenDetail(game.store_id)}
                         />
                       ))}
