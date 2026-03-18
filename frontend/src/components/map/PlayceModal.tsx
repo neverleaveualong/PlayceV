@@ -71,6 +71,7 @@ const PlayceModal = ({
             src={restaurant.main_img || defaultImage}
             alt={restaurant.store_name || "가게 이미지"}
             className="w-full h-full object-cover"
+            onError={(e) => { (e.target as HTMLImageElement).src = defaultImage; }}
             loading="lazy"
           />
           {/* 즐겨찾기 */}

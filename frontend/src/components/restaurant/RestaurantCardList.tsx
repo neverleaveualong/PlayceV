@@ -53,6 +53,7 @@ const RestaurantCardList = memo(function RestaurantCardList({
                   ? "w-14 h-14 rounded-lg object-cover bg-gray-200 border border-gray-100"
                   : "w-16 h-16 rounded-lg object-cover border border-gray-100 shadow-sm"
               }
+              onError={(e) => { (e.target as HTMLImageElement).src = "/noimg.png"; }}
             />
             <div className="flex-1 min-w-0">
               <div

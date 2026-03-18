@@ -41,6 +41,7 @@ const SearchResultItem: FC<SearchResultItemProps> = memo(function SearchResultIt
           src={imgUrl}
           alt={`${storeName} 썸네일`}
           className="w-20 h-20 object-cover rounded-lg ml-4 flex-shrink-0"
+          onError={(e) => { (e.target as HTMLImageElement).src = "/noimg.png"; }}
         />
       </div>
     </div>
