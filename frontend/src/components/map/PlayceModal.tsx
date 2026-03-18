@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import type { RestaurantBasic } from "@/types/restaurant.types";
 import { CustomOverlayMap } from "react-kakao-maps-sdk";
 import { FiStar, FiMapPin, FiX, FiClock, FiTv } from "react-icons/fi";
+import { getOpenStatus, getOpenStatusLabel } from "@/utils/openStatus";
 import { FaStar } from "react-icons/fa";
 import Button from "@/components/common/Button";
 import FallbackImage from "@/components/common/FallbackImage";
@@ -110,6 +111,13 @@ const PlayceModal = ({
                 <FiMapPin className="text-[11px] flex-shrink-0" />
                 <span className="truncate">{restaurant.address || "주소 정보 없음"}</span>
               </div>
+              {restaurant.opening_hours && (
+                <div className="flex items-center gap-1.5 mt-1">
+                  <FiClock className="text-[11px] text-gray-400 flex-shrink-0" />
+                  <span className="text-xs text-gray-500">{restaurant.opening_hours}</span>
+                  <OpenStatusBadge openingHours={restaurant.opening_hours} />
+                </div>
+              )}
             </div>
           </div>
 
@@ -166,6 +174,28 @@ const PlayceModal = ({
         <div className="absolute left-1/2 -bottom-2 -translate-x-1/2 w-4 h-4 bg-white border-r border-b border-gray-100 rotate-45" />
       </div>
     </CustomOverlayMap>
+  );
+};
+
+const OpenStatusBadge = ({ openingHours }: { openingHours: string }) => {
+  const status = getOpenStatus(openingHours);
+  if (status === "unknown") return null;
+  const isOpen = status === "open";
+  return (
+    <span
+      className={`inline-flex items-center gap-1 text-[10px] font-semibold px-1.5 py-0.5 rounded-full ${
+        isOpen
+          ? "bg-emerald-50 text-emerald-600"
+          : "bg-gray-100 text-gray-500"
+      }`}
+    >
+      <span
+        className={`w-1.5 h-1.5 rounded-full ${
+          isOpen ? "bg-emerald-500" : "bg-gray-400"
+        }`}
+      />
+      {getOpenStatusLabel(status)}
+    </span>
   );
 };
 
