@@ -1,8 +1,7 @@
 import { useCallback } from "react";
 import useAuthStore from "@/stores/authStore";
 import RestaurantCardList from "@/components/restaurant/RestaurantCardList";
-import RestaurantDetailComponent from "@/components/restaurant/RestaurantDetail";
-import useRestaurantDetail from "@/hooks/useRestaurantDetail";
+import useMapStore from "@/stores/mapStore";
 import { useFavorites, useRemoveFavorite } from "@/hooks/useFavorites";
 import { FiStar } from "react-icons/fi";
 import LoadingSpinner from "@/components/common/LoadingSpinner";
@@ -13,7 +12,7 @@ export default function FavoriteSidebar() {
   const setIsLoginModalOpen = useAuthStore((state) => state.setIsLoginModalOpen);
   const { data: favorites = [], isLoading } = useFavorites();
   const removeMutation = useRemoveFavorite();
-  const { selectedStoreId, openDetail, closeDetail } = useRestaurantDetail();
+  const openDetail = useMapStore((state) => state.openDetail);
 
   const handleRemove = useCallback(
     (storeId: number) => {
@@ -83,12 +82,6 @@ export default function FavoriteSidebar() {
         compact
         onDetail={openDetail}
       />
-      {selectedStoreId !== null && (
-        <RestaurantDetailComponent
-          storeId={selectedStoreId}
-          onClose={closeDetail}
-        />
-      )}
     </section>
   );
 }

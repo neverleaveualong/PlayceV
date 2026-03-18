@@ -2,8 +2,7 @@ import { useCallback, useMemo } from "react";
 import SearchResultItem from "./SearchResultItem";
 import { useSearchStore } from "@/stores/searchStore";
 import { sortSearchResults } from "@/utils/sortUtils";
-import RestaurantDetailComponent from "@/components/restaurant/RestaurantDetail";
-import useRestaurantDetail from "@/hooks/useRestaurantDetail";
+import useMapStore from "@/stores/mapStore";
 import type { SearchResultItem as SearchResultItemType } from "@/types/search";
 import LoadingSpinner from "@/components/common/LoadingSpinner";
 import EmptyMessage from "@/components/restaurant/EmptyMessage";
@@ -21,7 +20,7 @@ const SearchResultList = ({
 }: SearchResultListProps) => {
   const sort = useSearchStore((state) => state.sort);
   const setSort = useSearchStore((state) => state.setSort);
-  const { selectedStoreId, openDetail, closeDetail } = useRestaurantDetail();
+  const openDetail = useMapStore((state) => state.openDetail);
 
   const handleSortByDistance = useCallback(() => setSort("distance"), [setSort]);
   const handleSortByDatetime = useCallback(() => setSort("datetime"), [setSort]);
@@ -106,13 +105,6 @@ const SearchResultList = ({
         )}
       </div>
 
-      {/* 상세보기 모달/사이드바 */}
-      {selectedStoreId !== null && (
-        <RestaurantDetailComponent
-          storeId={selectedStoreId}
-          onClose={closeDetail}
-        />
-      )}
     </div>
   );
 };

@@ -1,5 +1,6 @@
 import { memo } from "react";
 import { FiTrash2 } from "react-icons/fi";
+import FallbackImage from "@/components/common/FallbackImage";
 import EmptyMessage from "./EmptyMessage";
 
 interface RestaurantCardListProps {
@@ -45,7 +46,7 @@ const RestaurantCardList = memo(function RestaurantCardList({
                 : undefined
             }
           >
-            <img
+            <FallbackImage
               src={store.main_img || "/noimg.png"}
               alt={store.store_name}
               className={

@@ -3,6 +3,12 @@ import { FaUtensils } from "react-icons/fa";
 import type { RestaurantDetail, MenuItem } from "@/types/restaurant.types";
 import EmptyMessage from "./EmptyMessage";
 
+function formatPrice(price: string): string {
+  const num = Number(price);
+  if (isNaN(num) || num === 0) return price || "-";
+  return `${num.toLocaleString()}원`;
+}
+
 const RestaurantDetailMenuTab = memo(function RestaurantDetailMenuTab({
   detail,
 }: {
@@ -10,33 +16,29 @@ const RestaurantDetailMenuTab = memo(function RestaurantDetailMenuTab({
 }) {
   const menus: MenuItem[] = Array.isArray(detail.menus) ? detail.menus : [];
 
+  if (menus.length === 0) {
+    return <EmptyMessage message="등록된 메뉴 정보가 없습니다." />;
+  }
+
   return (
-    <ul className="grid grid-cols-1 gap-3">
-      {menus.length > 0 ? (
-        menus.map((menu, idx) => (
-          <li
-            key={idx}
-            className={`flex items-center justify-between gap-3 px-5 py-3 ${
-              idx !== menus.length - 1 ? "border-b border-gray-200" : ""
-            }`}
-          >
-            <div className="flex items-center gap-3 min-w-0">
-              <FaUtensils className="text-primary5 text-base flex-shrink-0" />
-              <span className="font-medium text-gray-700 truncate">
-                {menu.name}
-              </span>
+    <div className="rounded-xl border border-gray-100 divide-y divide-gray-100">
+      {menus.map((menu, idx) => (
+        <div
+          key={idx}
+          className="flex items-center justify-between gap-3 px-4 py-3.5"
+        >
+          <div className="flex items-center gap-3 min-w-0">
+            <div className="w-8 h-8 rounded-lg bg-primary4/50 flex items-center justify-center flex-shrink-0">
+              <FaUtensils className="text-primary5 text-xs" />
             </div>
-            <span className="text-gray-800 font-semibold text-sm flex-shrink-0 ml-2">
-              {Number(menu.price).toLocaleString()}원
-            </span>
-          </li>
-        ))
-      ) : (
-        <li>
-          <EmptyMessage message="메뉴정보가 없습니다." />
-        </li>
-      )}
-    </ul>
+            <span className="font-medium text-gray-800 truncate">{menu.name}</span>
+          </div>
+          <span className="text-primary5 font-bold text-sm flex-shrink-0">
+            {formatPrice(menu.price)}
+          </span>
+        </div>
+      ))}
+    </div>
   );
 });
 

@@ -1,10 +1,9 @@
 import { useState, useMemo, useEffect, useCallback, memo } from "react";
 import { FiTv, FiMapPin, FiClock, FiChevronDown } from "react-icons/fi";
 import useMapStore from "@/stores/mapStore";
-import RestaurantDetailComponent from "@/components/restaurant/RestaurantDetail";
-import useRestaurantDetail from "@/hooks/useRestaurantDetail";
 import useNearbyRestaurants from "@/hooks/useNearbyRestaurants";
 import LoadingSpinner from "@/components/common/LoadingSpinner";
+import FallbackImage from "@/components/common/FallbackImage";
 import EmptyMessage from "@/components/restaurant/EmptyMessage";
 import type { Broadcast } from "@/types/restaurant.types";
 import { formatTimeShort } from "@/utils/formatTime";
@@ -71,7 +70,7 @@ function BroadcastCard({
     >
       {/* 상단: 가게 정보 */}
       <div className="flex items-center gap-2.5">
-        <img
+        <FallbackImage
           src={game.main_img || "/noimg.png"}
           alt={game.store_name}
           className="w-10 h-10 rounded-xl object-cover bg-gray-100 flex-shrink-0"
@@ -138,7 +137,7 @@ const TodayBroadcastSidebar = memo(function TodayBroadcastSidebar() {
   const myPosition = useMapStore((state) => state.myPosition);
   const bounds = useMapStore((state) => state.bounds);
   const { data: restaurants = [], isLoading } = useNearbyRestaurants(bounds);
-  const { selectedStoreId, openDetail, closeDetail } = useRestaurantDetail();
+  const openDetail = useMapStore((state) => state.openDetail);
   const { dateString: today } = getToday();
 
   const todayBroadcasts = useMemo(() => {
@@ -324,12 +323,6 @@ const TodayBroadcastSidebar = memo(function TodayBroadcastSidebar() {
         </>
       )}
 
-      {selectedStoreId && (
-        <RestaurantDetailComponent
-          storeId={selectedStoreId}
-          onClose={closeDetail}
-        />
-      )}
     </section>
   );
 });

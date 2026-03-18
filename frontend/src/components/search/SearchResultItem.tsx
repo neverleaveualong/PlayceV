@@ -1,5 +1,6 @@
 import { memo } from "react";
 import type { FC } from "react";
+import FallbackImage from "@/components/common/FallbackImage";
 
 interface SearchResultItemProps {
   data: {
@@ -37,7 +38,7 @@ const SearchResultItem: FC<SearchResultItemProps> = memo(function SearchResultIt
           </p>
         </div>
 
-        <img
+        <FallbackImage
           src={imgUrl}
           alt={`${storeName} 썸네일`}
           className="w-20 h-20 object-cover rounded-lg ml-4 flex-shrink-0"
