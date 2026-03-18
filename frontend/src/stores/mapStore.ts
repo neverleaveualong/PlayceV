@@ -38,7 +38,19 @@ const useMapStore = create<MapState>((set, get) => ({
     set({ position: pos });
   },
   initPosition: (pos) => {
-    set({ position: pos, myPosition: pos, searchPosition: pos });
+    // 현재 위치 기준 약 5km 범위 bounds 생성
+    const offset = 0.045;
+    set({
+      position: pos,
+      myPosition: pos,
+      searchPosition: pos,
+      bounds: {
+        swLat: pos.lat - offset,
+        swLng: pos.lng - offset,
+        neLat: pos.lat + offset,
+        neLng: pos.lng + offset,
+      },
+    });
   },
   search: (bounds) => {
     set({ searchPosition: get().position, bounds, isRefreshBtnOn: false });
