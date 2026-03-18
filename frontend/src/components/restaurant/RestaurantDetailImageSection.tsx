@@ -37,67 +37,77 @@ const FavoriteButton = ({
   </button>
 );
 
-const RestaurantDetailImageSection = ({
+const NoImageHeader = ({
   detail,
   isFavorite,
-  isFavoritePending = false,
+  isFavoritePending,
   onToggleFavorite,
-}: RestaurantDetailImageSectionProps) => {
-  const [imgError, setImgError] = useState(false);
-  const hasImage = detail.img_urls && detail.img_urls.length > 0 && !imgError;
+}: RestaurantDetailImageSectionProps) => (
+  <div className="px-5 py-4 flex items-center justify-between border-b border-gray-100">
+    <div>
+      {detail.type && (
+        <span className="text-[11px] bg-primary4 text-primary5 px-2 py-0.5 rounded-full font-medium">
+          {detail.type}
+        </span>
+      )}
+      <h2 className="text-xl font-bold text-gray-900 mt-1">{detail.store_name}</h2>
+    </div>
+    <FavoriteButton
+      isFavorite={isFavorite}
+      isFavoritePending={isFavoritePending}
+      onToggleFavorite={onToggleFavorite}
+    />
+  </div>
+);
 
-  if (!hasImage) {
-    return (
-      <div className="px-5 py-4 flex items-center justify-between border-b border-gray-100">
-        <div>
-          {detail.type && (
-            <span className="text-[11px] bg-primary4 text-primary5 px-2 py-0.5 rounded-full font-medium">
-              {detail.type}
-            </span>
-          )}
-          <h2 className="text-xl font-bold text-gray-900 mt-1">{detail.store_name}</h2>
-        </div>
-        <FavoriteButton
-          isFavorite={isFavorite}
-          isFavoritePending={isFavoritePending}
-          onToggleFavorite={onToggleFavorite}
-        />
-      </div>
-    );
+const RestaurantDetailImageSection = (props: RestaurantDetailImageSectionProps) => {
+  const { detail, isFavorite, isFavoritePending = false, onToggleFavorite } = props;
+  const imgUrl = detail.img_urls?.[0];
+
+  // 이미지 없으면 바로 텍스트 레이아웃
+  const [imgLoaded, setImgLoaded] = useState(false);
+  const [imgError, setImgError] = useState(false);
+
+  if (!imgUrl || imgError) {
+    return <NoImageHeader {...props} />;
   }
 
   return (
-    <div className="w-full h-52 bg-gray-100 relative overflow-hidden">
-      <img
-        src={detail.img_urls[0]}
-        alt={detail.store_name}
-        className="w-full h-full object-cover"
-        onError={() => setImgError(true)}
-      />
+    <>
+      {/* 이미지 로드 전에는 텍스트 헤더를 보여줌 */}
+      {!imgLoaded && <NoImageHeader {...props} />}
 
-      {/* 하단 그라데이션 */}
-      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent pointer-events-none" />
+      {/* 이미지 (로드 전에는 숨김, 로드 성공하면 표시) */}
+      <div className={`w-full h-52 bg-gray-100 relative overflow-hidden ${!imgLoaded ? "hidden" : ""}`}>
+        <img
+          src={imgUrl}
+          alt={detail.store_name}
+          className="w-full h-full object-cover"
+          onLoad={() => setImgLoaded(true)}
+          onError={() => setImgError(true)}
+        />
 
-      {/* 즐겨찾기 버튼 */}
-      <FavoriteButton
-        isFavorite={isFavorite}
-        isFavoritePending={isFavoritePending}
-        onToggleFavorite={onToggleFavorite}
-        className="absolute left-4 top-4 z-10"
-      />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent pointer-events-none" />
 
-      {/* 가게명 + 카테고리 오버레이 */}
-      <div className="absolute bottom-0 left-0 right-0 px-5 pb-4 z-10">
-        {detail.type && (
-          <span className="text-[11px] bg-white/20 backdrop-blur-sm text-white px-2 py-0.5 rounded-full font-medium">
-            {detail.type}
-          </span>
-        )}
-        <h2 className="text-xl font-bold text-white drop-shadow-md mt-1">
-          {detail.store_name}
-        </h2>
+        <FavoriteButton
+          isFavorite={isFavorite}
+          isFavoritePending={isFavoritePending ?? false}
+          onToggleFavorite={onToggleFavorite}
+          className="absolute left-4 top-4 z-10"
+        />
+
+        <div className="absolute bottom-0 left-0 right-0 px-5 pb-4 z-10">
+          {detail.type && (
+            <span className="text-[11px] bg-white/20 backdrop-blur-sm text-white px-2 py-0.5 rounded-full font-medium">
+              {detail.type}
+            </span>
+          )}
+          <h2 className="text-xl font-bold text-white drop-shadow-md mt-1">
+            {detail.store_name}
+          </h2>
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 
