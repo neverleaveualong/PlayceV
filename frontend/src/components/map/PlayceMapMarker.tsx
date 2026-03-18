@@ -20,7 +20,14 @@ const PlayceMapMarker = memo(function PlayceMapMarker({ restaurant }: PlayceMapM
     >
       <button
         onClick={() => {
-          map.panTo(new window.kakao.maps.LatLng(restaurant.lat, restaurant.lng));
+          // 모달이 상단에 뜨므로 pan 위치를 아래로 오프셋 (위도 기준 약간 위로)
+          const projection = map.getProjection();
+          const point = projection.pointFromCoords(
+            new window.kakao.maps.LatLng(restaurant.lat, restaurant.lng)
+          );
+          point.y -= 120; // 모달 높이만큼 위로 올림
+          const offsetLatLng = projection.coordsFromPoint(point);
+          map.panTo(offsetLatLng);
           setOpenedModal(restaurant.store_id);
         }}
         className={`
