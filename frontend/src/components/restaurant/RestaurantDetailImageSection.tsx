@@ -39,7 +39,7 @@ const RestaurantDetailImageSection = ({
       <button
         onClick={onToggleFavorite}
         disabled={isFavoritePending}
-        className={`absolute right-4 bottom-4 bg-white/90 backdrop-blur-sm rounded-full p-2.5 shadow-md
+        className={`absolute left-4 top-4 bg-white/90 backdrop-blur-sm rounded-full p-2.5 shadow-md
           hover:bg-white hover:scale-110 transition-all z-10
           ${isFavoritePending ? "opacity-50 cursor-not-allowed" : ""}`}
         aria-label={isFavorite ? "즐겨찾기 해제" : "즐겨찾기 추가"}
