@@ -1,5 +1,6 @@
 import { memo } from "react";
 import { FiTrash2 } from "react-icons/fi";
+import FallbackImage from "@/components/common/FallbackImage";
 import EmptyMessage from "./EmptyMessage";
 
 interface RestaurantCardListProps {
@@ -45,7 +46,7 @@ const RestaurantCardList = memo(function RestaurantCardList({
                 : undefined
             }
           >
-            <img
+            <FallbackImage
               src={store.main_img || "/noimg.png"}
               alt={store.store_name}
               className={
@@ -53,7 +54,6 @@ const RestaurantCardList = memo(function RestaurantCardList({
                   ? "w-14 h-14 rounded-lg object-cover bg-gray-200 border border-gray-100"
                   : "w-16 h-16 rounded-lg object-cover border border-gray-100 shadow-sm"
               }
-              onError={(e) => { (e.target as HTMLImageElement).src = "/noimg.png"; }}
             />
             <div className="flex-1 min-w-0">
               <div
