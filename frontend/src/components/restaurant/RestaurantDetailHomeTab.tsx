@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { FiMapPin, FiClock, FiPhone, FiFileText, FiCopy, FiCheck } from "react-icons/fi";
 import type { RestaurantDetail } from "@/types/restaurant.types";
+import { getOpenStatus, getOpenStatusLabel } from "@/utils/openStatus";
 
 export default function RestaurantDetailHomeTab({
   detail,
@@ -39,9 +40,31 @@ export default function RestaurantDetailHomeTab({
     });
   }
   if (detail.opening_hours) {
+    const status = getOpenStatus(detail.opening_hours);
+    const isOpen = status === "open";
     infoItems.push({
       icon: <FiClock />,
-      content: <span className="text-sm text-gray-700">{detail.opening_hours}</span>,
+      content: (
+        <div className="flex items-center gap-2 flex-1 min-w-0">
+          <span className="text-sm text-gray-700">{detail.opening_hours}</span>
+          {status !== "unknown" && (
+            <span
+              className={`inline-flex items-center gap-1 text-[10px] font-semibold px-1.5 py-0.5 rounded-full flex-shrink-0 ${
+                isOpen
+                  ? "bg-emerald-50 text-emerald-600"
+                  : "bg-gray-100 text-gray-500"
+              }`}
+            >
+              <span
+                className={`w-1.5 h-1.5 rounded-full ${
+                  isOpen ? "bg-emerald-500" : "bg-gray-400"
+                }`}
+              />
+              {getOpenStatusLabel(status)}
+            </span>
+          )}
+        </div>
+      ),
     });
   }
   if (detail.phone) {
@@ -65,7 +88,9 @@ export default function RestaurantDetailHomeTab({
     <div className="flex flex-col gap-2">
       {/* 설명 */}
       {detail.description && (
-        <p className="text-gray-600 text-sm leading-normal">{detail.description}</p>
+        <div className="rounded-xl border border-gray-100 bg-gray-50 px-4 py-3">
+          <p className="text-gray-600 text-sm leading-relaxed">{detail.description}</p>
+        </div>
       )}
 
       {detail.is_owner && (
