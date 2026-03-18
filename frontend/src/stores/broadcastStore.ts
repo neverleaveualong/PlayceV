@@ -29,11 +29,8 @@ const useBroadcastStore = create<BoradcastState>((set) => ({
   storeId: 0,
   viewOption: "tab",
   resetYMD: () => {
-    set({
-      year: dateInfo.year,
-      month: dateInfo.month,
-      date: dateInfo.date,
-    });
+    const { year, month, date } = getToday();
+    set({ year, month, date });
   },
   setYear: (year) => {
     set({ year: year });
