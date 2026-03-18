@@ -100,7 +100,7 @@ const SearchPage = () => {
         {activeTab === "search" ? (
           <>
             {/* 검색 영역 */}
-            <div className="bg-primary4 px-4 py-4 space-y-2">
+            <div className="px-4 py-4 space-y-2 border-b border-gray-100">
               <div>
                 <SearchInput className="w-full" />
               </div>
@@ -166,7 +166,9 @@ const SearchPage = () => {
                 />
               </div>
             ) : (
-              <TodayBroadcastSidebar />
+              <div className="px-4 py-4">
+                <TodayBroadcastSidebar />
+              </div>
             )}
           </>
         ) : (

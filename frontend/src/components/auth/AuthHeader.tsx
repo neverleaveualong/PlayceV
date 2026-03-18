@@ -15,24 +15,24 @@ const AuthHeader: React.FC = () => {
   const { setIsMypageOpen } = useMypageStore();
   const { userLogout } = useAuth();
   return (
-    <div className="absolute top-5 right-5 z-10 text-lg">
-      <div className="flex gap-3">
+    <div className="absolute top-4 right-4 z-10">
+      <div className="flex gap-2">
         {isLoggedIn ? (
           <>
             <Button
               icon={<FaSignOutAlt />}
-              size="medium"
+              size="semi"
               scheme="custom"
-              className="bg-white text-primary5 hover:shadow-lg rounded-lg"
+              className="bg-white/90 backdrop-blur-sm text-gray-600 hover:text-primary5 hover:bg-white rounded-full shadow-md border border-gray-100"
               onClick={() => userLogout()}
             >
               로그아웃
             </Button>
             <Button
               icon={<FaUserAlt />}
-              size="medium"
+              size="semi"
               scheme="custom"
-              className="bg-white text-primary5 hover:shadow-lg rounded-lg"
+              className="bg-primary5 text-white hover:brightness-95 rounded-full shadow-md"
               onClick={() => setIsMypageOpen(true)}
             >
               마이페이지
@@ -42,23 +42,19 @@ const AuthHeader: React.FC = () => {
           <>
             <Button
               icon={<FaSignInAlt />}
-              size="medium"
+              size="semi"
               scheme="custom"
-              className="bg-white text-primary5 hover:shadow-lg rounded-lg"
-              onClick={() => {
-                setIsLoginModalOpen(true);
-              }}
+              className="bg-white/90 backdrop-blur-sm text-gray-600 hover:text-primary5 hover:bg-white rounded-full shadow-md border border-gray-100"
+              onClick={() => setIsLoginModalOpen(true)}
             >
               로그인
             </Button>
             <Button
               icon={<FaUserPlus />}
-              size="medium"
+              size="semi"
               scheme="custom"
-              className="bg-white text-primary5 hover:shadow-lg rounded-lg"
-              onClick={() => {
-                setIsSignupModalOpen(true);
-              }}
+              className="bg-primary5 text-white hover:brightness-95 rounded-full shadow-md"
+              onClick={() => setIsSignupModalOpen(true)}
             >
               회원가입
             </Button>
