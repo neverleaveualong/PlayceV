@@ -31,30 +31,32 @@ const Home: React.FC = () => {
 
   return (
     <div className="flex h-screen overflow-hidden">
-      {/* 사이드바 + 토글 버튼 */}
-      <div className="flex flex-shrink-0">
-        <div
-          className={`transition-all duration-300 ease-in-out overflow-hidden ${
-            isSidebarOpen ? "w-sidebar" : "w-0"
-          }`}
-        >
-          <SearchPage />
-        </div>
-        <button
-          onClick={toggleSidebar}
-          className="self-center w-5 h-16 bg-white border border-l-0 border-gray-200
-            rounded-r-lg shadow-md
-            flex items-center justify-center
-            hover:bg-primary4 transition-colors z-30"
-          aria-label={isSidebarOpen ? "사이드바 닫기" : "사이드바 열기"}
-        >
-          {isSidebarOpen ? (
-            <FiChevronLeft className="text-gray-500 text-base" />
-          ) : (
-            <FiChevronRight className="text-gray-500 text-base" />
-          )}
-        </button>
+      {/* 사이드바 */}
+      <div
+        className={`flex-shrink-0 transition-all duration-300 ease-in-out overflow-hidden ${
+          isSidebarOpen ? "w-sidebar" : "w-0"
+        }`}
+      >
+        <SearchPage />
       </div>
+
+      {/* 토글 버튼 — 화면 기준 fixed */}
+      <button
+        onClick={toggleSidebar}
+        className={`fixed top-1/2 -translate-y-1/2 z-30
+          w-5 h-16 bg-white border border-l-0 border-gray-200
+          rounded-r-lg shadow-md
+          flex items-center justify-center
+          hover:bg-primary4 transition-all duration-300
+          ${isSidebarOpen ? "left-sidebar" : "left-0"}`}
+        aria-label={isSidebarOpen ? "사이드바 닫기" : "사이드바 열기"}
+      >
+        {isSidebarOpen ? (
+          <FiChevronLeft className="text-gray-500 text-base" />
+        ) : (
+          <FiChevronRight className="text-gray-500 text-base" />
+        )}
+      </button>
 
       {/* 지도 영역 */}
       <div className="relative flex-1 h-screen">
