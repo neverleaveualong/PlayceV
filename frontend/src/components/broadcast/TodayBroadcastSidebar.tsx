@@ -39,18 +39,18 @@ const getMatchStatus = (matchTime: string) => {
 /** 경기 카드 */
 function BroadcastCard({
   game,
-  searchPosition,
+  userPosition,
   onClick,
 }: {
   game: TodayBroadcast;
-  searchPosition: { lat: number; lng: number };
+  userPosition: { lat: number; lng: number };
   onClick: () => void;
 }) {
   const status = getMatchStatus(game.match_time);
   const isLive = status === "live";
   const isEnded = status === "종료";
   const distance = getDistanceFromLatLon(
-    searchPosition.lat, searchPosition.lng,
+    userPosition.lat, userPosition.lng,
     game.lat, game.lng
   );
 
@@ -129,6 +129,7 @@ function BroadcastCard({
 }
 
 const TodayBroadcastSidebar = memo(function TodayBroadcastSidebar() {
+  const position = useMapStore((state) => state.position);
   const searchPosition = useMapStore((state) => state.searchPosition);
   const radius = useMapStore((state) => state.radius);
   const { data: restaurants = [], isLoading } = useNearbyRestaurants(
@@ -273,7 +274,7 @@ const TodayBroadcastSidebar = memo(function TodayBroadcastSidebar() {
                   <BroadcastCard
                     key={`${game.store_id}-${game.match_time}-${game.league}`}
                     game={game}
-                    searchPosition={searchPosition}
+                    userPosition={position}
                     onClick={() => handleOpenDetail(game.store_id)}
                   />
                 ))}
@@ -306,7 +307,7 @@ const TodayBroadcastSidebar = memo(function TodayBroadcastSidebar() {
                         <BroadcastCard
                           key={`${game.store_id}-${game.match_time}-${game.league}`}
                           game={game}
-                          searchPosition={searchPosition}
+                          userPosition={position}
                           onClick={() => handleOpenDetail(game.store_id)}
                         />
                       ))}
