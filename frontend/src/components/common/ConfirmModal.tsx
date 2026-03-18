@@ -14,7 +14,7 @@ const ConfirmModal = ({ message, onConfirm, onCancel }: ConfirmModalProps) => {
       onClick={onCancel}
     >
       <div
-        className="bg-white rounded-xl shadow-lg p-6 w-modal-sm"
+        className="bg-white rounded-xl shadow-lg border border-gray-200 p-6 w-modal-sm"
         onClick={(e) => e.stopPropagation()}
       >
         <p className="text-center text-gray-800 mb-6">{message}</p>
