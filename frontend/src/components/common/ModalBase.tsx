@@ -23,12 +23,18 @@ const ModalBase = ({
 }: ModalBaseProps) => {
   return createPortal(
     <div
-      className="fixed inset-0 z-[9999] flex items-start justify-center pt-[20vh] sm:pt-[12vh] bg-black bg-opacity-50"
+      className={classNames(
+        "fixed inset-0 z-[9999] flex justify-center bg-black bg-opacity-50",
+        type === "auth"
+          ? "items-center py-6 overflow-y-auto"
+          : "items-start pt-[20vh] sm:pt-[12vh]"
+      )}
       onClick={type === "auth" ? undefined : onClose}
     >
       <div
         className={classNames(
-          "bg-white rounded-xl shadow-lg max-h-[90vh] overflow-hidden flex flex-col",
+          "bg-white rounded-xl shadow-lg flex flex-col relative",
+          type === "auth" ? "max-h-fit" : "max-h-[90vh] overflow-hidden",
           { "w-modal-auth": type === "auth" },
           { "w-modal-lg": type === "mypage" },
           { "w-modal-md": type !== "auth" && type !== "mypage" },

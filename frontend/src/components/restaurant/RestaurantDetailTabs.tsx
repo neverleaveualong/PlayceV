@@ -3,7 +3,7 @@ import { FiHome, FiTv, FiImage } from "react-icons/fi";
 import { FaUtensils } from "react-icons/fa";
 import classNames from "classnames";
 
-const TABS = ["홈", "메뉴", "사진", "중계"] as const;
+const TABS = ["홈", "중계", "메뉴", "사진"] as const;
 type Tab = (typeof TABS)[number];
 
 const TAB_ICONS: Record<Tab, React.ReactNode> = {
