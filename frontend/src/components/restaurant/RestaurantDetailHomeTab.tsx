@@ -19,71 +19,64 @@ export default function RestaurantDetailHomeTab({
     }
   };
 
+  const infoItems = [
+    detail.address && {
+      icon: <FiMapPin />,
+      content: (
+        <div className="flex items-center gap-2 flex-1 min-w-0">
+          <span className="text-sm text-gray-700 truncate">{detail.address}</span>
+          <button
+            onClick={handleCopyAddress}
+            className="text-gray-400 hover:text-primary5 transition flex-shrink-0"
+            aria-label="주소 복사"
+          >
+            {copied ? <FiCheck className="text-primary5 text-sm" /> : <FiCopy className="text-sm" />}
+          </button>
+        </div>
+      ),
+    },
+    detail.opening_hours && {
+      icon: <FiClock />,
+      content: <span className="text-sm text-gray-700">{detail.opening_hours}</span>,
+    },
+    detail.phone && {
+      icon: <FiPhone />,
+      content: (
+        <a href={`tel:${detail.phone}`} className="text-sm text-primary5 font-medium hover:underline">
+          {detail.phone}
+        </a>
+      ),
+    },
+    detail.type && {
+      icon: <FiFileText />,
+      content: <span className="text-sm text-gray-700">{detail.type}</span>,
+    },
+  ].filter(Boolean);
+
   return (
-    <div className="flex flex-col gap-5">
-      {/* 가게명 + 배지 */}
-      <div>
-        {detail.is_owner && (
-          <span className="inline-block px-2.5 py-1 bg-primary5 text-white rounded-md text-xs font-bold mb-2">
-            내 가게
-          </span>
-        )}
-        <h2 className="text-2xl font-bold text-mainText">{detail.store_name}</h2>
-        {detail.description && (
-          <p className="text-gray-500 text-sm leading-relaxed mt-2">{detail.description}</p>
-        )}
-      </div>
+    <div className="flex flex-col gap-4">
+      {/* 설명 */}
+      {detail.description && (
+        <p className="text-gray-600 text-sm leading-relaxed">{detail.description}</p>
+      )}
 
-      {/* 정보 카드 */}
-      <div className="bg-gray-50 rounded-xl p-4 flex flex-col gap-3">
-        {/* 주소 — 복사 기능 */}
-        {detail.address && (
-          <div className="flex items-start gap-3 group">
-            <FiMapPin className="text-primary5 text-lg flex-shrink-0 mt-0.5" />
-            <span className="text-sm text-gray-700 flex-1">{detail.address}</span>
-            <button
-              onClick={handleCopyAddress}
-              className="text-gray-400 hover:text-primary5 transition flex-shrink-0"
-              aria-label="주소 복사"
-            >
-              {copied ? (
-                <FiCheck className="text-primary5 text-base" />
-              ) : (
-                <FiCopy className="text-base" />
-              )}
-            </button>
-          </div>
-        )}
+      {detail.is_owner && (
+        <span className="self-start px-2.5 py-1 bg-primary5 text-white rounded-md text-xs font-bold">
+          내 가게
+        </span>
+      )}
 
-        {/* 영업시간 */}
-        {detail.opening_hours && (
-          <div className="flex items-start gap-3">
-            <FiClock className="text-primary5 text-lg flex-shrink-0 mt-0.5" />
-            <span className="text-sm text-gray-700">{detail.opening_hours}</span>
-          </div>
-        )}
-
-        {/* 전화번호 — 클릭하면 전화 */}
-        {detail.phone && (
-          <div className="flex items-center gap-3">
-            <FiPhone className="text-primary5 text-lg flex-shrink-0" />
-            <a
-              href={`tel:${detail.phone}`}
-              className="text-sm text-primary5 font-medium hover:underline"
-            >
-              {detail.phone}
-            </a>
-          </div>
-        )}
-
-        {/* 업종 */}
-        {detail.type && (
-          <div className="flex items-center gap-3">
-            <FiFileText className="text-primary5 text-lg flex-shrink-0" />
-            <span className="text-sm text-gray-700">{detail.type}</span>
-          </div>
-        )}
-      </div>
+      {/* 정보 */}
+      {infoItems.length > 0 && (
+        <div className="rounded-xl border border-gray-100 divide-y divide-gray-100">
+          {infoItems.map((item, idx) => (
+            <div key={idx} className="flex items-center gap-3 px-4 py-3">
+              <span className="text-primary5 text-base flex-shrink-0">{item.icon}</span>
+              {item.content}
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 }

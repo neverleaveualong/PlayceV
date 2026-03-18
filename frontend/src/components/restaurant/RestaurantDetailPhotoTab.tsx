@@ -35,14 +35,14 @@ const RestaurantDetailPhotoTab = memo(function RestaurantDetailPhotoTab({
 
   return (
     <div>
-      <div className="grid grid-cols-2 gap-3">
+      <div className={images.length === 1 ? "" : "grid grid-cols-2 gap-2.5"}>
         {images.map((url, idx) => (
           <img
             key={idx}
             src={url}
             alt={`${detail.store_name} 사진 ${idx + 1}`}
-            className="w-full h-40 object-cover rounded-lg shadow cursor-pointer
-              transition-transform hover:scale-105"
+            className={`w-full object-cover rounded-xl cursor-pointer transition-all hover:brightness-95
+              ${images.length === 1 ? "h-56" : "h-40"}`}
             loading="lazy"
             onClick={() => setModalIndex(idx)}
           />
