@@ -46,16 +46,16 @@ const Home: React.FC = () => {
         <button
           onClick={toggleSidebar}
           className="absolute top-1/2 -translate-y-1/2 -right-4 z-30
-            w-4 h-12 bg-white border border-l-0 border-gray-200
-            rounded-r-md shadow-sm
+            w-5 h-16 bg-white border border-l-0 border-gray-200
+            rounded-r-lg shadow-md
             flex items-center justify-center
             hover:bg-primary4 transition-colors"
           aria-label={isSidebarOpen ? "사이드바 닫기" : "사이드바 열기"}
         >
           {isSidebarOpen ? (
-            <FiChevronLeft className="text-gray-400 text-sm" />
+            <FiChevronLeft className="text-gray-500 text-base" />
           ) : (
-            <FiChevronRight className="text-gray-400 text-sm" />
+            <FiChevronRight className="text-gray-500 text-base" />
           )}
         </button>
       </div>
