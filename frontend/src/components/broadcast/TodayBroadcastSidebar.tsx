@@ -61,6 +61,14 @@ const TodayBroadcastSidebar = memo(function TodayBroadcastSidebar() {
     }
   }, [SPORTS, selectedSport]);
 
+  const sportCounts = useMemo(() => {
+    const counts: Record<string, number> = {};
+    todayBroadcasts.forEach((b) => {
+      counts[b.sport] = (counts[b.sport] || 0) + 1;
+    });
+    return counts;
+  }, [todayBroadcasts]);
+
   const filtered = useMemo(
     () => todayBroadcasts.filter((b) => b.sport === selectedSport),
     [todayBroadcasts, selectedSport]
@@ -85,10 +93,13 @@ const TodayBroadcastSidebar = memo(function TodayBroadcastSidebar() {
         <div className="flex items-center gap-2">
           <FiTv className="text-primary5" />
           <span className="text-sm font-semibold text-gray-800">오늘의 중계</span>
+          {todayBroadcasts.length > 0 && (
+            <span className="text-xs text-primary5 font-bold">{todayBroadcasts.length}경기</span>
+          )}
         </div>
-        <span className="text-xs text-gray-400">지도에서 탐색한 가게만</span>
+        <span className="text-[11px] text-gray-400">지도 기준</span>
       </div>
-      <p className="text-xs text-gray-500 mb-3 ml-6">{formattedDate} ({dayName})</p>
+      <p className="text-xs text-gray-400 mb-3 ml-6">{formattedDate} ({dayName})</p>
 
       {isLoading ? (
         <LoadingSpinner message="중계 일정을 불러오는 중..." />
@@ -108,7 +119,7 @@ const TodayBroadcastSidebar = memo(function TodayBroadcastSidebar() {
                     : "bg-gray-100 text-gray-500 hover:bg-gray-200"
                 }`}
               >
-                {sport}
+                {sport} {sportCounts[sport]}
               </button>
             ))}
           </nav>
