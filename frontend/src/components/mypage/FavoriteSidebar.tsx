@@ -1,11 +1,11 @@
 import { useCallback } from "react";
 import useAuthStore from "@/stores/authStore";
-import RestaurantCardList from "@/components/restaurant/RestaurantCardList";
 import useMapStore from "@/stores/mapStore";
 import { useFavorites, useRemoveFavorite } from "@/hooks/useFavorites";
-import { FiStar } from "react-icons/fi";
+import { FiStar, FiTrash2 } from "react-icons/fi";
 import LoadingSpinner from "@/components/common/LoadingSpinner";
 import Button from "@/components/common/Button";
+import FallbackImage from "@/components/common/FallbackImage";
 
 export default function FavoriteSidebar() {
   const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
@@ -71,17 +71,57 @@ export default function FavoriteSidebar() {
 
   return (
     <section className="w-full">
-      <div className="px-4 py-3 text-sm text-gray-500">
-        총 {favorites.length}개
+      {/* 헤더 */}
+      <div className="flex items-center justify-between px-4 py-3">
+        <div className="flex items-center gap-2">
+          <FiStar className="text-primary5" />
+          <span className="text-sm font-semibold text-mainText">내 즐겨찾기</span>
+        </div>
+        <span className="text-xs text-darkgray bg-gray-100 px-2 py-0.5 rounded-full">
+          {favorites.length}개
+        </span>
       </div>
-      <RestaurantCardList
-        stores={favorites}
-        onRemove={handleRemove}
-        showDelete
-        showDetail
-        compact
-        onDetail={openDetail}
-      />
+
+      {/* 카드 리스트 */}
+      <ul className="flex flex-col gap-2 px-3 pb-3">
+        {favorites.map((store) => (
+          <li
+            key={store.store_id}
+            className="group relative flex items-center gap-3 p-3 bg-white rounded-xl border border-gray-100 shadow-sm hover:shadow-md hover:border-primary1 cursor-pointer transition-all duration-150"
+            onClick={() => openDetail(store.store_id)}
+          >
+            <FallbackImage
+              src={store.main_img || "/noimg.png"}
+              alt={store.store_name}
+              className="w-14 h-14 rounded-lg object-cover bg-gray-100 flex-shrink-0"
+            />
+            <div className="flex-1 min-w-0">
+              <div className="flex items-center gap-1.5">
+                <span className="font-semibold text-sm text-mainText truncate">
+                  {store.store_name}
+                </span>
+                <span className="text-[11px] px-1.5 py-0.5 rounded bg-primary4 text-primary5 font-medium flex-shrink-0">
+                  {store.type}
+                </span>
+              </div>
+              <p className="text-xs text-darkgray truncate mt-1">
+                {store.address}
+              </p>
+            </div>
+            {/* 삭제 — hover 시에만 표시 */}
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                handleRemove(store.store_id);
+              }}
+              className="absolute top-2 right-2 w-7 h-7 flex items-center justify-center rounded-full bg-white border border-gray-200 shadow-sm opacity-0 group-hover:opacity-100 hover:bg-red-50 hover:border-red-200 transition-all duration-150"
+              aria-label="삭제"
+            >
+              <FiTrash2 className="text-gray-400 hover:text-red-500 text-xs transition-colors" />
+            </button>
+          </li>
+        ))}
+      </ul>
     </section>
   );
 }
