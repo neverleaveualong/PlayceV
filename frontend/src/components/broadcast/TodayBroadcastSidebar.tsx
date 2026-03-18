@@ -3,6 +3,7 @@ import { FiTv, FiMapPin, FiClock, FiChevronDown } from "react-icons/fi";
 import useMapStore from "@/stores/mapStore";
 import useNearbyRestaurants from "@/hooks/useNearbyRestaurants";
 import LoadingSpinner from "@/components/common/LoadingSpinner";
+import FallbackImage from "@/components/common/FallbackImage";
 import EmptyMessage from "@/components/restaurant/EmptyMessage";
 import type { Broadcast } from "@/types/restaurant.types";
 import { formatTimeShort } from "@/utils/formatTime";
@@ -69,11 +70,10 @@ function BroadcastCard({
     >
       {/* 상단: 가게 정보 */}
       <div className="flex items-center gap-2.5">
-        <img
+        <FallbackImage
           src={game.main_img || "/noimg.png"}
           alt={game.store_name}
           className="w-10 h-10 rounded-xl object-cover bg-gray-100 flex-shrink-0"
-          onError={(e) => { (e.target as HTMLImageElement).src = "/noimg.png"; }}
         />
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-1.5">

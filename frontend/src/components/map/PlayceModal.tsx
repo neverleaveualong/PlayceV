@@ -4,6 +4,7 @@ import { CustomOverlayMap } from "react-kakao-maps-sdk";
 import { FiStar, FiMapPin, FiX, FiClock, FiTv } from "react-icons/fi";
 import { FaStar } from "react-icons/fa";
 import Button from "@/components/common/Button";
+import FallbackImage from "@/components/common/FallbackImage";
 import useFavoriteToggle from "@/hooks/useFavoriteToggle";
 
 const defaultImage = "/noimg.png";
@@ -67,11 +68,11 @@ const PlayceModal = ({
 
         {/* 이미지 */}
         <div className="relative h-32 bg-gray-100">
-          <img
+          <FallbackImage
             src={restaurant.main_img || defaultImage}
+            fallbackSrc={defaultImage}
             alt={restaurant.store_name || "가게 이미지"}
             className="w-full h-full object-cover"
-            onError={(e) => { (e.target as HTMLImageElement).src = defaultImage; }}
             loading="lazy"
           />
           {/* 즐겨찾기 */}
