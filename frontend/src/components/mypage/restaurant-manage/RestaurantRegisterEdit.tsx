@@ -18,7 +18,6 @@ import useToastStore from "@/stores/toastStore";
 import Button from "@/components/common/Button";
 import { useQueryClient } from "@tanstack/react-query";
 
-// ① 폼 값 타입 정의
 interface StoreFormValues {
   store_name: string;
   business_number: string;
@@ -34,12 +33,14 @@ interface StoreFormModalProps {
   mode: "create" | "edit";
 }
 
+const INPUT =
+  "w-full border border-gray-200 rounded-xl px-3.5 py-2.5 text-sm text-mainText placeholder-gray-400 hover:border-primary5 focus:border-primary5 focus:outline-none focus:ring-2 focus:ring-primary1 transition-colors";
+
 const RestaurantRegisterEdit = ({ mode }: StoreFormModalProps) => {
   const { restaurantEditId, setRestaurantSubpage } = useMypageStore();
   const { addToast } = useToastStore();
   const queryClient = useQueryClient();
 
-  // ② useForm — useState 9개를 대체
   const {
     register,
     handleSubmit,
@@ -59,12 +60,10 @@ const RestaurantRegisterEdit = ({ mode }: StoreFormModalProps) => {
     },
   });
 
-  // ③ menus, imgUrls는 동적 배열이라 useState 유지
   const [menus, setMenus] = useState<MenuItem[]>([{ name: "", price: "" }]);
   const [imgUrls, setImgUrls] = useState<string[]>([]);
 
-  // ④ 수정 모드: useStoreDetail + reset으로 폼 채우기
-  const { data: detail } = useStoreDetail(restaurantEditId ?? 0, {
+  const { data: detail, isLoading: isDetailLoading } = useStoreDetail(restaurantEditId ?? 0, {
     enabled: mode === "edit" && !!restaurantEditId,
   });
 
@@ -82,7 +81,6 @@ const RestaurantRegisterEdit = ({ mode }: StoreFormModalProps) => {
     setImgUrls(detail.img_urls);
   }, [detail, reset]);
 
-  // ⑤ submit — 유효성 통과한 경우만 실행됨
   const onSubmit = async (data: StoreFormValues) => {
     if (mode === "create") {
       const payload: RegisterStoreProps = {
@@ -126,153 +124,158 @@ const RestaurantRegisterEdit = ({ mode }: StoreFormModalProps) => {
     }
   };
 
-  // ⑥ JSX — register로 input 연결
-  return (
-    <div className="p-2">
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-        {/* 가게명 */}
-        <div>
-          <label className="block mb-1 font-semibold text-gray-700">
-            가게명 <span className="text-red-500">*</span>
-          </label>
-          <input
-            className="w-full border rounded-lg px-3 py-2"
-            {...register("store_name", { required: "가게명을 입력해주세요" })}
-          />
-          <ErrorMessage message={errors.store_name?.message} />
-        </div>
+  if (mode === "edit" && isDetailLoading) {
+    return <FormSkeleton />;
+  }
 
-        {/* 사업자등록번호 (등록 모드만) */}
+  return (
+    <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
+      {/* 기본 정보 섹션 */}
+      <Section title="기본 정보">
+        <Field label="가게명" required error={errors.store_name?.message}>
+          <input className={INPUT} {...register("store_name", { required: "가게명을 입력해주세요" })} placeholder="예: 홍대 스포츠치킨" />
+        </Field>
+
         {mode === "create" && (
-          <div>
-            <label className="block mb-1 font-semibold text-gray-700">
-              사업자등록번호 <span className="text-red-500">*</span>
-            </label>
-            <input
-              className="w-full border rounded-lg px-3 py-2"
-              {...register("business_number", { required: "사업자등록번호를 입력해주세요" })}
-            />
-            <ErrorMessage message={errors.business_number?.message} />
-          </div>
+          <Field label="사업자등록번호" required error={errors.business_number?.message}>
+            <input className={INPUT} {...register("business_number", { required: "사업자등록번호를 입력해주세요" })} placeholder="000-00-00000" />
+          </Field>
         )}
 
-        {/* 주소 */}
-        <div>
-          <label className="block mb-1 font-semibold text-gray-700">
-            주소 <span className="text-red-500">*</span>
-          </label>
-          <div className="flex gap-3">
-            <input
-              className="w-full border rounded-lg px-3 py-2"
-              {...register("address", { required: "주소를 입력해주세요" })}
-              readOnly={true}
-            />
-            <FindAddressButton
-              onCompleted={(addr) => setValue("address", addr)}
-            />
+        <Field label="주소" required error={errors.address?.message}>
+          <div className="flex gap-2">
+            <input className={INPUT} {...register("address", { required: "주소를 입력해주세요" })} readOnly placeholder="주소 찾기를 눌러주세요" />
+            <FindAddressButton onCompleted={(addr) => setValue("address", addr)} />
           </div>
-          <ErrorMessage message={errors.address?.message} />
+        </Field>
+
+        <div className="grid grid-cols-2 gap-3">
+          <Field label="전화번호" required error={errors.phone?.message}>
+            <input className={INPUT} {...register("phone", { required: "전화번호를 입력해주세요" })} placeholder="02-0000-0000" />
+          </Field>
+          <Field label="업종" required error={errors.type?.message}>
+            <input className={INPUT} {...register("type", { required: "업종을 입력해주세요" })} placeholder="예: 치킨" />
+          </Field>
         </div>
 
-        {/* 전화번호 */}
-        <div>
-          <label className="block mb-1 font-semibold text-gray-700">
-            전화번호 <span className="text-red-500">*</span>
-          </label>
-          <input
-            className="w-full border rounded-lg px-3 py-2"
-            {...register("phone", { required: "전화번호를 입력해주세요" })}
-          />
-          <ErrorMessage message={errors.phone?.message} />
-        </div>
+        <Field label="영업시간" required error={errors.opening_hours?.message}>
+          <input className={INPUT} {...register("opening_hours", { required: "영업시간을 입력해주세요" })} placeholder="예: 매일 15:00 ~ 01:00" />
+        </Field>
+      </Section>
 
-        {/* 영업시간 */}
-        <div>
-          <label className="block mb-1 font-semibold text-gray-700">
-            영업시간 <span className="text-red-500">*</span>
-          </label>
-          <input
-            className="w-full border rounded-lg px-3 py-2"
-            {...register("opening_hours", { required: "영업시간을 입력해주세요" })}
-          />
-          <ErrorMessage message={errors.opening_hours?.message} />
-        </div>
-
-        {/* 업종 */}
-        <div>
-          <label className="block mb-1 font-semibold text-gray-700">
-            업종 <span className="text-red-500">*</span>
-          </label>
-          <input
-            className="w-full border rounded-lg px-3 py-2"
-            {...register("type", { required: "업종을 입력해주세요" })}
-          />
-          <ErrorMessage message={errors.type?.message} />
-        </div>
-
-        {/* 메뉴 (동적 배열 — useState 유지) */}
+      {/* 메뉴 섹션 */}
+      <Section title="메뉴">
         <MenuInputList menus={menus} setMenus={setMenus} />
+      </Section>
 
-        {/* 소개 (선택) */}
-        <div>
-          <label className="block mb-1 font-semibold text-gray-700">소개</label>
+      {/* 추가 정보 섹션 */}
+      <Section title="추가 정보">
+        <Field label="소개">
           <textarea
-            className="w-full border rounded-lg px-3 py-2"
+            className={INPUT + " resize-none"}
             {...register("description")}
             rows={3}
             placeholder="식당을 소개해 주세요 (선택)"
           />
-        </div>
+        </Field>
 
-        {/* 사진 */}
-        <div>
-          <label className="block mb-1 font-semibold text-gray-700">
-            사진 <span className="text-red-500">*</span>
+        <Field label="사진" required>
+          <ImageUrlInputList imgUrls={imgUrls} setImgUrls={setImgUrls} />
+        </Field>
+      </Section>
+
+      {/* 약관 동의 */}
+      {mode === "create" && (
+        <div className="rounded-xl bg-gray-50 border border-gray-100 p-4">
+          <label htmlFor="agreement" className="flex items-start gap-3 cursor-pointer select-none">
+            <input
+              type="checkbox"
+              id="agreement"
+              {...register("agree", { required: "중계권 관련 약관에 동의해야 등록이 가능합니다." })}
+              className="mt-0.5 w-4 h-4 accent-primary5 rounded"
+            />
+            <span className="text-xs text-darkgray leading-relaxed">
+              <span className="font-bold text-red-500">[필수]</span>{" "}
+              본인은 스포츠 중계권 및 저작권 관련 법적 책임이 본 플랫폼에 없음을 확인하고 동의합니다.
+              <br />
+              <span className="text-gray-400">(중계 영상 송출, 저작권 침해 등은 등록자 본인의 책임입니다)</span>
+            </span>
           </label>
-          <ImageUrlInputList
-            imgUrls={imgUrls}
-            setImgUrls={setImgUrls}
-          />
+          {errors.agree && (
+            <p className="text-xs text-red-500 mt-2 ml-7">{errors.agree.message}</p>
+          )}
         </div>
+      )}
 
-        {/* 약관 동의 (등록 모드만) */}
-        {mode === "create" && (
-          <>
-            <div className="flex mt-5 items-start gap-2">
-              <input
-                type="checkbox"
-                id="agreement"
-                {...register("agree", { required: "중계권 관련 약관에 동의해야 등록이 가능합니다." })}
-                className="mt-1"
-              />
-              <label
-                htmlFor="agreement"
-                className="text-sm text-gray-700 select-none"
-              >
-                <span className="font-semibold text-red-500">[필수]</span>{" "}
-                본인은{" "}
-                <b>
-                  스포츠 중계권 및 저작권 관련 법적 책임이 본 플랫폼에 없음을
-                  확인하고 동의합니다.
-                </b>
-                <br />
-                (중계 영상 송출, 저작권 침해 등은 등록자 본인의 책임입니다)
-              </label>
-            </div>
-            {errors.agree && (
-              <div className="text-xs text-red-500 mt-1">{errors.agree.message}</div>
-            )}
-          </>
-        )}
-
-        <div className="flex justify-end gap-2 mt-4">
-          <Button type="submit" scheme="primary" size="medium">
-            {mode === "edit" ? "수정" : "등록"}
-          </Button>
-        </div>
-      </form>
-    </div>
+      {/* 제출 버튼 */}
+      <Button type="submit" scheme="primary" size="medium" fullWidth className="!py-3 rounded-xl text-base">
+        {mode === "edit" ? "수정 완료" : "식당 등록하기"}
+      </Button>
+    </form>
   );
 };
+
+/* 섹션 카드 */
+const Section = ({ title, children }: { title: string; children: React.ReactNode }) => (
+  <div className="rounded-xl border border-gray-100 bg-white p-4 shadow-sm space-y-4">
+    <h3 className="text-sm font-bold text-mainText">{title}</h3>
+    {children}
+  </div>
+);
+
+/* 필드 래퍼 */
+const Field = ({
+  label,
+  required,
+  error,
+  children,
+}: {
+  label: string;
+  required?: boolean;
+  error?: string;
+  children: React.ReactNode;
+}) => (
+  <div>
+    <label className="block mb-1.5 text-xs font-semibold text-darkgray">
+      {label}
+      {required && <span className="text-red-500 ml-0.5">*</span>}
+    </label>
+    {children}
+    <ErrorMessage message={error} />
+  </div>
+);
+
+/* 로딩 스켈레톤 */
+const Bone = ({ className = "" }: { className?: string }) => (
+  <div className={`animate-pulse bg-gray-100 rounded-xl ${className}`} />
+);
+
+const FormSkeleton = () => (
+  <div className="space-y-5">
+    {/* 기본 정보 */}
+    <div className="rounded-xl border border-gray-100 bg-white p-4 space-y-4 shadow-sm">
+      <Bone className="h-4 w-16" />
+      <Bone className="h-10 w-full" />
+      <Bone className="h-10 w-full" />
+      <div className="grid grid-cols-2 gap-3">
+        <Bone className="h-10 w-full" />
+        <Bone className="h-10 w-full" />
+      </div>
+      <Bone className="h-10 w-full" />
+    </div>
+    {/* 메뉴 */}
+    <div className="rounded-xl border border-gray-100 bg-white p-4 space-y-4 shadow-sm">
+      <Bone className="h-4 w-10" />
+      <Bone className="h-10 w-full" />
+      <Bone className="h-10 w-full" />
+    </div>
+    {/* 추가 정보 */}
+    <div className="rounded-xl border border-gray-100 bg-white p-4 space-y-4 shadow-sm">
+      <Bone className="h-4 w-16" />
+      <Bone className="h-20 w-full" />
+      <Bone className="h-24 w-full" />
+    </div>
+  </div>
+);
 
 export default RestaurantRegisterEdit;
