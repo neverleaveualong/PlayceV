@@ -1,3 +1,4 @@
+import { FiMapPin } from "react-icons/fi";
 import { useSearchStore } from "@/stores/searchStore";
 import { useRegionStore } from "@/stores/regionStore";
 import { useSportStore } from "@/stores/sportStore";
@@ -8,9 +9,9 @@ export default function AppLogoHeader() {
   const resetSport = useSportStore((state) => state.resetSport);
 
   return (
-    <div className="h-12 flex items-center pl-6 border-b border-gray-100">
+    <div className="h-14 flex items-center px-5 border-b border-gray-100">
       <button
-        className="text-2xl font-bold tracking-tight text-primary5 font-pretendard focus:outline-none"
+        className="flex items-center gap-2 focus:outline-none"
         onClick={() => {
           resetSearch();
           resetRegions();
@@ -19,7 +20,10 @@ export default function AppLogoHeader() {
         }}
         aria-label="홈으로 이동"
       >
-        Playce
+        <FiMapPin className="text-primary5 text-xl" />
+        <span className="text-xl font-bold tracking-tight text-primary5">
+          Playce
+        </span>
       </button>
     </div>
   );
