@@ -75,12 +75,13 @@ const SignupModal = () => {
           {/* 일반 필드들 + 비밀번호 확인은 password 바로 뒤에 삽입 */}
           {FIELDS.map(({ name, label, icon: Icon, type, placeholder, rules }) => (
             <fieldset key={name}>
-              <label className="text-[11px] font-semibold text-gray-600 mb-1 block">
+              <label htmlFor={`signup-${name}`} className="text-[11px] font-semibold text-gray-600 mb-1 block">
                 {label}
               </label>
               <div className="relative">
                 <Icon className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 text-sm" />
                 <input
+                  id={`signup-${name}`}
                   type={type}
                   placeholder={placeholder}
                   className="w-full pl-10 pr-4 py-2.5 text-sm border border-gray-200 rounded-lg
@@ -96,12 +97,13 @@ const SignupModal = () => {
               {/* 비밀번호 바로 뒤에 비밀번호 확인 */}
               {name === "password" && (
                 <div className="mt-3">
-                  <label className="text-[11px] font-semibold text-gray-600 mb-1 block">
+                  <label htmlFor="signup-passwordConfirm" className="text-[11px] font-semibold text-gray-600 mb-1 block">
                     비밀번호 확인
                   </label>
                   <div className="relative">
                     <FiLock className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 text-sm" />
                     <input
+                      id="signup-passwordConfirm"
                       type="password"
                       placeholder="비밀번호를 다시 입력하세요"
                       className="w-full pl-10 pr-4 py-2.5 text-sm border border-gray-200 rounded-lg

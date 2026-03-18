@@ -57,8 +57,10 @@ export const useAuth = () => {
     try {
       await passwordResetRequest(data);
       addToast("비밀번호 재설정 메일이 전송되었습니다.", "success");
+      return true;
     } catch (error) {
       addToast(getApiErrorMessage(error), "error");
+      return false;
     } finally {
       setIsPending(false);
     }
