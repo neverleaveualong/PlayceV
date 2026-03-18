@@ -9,6 +9,7 @@ interface MapState {
   radius: number;
   isRefreshBtnOn: boolean;
   zoomLevel: number;
+  isSidebarOpen: boolean;
   setPosition: (pos: latlng) => void;
   initPosition: (pos: latlng) => void;
   search: (radius: number) => void;
@@ -16,6 +17,7 @@ interface MapState {
   closeModal: () => void;
   setRefreshBtn: (button: boolean) => void;
   setZoomLevel: (zoom: number) => void;
+  toggleSidebar: () => void;
 }
 
 const useMapStore = create<MapState>((set, get) => ({
@@ -25,6 +27,7 @@ const useMapStore = create<MapState>((set, get) => ({
   radius: SEARCHNEARBY_RADIUS,
   isRefreshBtnOn: false,
   zoomLevel: 3,
+  isSidebarOpen: true,
   setPosition: (pos) => {
     set({ position: pos });
   },
@@ -45,6 +48,9 @@ const useMapStore = create<MapState>((set, get) => ({
   },
   setZoomLevel: (zoom) => {
     set({ zoomLevel: zoom });
+  },
+  toggleSidebar: () => {
+    set((state) => ({ isSidebarOpen: !state.isSidebarOpen }));
   },
 }));
 

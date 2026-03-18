@@ -59,8 +59,7 @@ const SearchPage = () => {
       }개`;
 
   return (
-    <div className="h-screen bg-white">
-      {/* 사이드바 */}
+    <div className="h-screen bg-white w-sidebar">
       <aside
         className="w-sidebar h-screen overflow-y-auto border-r bg-white"
         style={{
