@@ -66,12 +66,13 @@ const PasswordResetModal = () => {
         <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
           {/* 새 비밀번호 */}
           <fieldset>
-            <label className="text-xs font-semibold text-gray-600 mb-1.5 block">
+            <label htmlFor="newpw-password" className="text-xs font-semibold text-gray-600 mb-1.5 block">
               새 비밀번호
             </label>
             <div className="relative">
               <FiLock className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 text-sm" />
               <input
+                id="newpw-password"
                 type="password"
                 placeholder="6자 이상 입력하세요"
                 className="w-full pl-10 pr-4 py-2.5 text-sm border border-gray-200 rounded-lg
@@ -87,12 +88,13 @@ const PasswordResetModal = () => {
 
           {/* 비밀번호 확인 */}
           <fieldset>
-            <label className="text-xs font-semibold text-gray-600 mb-1.5 block">
+            <label htmlFor="newpw-confirm" className="text-xs font-semibold text-gray-600 mb-1.5 block">
               비밀번호 확인
             </label>
             <div className="relative">
               <FiShield className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 text-sm" />
               <input
+                id="newpw-confirm"
                 type="password"
                 placeholder="비밀번호를 다시 입력하세요"
                 className="w-full pl-10 pr-4 py-2.5 text-sm border border-gray-200 rounded-lg

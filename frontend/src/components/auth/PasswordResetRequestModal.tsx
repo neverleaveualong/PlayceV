@@ -20,8 +20,8 @@ const PasswordResetRequestModal = () => {
   } = useForm<{ email: string; name: string }>();
 
   const onSubmit = async (data: { email: string; name: string }) => {
-    await userPasswordResetRequest(data);
-    setIsPasswordResetModalOpen(false);
+    const ok = await userPasswordResetRequest(data);
+    if (ok) setIsPasswordResetModalOpen(false);
   };
 
   const handleBack = () => {
@@ -57,12 +57,13 @@ const PasswordResetRequestModal = () => {
         <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
           {/* 이메일 */}
           <fieldset>
-            <label className="text-xs font-semibold text-gray-600 mb-1.5 block">
+            <label htmlFor="reset-email" className="text-xs font-semibold text-gray-600 mb-1.5 block">
               이메일
             </label>
             <div className="relative">
               <FiMail className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 text-sm" />
               <input
+                id="reset-email"
                 type="email"
                 placeholder="가입한 이메일을 입력하세요"
                 className="w-full pl-10 pr-4 py-2.5 text-sm border border-gray-200 rounded-lg
@@ -76,12 +77,13 @@ const PasswordResetRequestModal = () => {
 
           {/* 이름 */}
           <fieldset>
-            <label className="text-xs font-semibold text-gray-600 mb-1.5 block">
+            <label htmlFor="reset-name" className="text-xs font-semibold text-gray-600 mb-1.5 block">
               이름
             </label>
             <div className="relative">
               <FiUser className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 text-sm" />
               <input
+                id="reset-name"
                 type="text"
                 placeholder="가입한 이름을 입력하세요"
                 className="w-full pl-10 pr-4 py-2.5 text-sm border border-gray-200 rounded-lg
