@@ -18,7 +18,7 @@ interface RestaurantDetailComponentProps {
   onClose: () => void;
 }
 
-const ASIDE_BASE = "fixed left-0 top-0 h-full w-sidebar z-[100] bg-white shadow-2xl border-r border-gray-100 flex flex-col font-pretendard animate-slide-in-left";
+const ASIDE_BASE = "w-sidebar h-screen bg-white border-r border-gray-100 flex flex-col font-pretendard";
 
 export default function RestaurantDetailComponent({
   storeId,
@@ -26,7 +26,7 @@ export default function RestaurantDetailComponent({
 }: RestaurantDetailComponentProps) {
   const [currentTab, setCurrentTab] = useState<Tab>("홈");
   const { data: detail, isLoading: loading, error } = useStoreDetail(storeId);
-  const { setPosition, setRefreshBtn, isSidebarOpen } = useMapStore();
+  const { setPosition, setRefreshBtn } = useMapStore();
   const { isFavorite, toggleFavorite, isPending: isFavoritePending } = useFavoriteToggle(storeId);
 
   useEffect(() => {
@@ -34,11 +34,6 @@ export default function RestaurantDetailComponent({
     setPosition({ lat: detail.lat, lng: detail.lng });
     setRefreshBtn(false);
   }, [detail, setPosition, setRefreshBtn]);
-
-  // 사이드바 닫히면 상세보기도 닫기
-  useEffect(() => {
-    if (!isSidebarOpen) onClose();
-  }, [isSidebarOpen, onClose]);
 
   if (loading) {
     return (
