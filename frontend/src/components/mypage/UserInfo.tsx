@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { FaPen, FaCheck, FaTimes, FaStore, FaHeart } from "react-icons/fa";
-import Button from "@/components/common/Button";
 import InputText from "@/components/common/InputText";
 import { useUpdateNickname } from "@/hooks/useUser";
 
@@ -11,7 +10,6 @@ export interface UserInfoProps {
   phone: string;
   storeCount: number;
   favoriteCount: number;
-  onClose?: () => void;
 }
 
 const UserInfo = ({
@@ -21,7 +19,6 @@ const UserInfo = ({
   phone,
   storeCount,
   favoriteCount,
-  onClose,
 }: UserInfoProps) => {
   const [isEditingNickname, setIsEditingNickname] = useState(false);
   const [nicknameInput, setNicknameInput] = useState(nickname);
@@ -49,13 +46,8 @@ const UserInfo = ({
 
   return (
     <div className="flex flex-col justify-center h-full gap-3">
-      {/* 헤더 */}
-      <div className="flex items-center justify-between flex-shrink-0">
-        <h2 className="text-xl font-semibold text-mainText">내 정보</h2>
-        <Button onClick={onClose} scheme="close" size="icon" className="text-mainText">
-          <FaTimes />
-        </Button>
-      </div>
+      {/* 타이틀 */}
+      <h2 className="text-xl font-semibold text-mainText flex-shrink-0">내 정보</h2>
 
       {/* 프로필 히어로 */}
       <div className="bg-gradient-to-br from-primary3 to-primary4 rounded-xl py-5 px-5 flex-shrink-0">

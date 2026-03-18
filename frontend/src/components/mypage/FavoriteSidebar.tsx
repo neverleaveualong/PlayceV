@@ -2,7 +2,7 @@ import { useCallback } from "react";
 import useAuthStore from "@/stores/authStore";
 import useMapStore from "@/stores/mapStore";
 import { useFavorites, useRemoveFavorite } from "@/hooks/useFavorites";
-import { FiStar, FiTrash2 } from "react-icons/fi";
+import { FiStar, FiTrash2, FiMapPin } from "react-icons/fi";
 import LoadingSpinner from "@/components/common/LoadingSpinner";
 import Button from "@/components/common/Button";
 import FallbackImage from "@/components/common/FallbackImage";
@@ -71,53 +71,49 @@ export default function FavoriteSidebar() {
 
   return (
     <section className="w-full">
-      {/* 헤더 */}
-      <div className="flex items-center justify-between px-4 py-3">
-        <div className="flex items-center gap-2">
-          <FiStar className="text-primary5" />
-          <span className="text-sm font-semibold text-mainText">내 즐겨찾기</span>
-        </div>
-        <span className="text-xs text-darkgray bg-gray-100 px-2 py-0.5 rounded-full">
-          {favorites.length}개
-        </span>
-      </div>
-
       {/* 카드 리스트 */}
-      <ul className="flex flex-col gap-2 px-3 pb-3">
+      <ul className="flex flex-col gap-2.5 px-4 pb-4 pt-3">
         {favorites.map((store) => (
           <li
             key={store.store_id}
-            className="group relative flex items-center gap-3 p-3 bg-white rounded-xl border border-gray-100 shadow-sm hover:shadow-md hover:border-primary1 cursor-pointer transition-all duration-150"
+            className="group relative flex gap-3.5 p-3 rounded-2xl bg-white shadow-[0_1px_4px_rgba(0,0,0,0.06)] hover:bg-primary4/30 cursor-pointer transition-all duration-150"
             onClick={() => openDetail(store.store_id)}
           >
+            {/* 이미지 */}
             <FallbackImage
               src={store.main_img || "/noimg.png"}
               alt={store.store_name}
-              className="w-14 h-14 rounded-lg object-cover bg-gray-100 flex-shrink-0"
+              className="w-16 h-16 rounded-xl object-cover bg-gray-100 flex-shrink-0"
             />
-            <div className="flex-1 min-w-0">
-              <div className="flex items-center gap-1.5">
-                <span className="font-semibold text-sm text-mainText truncate">
+
+            {/* 텍스트 */}
+            <div className="flex-1 min-w-0 py-0.5">
+              <div className="flex items-center gap-2">
+                <span className="font-bold text-[15px] text-mainText truncate">
                   {store.store_name}
                 </span>
-                <span className="text-[11px] px-1.5 py-0.5 rounded bg-primary4 text-primary5 font-medium flex-shrink-0">
+                <span className="text-[10px] px-2 py-0.5 rounded-full bg-primary4/60 text-primary5 font-semibold flex-shrink-0 tracking-tight">
                   {store.type}
                 </span>
               </div>
-              <p className="text-xs text-darkgray truncate mt-1">
-                {store.address}
-              </p>
+              <div className="flex items-center gap-1 mt-1.5">
+                <FiMapPin className="text-[11px] text-gray-400 flex-shrink-0" />
+                <p className="text-xs text-darkgray truncate">
+                  {store.address}
+                </p>
+              </div>
             </div>
-            {/* 삭제 — hover 시에만 표시 */}
+
+            {/* 삭제 — hover 시에만 */}
             <button
               onClick={(e) => {
                 e.stopPropagation();
                 handleRemove(store.store_id);
               }}
-              className="absolute top-2 right-2 w-7 h-7 flex items-center justify-center rounded-full bg-white border border-gray-200 shadow-sm opacity-0 group-hover:opacity-100 hover:bg-red-50 hover:border-red-200 transition-all duration-150"
+              className="absolute top-2.5 right-2.5 w-6 h-6 flex items-center justify-center rounded-full bg-black/5 opacity-0 group-hover:opacity-100 hover:bg-red-500 hover:text-white transition-all duration-200"
               aria-label="삭제"
             >
-              <FiTrash2 className="text-gray-400 hover:text-red-500 text-xs transition-colors" />
+              <FiTrash2 className="text-gray-500 group-hover:text-gray-500 hover:!text-white text-[11px]" />
             </button>
           </li>
         ))}
