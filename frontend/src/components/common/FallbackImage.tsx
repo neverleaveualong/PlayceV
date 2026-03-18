@@ -1,22 +1,35 @@
 import { useState } from "react";
+import { FiImage } from "react-icons/fi";
 
-interface FallbackImageProps extends React.ImgHTMLAttributes<HTMLImageElement> {
+interface FallbackImageProps extends Omit<React.ImgHTMLAttributes<HTMLImageElement>, "onError"> {
   fallbackSrc?: string;
 }
 
 const FallbackImage = ({
   src,
-  fallbackSrc = "/noimg.png",
+  fallbackSrc,
   alt,
+  className,
   ...props
 }: FallbackImageProps) => {
   const [failed, setFailed] = useState(false);
 
+  if (failed || !src) {
+    return (
+      <div
+        className={`flex items-center justify-center bg-gray-100 text-gray-300 ${className ?? ""}`}
+      >
+        <FiImage className="text-lg" />
+      </div>
+    );
+  }
+
   return (
     <img
-      src={failed ? fallbackSrc : src || fallbackSrc}
+      src={src}
       alt={alt}
-      onError={() => { if (!failed) setFailed(true); }}
+      className={className}
+      onError={() => setFailed(true)}
       {...props}
     />
   );
