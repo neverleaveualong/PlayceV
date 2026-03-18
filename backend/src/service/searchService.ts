@@ -9,8 +9,8 @@ import crypto from "crypto";
 import { log } from "../utils/logUtils";
 
 const searchService = {
-  // 현재 위치 기반 검색 (redis 캐시 사용 X)
-  getNearbyStores: async (lat: number, lng: number, radius: number = 5) => {
+  // 화면 영역(bounds) 기반 검색
+  getNearbyStores: async (swLat: number, swLng: number, neLat: number, neLng: number) => {
     const storeRepo = AppDataSource.getRepository(Store);
 
     const stores = await storeRepo
@@ -19,24 +19,8 @@ const searchService = {
       .leftJoinAndSelect("store.broadcasts", "broadcast")
       .leftJoinAndSelect("broadcast.sport", "sport")
       .leftJoinAndSelect("broadcast.league", "league")
-      .addSelect(`
-        (6371 * acos(
-          cos(radians(:lat))
-          * cos(radians(store.lat))
-          * cos(radians(store.lng) - radians(:lng))
-          + sin(radians(:lat))
-          * sin(radians(store.lat))
-        ))
-      `, "distance")
-      .where(`
-        (6371 * acos(
-          cos(radians(:lat))
-          * cos(radians(store.lat))
-          * cos(radians(store.lng) - radians(:lng))
-          + sin(radians(:lat))
-          * sin(radians(store.lat))
-        )) <= :radius
-      `, { lat, lng, radius })
+      .where("store.lat BETWEEN :swLat AND :neLat", { swLat, neLat })
+      .andWhere("store.lng BETWEEN :swLng AND :neLng", { swLng, neLng })
       .getMany();
 
     return stores.map((store) => ({
