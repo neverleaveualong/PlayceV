@@ -11,6 +11,7 @@ interface MapState {
   isRefreshBtnOn: boolean;
   zoomLevel: number;
   isSidebarOpen: boolean;
+  selectedStoreId: number | null;
   setPosition: (pos: latlng) => void;
   initPosition: (pos: latlng) => void;
   search: (bounds: Bounds) => void;
@@ -19,6 +20,8 @@ interface MapState {
   setRefreshBtn: (button: boolean) => void;
   setZoomLevel: (zoom: number) => void;
   toggleSidebar: () => void;
+  openDetail: (storeId: number) => void;
+  closeDetail: () => void;
 }
 
 const useMapStore = create<MapState>((set, get) => ({
@@ -30,11 +33,24 @@ const useMapStore = create<MapState>((set, get) => ({
   isRefreshBtnOn: false,
   zoomLevel: 3,
   isSidebarOpen: true,
+  selectedStoreId: null,
   setPosition: (pos) => {
     set({ position: pos });
   },
   initPosition: (pos) => {
-    set({ position: pos, myPosition: pos, searchPosition: pos });
+    // 현재 위치 기준 약 5km 범위 bounds 생성
+    const offset = 0.045;
+    set({
+      position: pos,
+      myPosition: pos,
+      searchPosition: pos,
+      bounds: {
+        swLat: pos.lat - offset,
+        swLng: pos.lng - offset,
+        neLat: pos.lat + offset,
+        neLng: pos.lng + offset,
+      },
+    });
   },
   search: (bounds) => {
     set({ searchPosition: get().position, bounds, isRefreshBtnOn: false });
@@ -53,6 +69,12 @@ const useMapStore = create<MapState>((set, get) => ({
   },
   toggleSidebar: () => {
     set((state) => ({ isSidebarOpen: !state.isSidebarOpen }));
+  },
+  openDetail: (storeId) => {
+    set({ selectedStoreId: storeId, isSidebarOpen: true });
+  },
+  closeDetail: () => {
+    set({ selectedStoreId: null });
   },
 }));
 

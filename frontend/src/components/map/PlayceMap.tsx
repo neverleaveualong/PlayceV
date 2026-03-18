@@ -4,8 +4,6 @@ import useMapStore from "@/stores/mapStore";
 import PlayceMapMarker from "./PlayceMapMarker";
 import PlayceModal from "./PlayceModal";
 import SpotRefreshButton from "./SpotRefreshButton";
-import RestaurantDetailComponent from "@/components/restaurant/RestaurantDetail";
-import useRestaurantDetail from "@/hooks/useRestaurantDetail";
 import useToastStore from "@/stores/toastStore";
 import GoToCurrentLocationButton from "./CurrentMap";
 import useNearbyRestaurants from "@/hooks/useNearbyRestaurants";
@@ -23,10 +21,9 @@ const PlayceMap: React.FC = () => {
   const closeModal = useMapStore((state) => state.closeModal);
   const setRefreshBtn = useMapStore((state) => state.setRefreshBtn);
   const setZoomLevel = useMapStore((state) => state.setZoomLevel);
+  const openDetail = useMapStore((state) => state.openDetail);
 
   const { data: restaurants = [] } = useNearbyRestaurants(bounds);
-
-  const { selectedStoreId, openDetail, closeDetail } = useRestaurantDetail();
 
   const mapRef = useRef<kakao.maps.Map | null>(null);
 
@@ -107,12 +104,6 @@ const PlayceMap: React.FC = () => {
           <SpotRefreshButton mapRef={mapRef} />
         )}
         <GoToCurrentLocationButton mapRef={mapRef} />
-        {selectedStoreId && (
-          <RestaurantDetailComponent
-            storeId={selectedStoreId}
-            onClose={closeDetail}
-          />
-        )}
       </div>
     </>
   );

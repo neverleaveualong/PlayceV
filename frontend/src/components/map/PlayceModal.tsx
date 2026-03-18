@@ -4,6 +4,7 @@ import { CustomOverlayMap } from "react-kakao-maps-sdk";
 import { FiStar, FiMapPin, FiX, FiClock, FiTv } from "react-icons/fi";
 import { FaStar } from "react-icons/fa";
 import Button from "@/components/common/Button";
+import FallbackImage from "@/components/common/FallbackImage";
 import useFavoriteToggle from "@/hooks/useFavoriteToggle";
 
 const defaultImage = "/noimg.png";
@@ -67,8 +68,9 @@ const PlayceModal = ({
 
         {/* 이미지 */}
         <div className="relative h-32 bg-gray-100">
-          <img
+          <FallbackImage
             src={restaurant.main_img || defaultImage}
+            fallbackSrc={defaultImage}
             alt={restaurant.store_name || "가게 이미지"}
             className="w-full h-full object-cover"
             loading="lazy"
@@ -78,7 +80,7 @@ const PlayceModal = ({
             onMouseDown={(e) => e.stopPropagation()}
             onClick={(e) => { e.stopPropagation(); toggleFavorite(); }}
             disabled={isFavoritePending}
-            className={`absolute bottom-3 right-3 w-9 h-9 rounded-full bg-white/90 backdrop-blur-sm shadow flex items-center justify-center transition-all ${
+            className={`absolute top-3 left-3 w-9 h-9 rounded-full bg-white/90 backdrop-blur-sm shadow flex items-center justify-center transition-all ${
               isFavoritePending ? "opacity-50" : "hover:scale-110"
             }`}
             aria-label={isFavorite ? "즐겨찾기 해제" : "즐겨찾기 추가"}
