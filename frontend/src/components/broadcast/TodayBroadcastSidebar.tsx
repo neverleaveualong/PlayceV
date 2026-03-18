@@ -73,16 +73,22 @@ const TodayBroadcastSidebar = memo(function TodayBroadcastSidebar() {
     [openDetail]
   );
 
+  const todayDate = new Date();
+  const formattedDate = `${todayDate.getFullYear()}.${String(todayDate.getMonth() + 1).padStart(2, "0")}.${String(todayDate.getDate()).padStart(2, "0")}`;
+  const dayNames = ["일", "월", "화", "수", "목", "금", "토"];
+  const dayName = dayNames[todayDate.getDay()];
+
   return (
-    <section className="w-full">
+    <section className="w-full bg-gray-50 rounded-xl p-4">
       {/* 헤더 */}
-      <div className="flex items-center justify-between mb-3">
+      <div className="flex items-center justify-between mb-1">
         <div className="flex items-center gap-2">
           <FiTv className="text-primary5" />
-          <span className="text-sm font-semibold text-gray-700">오늘의 중계</span>
+          <span className="text-sm font-semibold text-gray-800">오늘의 중계</span>
         </div>
-        <span className="text-[11px] text-gray-400">지도에서 탐색한 가게만</span>
+        <span className="text-xs text-gray-400">지도에서 탐색한 가게만</span>
       </div>
+      <p className="text-xs text-gray-500 mb-3 ml-6">{formattedDate} ({dayName})</p>
 
       {isLoading ? (
         <LoadingSpinner message="중계 일정을 불러오는 중..." />
