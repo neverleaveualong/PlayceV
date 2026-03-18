@@ -1,7 +1,6 @@
 import RestaurantCardList from "@/components/restaurant/RestaurantCardList";
-import RestaurantDetailComponent from "@/components/restaurant/RestaurantDetail";
 import SectionHeader from "@/components/common/SectionHeader";
-import useRestaurantDetail from "@/hooks/useRestaurantDetail";
+import useMapStore from "@/stores/mapStore";
 import { useFavorites, useRemoveFavorite } from "@/hooks/useFavorites";
 
 interface FavoriteListProps {
@@ -11,12 +10,7 @@ interface FavoriteListProps {
 const FavoriteList = ({ onClose }: FavoriteListProps) => {
   const { data: favorites = [] } = useFavorites();
   const removeMutation = useRemoveFavorite();
-  const { selectedStoreId, openDetail, closeDetail } = useRestaurantDetail();
-
-  // 상세보기 버튼 클릭 시 storeId만 저장
-  const handleDetail = (store_id: number) => {
-    openDetail(store_id);
-  };
+  const openDetail = useMapStore((state) => state.openDetail);
 
   return (
     <section className="px-2">
@@ -27,15 +21,8 @@ const FavoriteList = ({ onClose }: FavoriteListProps) => {
         showDelete
         showDetail
         compact={false}
-        onDetail={handleDetail}
+        onDetail={(storeId) => openDetail(storeId)}
       />
-      {/* 상세보기 모달/사이드바 */}
-      {selectedStoreId !== null && (
-        <RestaurantDetailComponent
-          storeId={selectedStoreId}
-          onClose={closeDetail}
-        />
-      )}
     </section>
   );
 };

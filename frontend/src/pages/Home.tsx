@@ -2,6 +2,7 @@ import { lazy, Suspense } from "react";
 import LoadingSpinner from "@/components/common/LoadingSpinner";
 import AuthHeader from "@/components/auth/AuthHeader";
 import Map from "@/components/map/PlayceMap";
+import RestaurantDetailComponent from "@/components/restaurant/RestaurantDetail";
 import { useGeoLocation } from "@/hooks/useGeoLocation";
 import useMapStore from "@/stores/mapStore";
 import useMypageStore from "@/stores/mypageStore";
@@ -16,7 +17,7 @@ const PasswordResetRequestModal = lazy(
 const MypageModal = lazy(() => import("@/components/mypage/MypageModal"));
 
 const Home: React.FC = () => {
-  const { position, isSidebarOpen, toggleSidebar } =
+  const { position, isSidebarOpen, toggleSidebar, selectedStoreId, closeDetail } =
     useMapStore();
   const { isMypageOpen, setIsMypageOpen } = useMypageStore();
 
@@ -36,7 +37,14 @@ const Home: React.FC = () => {
           isSidebarOpen ? "w-sidebar" : "w-0"
         }`}
       >
-        <SearchPage />
+        {selectedStoreId !== null ? (
+          <RestaurantDetailComponent
+            storeId={selectedStoreId}
+            onClose={closeDetail}
+          />
+        ) : (
+          <SearchPage />
+        )}
       </div>
 
       {/* 토글 버튼 — 화면 기준 fixed */}
