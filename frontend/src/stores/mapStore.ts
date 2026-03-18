@@ -1,19 +1,19 @@
 import { create } from "zustand";
-import type { latlng } from "@/types/map";
-import { CITY_STATION, SEARCHNEARBY_RADIUS } from "@/constants/mapConstant";
+import type { latlng, Bounds } from "@/types/map";
+import { CITY_STATION, INITIAL_BOUNDS } from "@/constants/mapConstant";
 
 interface MapState {
   position: latlng;
   myPosition: latlng;
   searchPosition: latlng;
   openedModal: number;
-  radius: number;
+  bounds: Bounds;
   isRefreshBtnOn: boolean;
   zoomLevel: number;
   isSidebarOpen: boolean;
   setPosition: (pos: latlng) => void;
   initPosition: (pos: latlng) => void;
-  search: (radius: number) => void;
+  search: (bounds: Bounds) => void;
   setOpenedModal: (modal: number) => void;
   closeModal: () => void;
   setRefreshBtn: (button: boolean) => void;
@@ -26,7 +26,7 @@ const useMapStore = create<MapState>((set, get) => ({
   myPosition: CITY_STATION,
   searchPosition: CITY_STATION,
   openedModal: -1,
-  radius: SEARCHNEARBY_RADIUS,
+  bounds: INITIAL_BOUNDS,
   isRefreshBtnOn: false,
   zoomLevel: 3,
   isSidebarOpen: true,
@@ -36,8 +36,8 @@ const useMapStore = create<MapState>((set, get) => ({
   initPosition: (pos) => {
     set({ position: pos, myPosition: pos, searchPosition: pos });
   },
-  search: (radius) => {
-    set({ searchPosition: get().position, radius, isRefreshBtnOn: false });
+  search: (bounds) => {
+    set({ searchPosition: get().position, bounds, isRefreshBtnOn: false });
   },
   setOpenedModal: (modal) => {
     set({ openedModal: modal });
