@@ -43,7 +43,7 @@ export default function FavoriteSidebar() {
     (storeId: number) => {
       removeMutation.mutate(storeId);
     },
-    [removeMutation]
+    [removeMutation.mutate]
   );
 
   if (!isLoggedIn) {

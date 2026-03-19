@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useMemo, useState, useEffect } from "react";
 import { FiTv, FiChevronDown } from "react-icons/fi";
 import useMapStore from "@/stores/mapStore";
 import useNearbyRestaurants from "@/hooks/useNearbyRestaurants";
@@ -14,6 +14,13 @@ export default function TodayBroadcastBar({ expanded, onToggle }: TodayBroadcast
   const { data: restaurants = [] } = useNearbyRestaurants(bounds);
   const { dateString: today } = getToday();
 
+  // 1분마다 갱신해서 LIVE 상태 정확하게 반영
+  const [now, setNow] = useState(() => new Date());
+  useEffect(() => {
+    const id = setInterval(() => setNow(new Date()), 60_000);
+    return () => clearInterval(id);
+  }, []);
+
   const count = useMemo(() => {
     let total = 0;
     for (const store of restaurants) {
@@ -25,7 +32,6 @@ export default function TodayBroadcastBar({ expanded, onToggle }: TodayBroadcast
   }, [restaurants, today]);
 
   const liveCount = useMemo(() => {
-    const now = new Date();
     let live = 0;
     for (const store of restaurants) {
       for (const b of store.broadcasts || []) {
@@ -37,7 +43,7 @@ export default function TodayBroadcastBar({ expanded, onToggle }: TodayBroadcast
       }
     }
     return live;
-  }, [restaurants, today]);
+  }, [restaurants, today, now]);
 
   if (count === 0) return null;
 

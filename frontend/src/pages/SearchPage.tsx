@@ -89,7 +89,7 @@ const SearchPage = () => {
   // 검색할 때마다 중계 요약바를 접어서 검색 결과 먼저 보이게
   useEffect(() => {
     if (hasSearched) setBroadcastExpanded(false);
-  }, [submittedParams]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [submittedParams, hasSearched]);
 
   const selectedRegionLabel =
     selectedRegions.length === 0
