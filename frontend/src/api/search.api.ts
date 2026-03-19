@@ -9,6 +9,8 @@ interface SearchParams {
   team?: string;
   big_regions?: string[];
   small_regions?: string[];
+  date_from?: string;
+  date_to?: string;
   sort?: string;
 }
 

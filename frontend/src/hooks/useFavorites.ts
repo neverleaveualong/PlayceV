@@ -1,5 +1,5 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { getFavorites, addFavorite, removeFavorite } from "@/api/favorite.api";
+import { getFavorites, getUpcomingBroadcasts, addFavorite, removeFavorite } from "@/api/favorite.api";
 import type { RestaurantBasic } from "@/types/restaurant.types";
 import useAuthStore from "@/stores/authStore";
 import useToastStore from "@/stores/toastStore";
@@ -11,6 +11,38 @@ export const useFavorites = () => {
     queryFn: async () => {
       const res = await getFavorites();
       return res.data.stores ?? [];
+    },
+    enabled: isLoggedIn,
+  });
+};
+
+export interface UpcomingBroadcast {
+  broadcast_id: number;
+  match_date: string;
+  match_time: string;
+  sport: string;
+  league: string;
+  team_one: string;
+  team_two: string;
+  etc: string;
+  store: {
+    store_id: number;
+    store_name: string;
+    address: string;
+    type: string;
+    main_img: string | null;
+    lat: number;
+    lng: number;
+  };
+}
+
+export const useUpcomingBroadcasts = () => {
+  const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
+  return useQuery<UpcomingBroadcast[]>({
+    queryKey: ["favorites", "upcoming"],
+    queryFn: async () => {
+      const res = await getUpcomingBroadcasts();
+      return res.data.broadcasts ?? [];
     },
     enabled: isLoggedIn,
   });

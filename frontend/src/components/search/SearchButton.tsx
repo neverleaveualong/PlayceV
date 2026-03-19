@@ -33,11 +33,14 @@ const SearchButton = () => {
   );
 
   const handleSearch = () => {
+    const { dateFrom, dateTo } = useSearchStore.getState();
     const hasKeyword =
       searchText.trim() !== "" ||
       selectedRegions.length > 0 ||
       sport !== "" ||
-      selectedLeagues.length > 0;
+      selectedLeagues.length > 0 ||
+      dateFrom !== "" ||
+      dateTo !== "";
 
     if (!hasKeyword) {
       addToast("검색 조건을 하나 이상 입력해주세요.", "info");
@@ -53,13 +56,16 @@ const SearchButton = () => {
     const leagues = selectedLeagues.map((l) => l.league);
     setLeagues(leagues);
 
+    const { dateFrom, dateTo, sort } = useSearchStore.getState();
     setSubmittedParams({
       searchText,
       sports: uniqueSports,
       leagues,
       bigRegions,
       smallRegions,
-      sort: useSearchStore.getState().sort,
+      dateFrom,
+      dateTo,
+      sort,
     });
   };
 
