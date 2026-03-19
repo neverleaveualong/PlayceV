@@ -79,13 +79,7 @@ const Home: React.FC = () => {
       </div>
 
       {isMypageOpen && (
-        <Suspense
-          fallback={
-            <div className="fixed right-0 top-0 h-full w-sidebar bg-white z-[100] flex items-center justify-center">
-              <LoadingSpinner />
-            </div>
-          }
-        >
+        <Suspense fallback={null}>
           <MypageModal onClose={() => setIsMypageOpen(false)} />
         </Suspense>
       )}

@@ -179,7 +179,7 @@ const TabList = ({ tabRef, itemRefs, scrollToDate }: TabListProps) => {
 
               {/* 팀 정보 */}
               {b.team_one && b.team_two ? (
-                <p className="text-sm font-semibold text-mainText">
+                <p className="text-sm font-semibold text-mainText truncate pr-16">
                   {b.team_one}
                   <span className="text-gray-400 mx-1.5">vs</span>
                   {b.team_two}
