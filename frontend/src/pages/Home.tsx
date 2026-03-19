@@ -70,10 +70,10 @@ const Home: React.FC = () => {
       <div className="relative flex-1 h-screen">
         {position && <Map />}
 
-        {/* 로고 — 사이드바 닫혔을 때만 표시 */}
+        {/* 로고 — 사이드바 닫혔을 때만 표시 (fixed로 위치 고정) */}
         <div
-          className={`absolute top-5 left-5 z-10 flex items-center gap-2 select-none pointer-events-none transition-opacity duration-500 ${
-            isSidebarOpen ? "opacity-0" : "opacity-100"
+          className={`fixed top-5 left-5 z-10 flex items-center gap-2 select-none pointer-events-none transition-opacity duration-200 ${
+            isSidebarOpen ? "opacity-0" : "opacity-100 delay-300"
           }`}
         >
           <img src="/favicon.svg" alt="" className="w-9 h-9 drop-shadow-md" />
