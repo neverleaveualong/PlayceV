@@ -56,6 +56,20 @@ const favoriteController = {
       next(error);
     }
   },
+  getUpcomingBroadcasts: async (req: AuthRequest, res: Response, next: NextFunction) => {
+    try {
+      log("\n⭐ [즐겨찾기 다가오는 중계] 요청");
+      const userId = req.user!.userId;
+
+      const result = await favoriteService.getUpcomingBroadcasts(userId);
+
+      log("✅ [즐겨찾기 다가오는 중계] 성공");
+      return success(res, "즐겨찾기 다가오는 중계 조회 성공", { broadcasts: result });
+    } catch (error: any) {
+      logApiError("즐겨찾기 다가오는 중계", error);
+      next(error);
+    }
+  },
 };
 
 export default favoriteController;

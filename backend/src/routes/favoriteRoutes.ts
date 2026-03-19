@@ -147,6 +147,7 @@ router.delete("/:store_id", authenticate, favoriteController.removeFavorite);
  *       404:
  *         description: 사용자를 찾을 수 없음
  */
-router.get("/", authenticate, favoriteController.getFavorites); 
+router.get("/upcoming", authenticate, favoriteController.getUpcomingBroadcasts);
+router.get("/", authenticate, favoriteController.getFavorites);
 
 export default router;
