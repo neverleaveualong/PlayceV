@@ -9,6 +9,7 @@ import SearchButton from "@/components/search/SearchButton";
 import SearchResultList from "@/components/search/SearchResultList";
 import AppHeader from "@/components/layout/AppHeader";
 import TodayBroadcastSidebar from "@/components/broadcast/TodayBroadcastSidebar";
+import TodayBroadcastBar from "@/components/broadcast/TodayBroadcastBar";
 import FavoriteSidebar from "@/components/mypage/FavoriteSidebar";
 import { useSearchStore } from "@/stores/searchStore";
 import ResetButton from "@/components/search/ResetButton";
@@ -83,6 +84,12 @@ const SearchPage = () => {
     : "";
 
   const hasSearched = submittedParams !== null;
+  const [broadcastExpanded, setBroadcastExpanded] = useState(false);
+
+  // 검색할 때마다 중계 요약바를 접어서 검색 결과 먼저 보이게
+  useEffect(() => {
+    if (hasSearched) setBroadcastExpanded(false);
+  }, [submittedParams]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const selectedRegionLabel =
     selectedRegions.length === 0
@@ -304,14 +311,25 @@ const SearchPage = () => {
                 </div>
               </div>
             </div>
-            {hasSearched || isSearching ? (
-              <div className="mt-4 px-3">
-                <SearchResultList
-                  results={results ?? []}
-                  isSearching={isSearching}
-                  hasSearched={hasSearched}
+            {hasSearched ? (
+              <>
+                <TodayBroadcastBar
+                  expanded={broadcastExpanded}
+                  onToggle={() => setBroadcastExpanded((prev) => !prev)}
                 />
-              </div>
+                {broadcastExpanded && (
+                  <div className="px-4 py-4 border-b border-gray-100">
+                    <TodayBroadcastSidebar hideHeader />
+                  </div>
+                )}
+                <div className="mt-4 px-3">
+                  <SearchResultList
+                    results={results ?? []}
+                    isSearching={isSearching}
+                    hasSearched={hasSearched}
+                  />
+                </div>
+              </>
             ) : (
               <div className="px-4 py-4">
                 <TodayBroadcastSidebar />
