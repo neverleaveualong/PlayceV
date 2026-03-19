@@ -116,15 +116,40 @@ const userService = {
     const clientUrl = process.env.FRONTEND_URL || "http://localhost:5173";
     const resetUrl = `${clientUrl}/reset-password/${token}`;
 
-    const html = `
-  <p>비밀번호를 재설정하려면 아래 링크를 클릭하세요:</p>
-  <a href="${resetUrl}">${resetUrl}</a>
-  <p>이 링크는 ${expirationMinutes}분 동안만 유효합니다.</p>
-`;
+    const html = `<!DOCTYPE html>
+<html><body style="margin:0;padding:0;background:#f5f5f5;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;">
+<table width="100%" cellpadding="0" cellspacing="0" style="background:#f5f5f5;padding:40px 0;">
+<tr><td align="center">
+<table width="420" cellpadding="0" cellspacing="0" style="background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,0.06);">
+<tr><td style="background:linear-gradient(135deg,#ECFAE5,#DDF6D2);padding:32px 40px;text-align:center;">
+  <div style="font-size:28px;font-weight:800;color:#66A648;letter-spacing:-0.5px;">⊙ Playce</div>
+  <div style="font-size:13px;color:#6A7282;margin-top:6px;">스포츠 중계 맛집 플랫폼</div>
+</td></tr>
+<tr><td style="padding:36px 40px;">
+  <h2 style="margin:0 0 8px;font-size:20px;font-weight:700;color:#3A3A3A;">비밀번호 재설정</h2>
+  <p style="margin:0 0 24px;font-size:14px;color:#6A7282;line-height:1.6;">
+    안녕하세요, <strong style="color:#3A3A3A;">${userByEmail.nickname || userByEmail.name}</strong>님!<br>
+    아래 버튼을 클릭하여 새 비밀번호를 설정해주세요.
+  </p>
+  <a href="${resetUrl}" style="display:block;text-align:center;background:#66A648;color:#ffffff;text-decoration:none;padding:14px 0;border-radius:12px;font-size:15px;font-weight:600;">
+    비밀번호 재설정하기
+  </a>
+  <p style="margin:24px 0 0;font-size:12px;color:#9CA3AF;line-height:1.5;">
+    이 링크는 <strong>${expirationMinutes}분</strong> 동안만 유효합니다.<br>
+    본인이 요청하지 않았다면 이 메일을 무시해주세요.
+  </p>
+</td></tr>
+<tr><td style="padding:20px 40px;border-top:1px solid #f0f0f0;text-align:center;">
+  <p style="margin:0;font-size:11px;color:#CCCCCC;">© 2026 Playce. All rights reserved.</p>
+</td></tr>
+</table>
+</td></tr>
+</table>
+</body></html>`;
 
     await sendMail({
       to: email,
-      subject: "비밀번호 재설정",
+      subject: "[Playce] 비밀번호 재설정 안내",
       html,
     });
 
