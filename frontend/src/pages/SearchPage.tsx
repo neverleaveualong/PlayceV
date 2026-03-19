@@ -105,7 +105,7 @@ const SearchPage = () => {
               <div className="flex gap-2">
                 <button
                   onClick={() => setShowRegionModal(true)}
-                  className="flex-1 flex items-center justify-between px-3 py-2 border border-gray-200 rounded-lg bg-gray-50 text-sm hover:border-primary5 hover:bg-white transition-colors min-w-0"
+                  className="flex-1 flex items-center justify-between px-3.5 py-2.5 border border-gray-200 rounded-xl bg-gray-50 text-sm hover:border-primary5 hover:bg-white transition-colors min-w-0"
                 >
                   <span className="truncate text-gray-600" title={selectedRegionLabel}>
                     {selectedRegionLabel}
@@ -114,7 +114,7 @@ const SearchPage = () => {
                 </button>
                 <button
                   onClick={() => setShowSportModal(true)}
-                  className="flex-1 flex items-center justify-between px-3 py-2 border border-gray-200 rounded-lg bg-gray-50 text-sm hover:border-primary5 hover:bg-white transition-colors min-w-0"
+                  className="flex-1 flex items-center justify-between px-3.5 py-2.5 border border-gray-200 rounded-xl bg-gray-50 text-sm hover:border-primary5 hover:bg-white transition-colors min-w-0"
                 >
                   <span className="truncate text-gray-600" title={selectedSportLabel}>
                     {selectedSportLabel}

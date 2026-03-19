@@ -38,7 +38,7 @@ const LoginModal = () => {
 
   return (
     <ModalBase onClose={handleCancel} hideHeader type="auth" className="p-0">
-      <div className="px-8 pt-8 pb-6">
+      <div className="px-6 pt-14 pb-6 md:px-8 md:pt-8">
         {/* 로고 + 환영 문구 */}
         <div className="text-center mb-6">
           <div className="flex items-center justify-center gap-2 mb-2">
@@ -148,7 +148,7 @@ const LoginModal = () => {
       <button
         type="button"
         onClick={handleCancel}
-        className="absolute top-3 right-3 w-8 h-8 flex items-center justify-center
+        className="absolute top-4 right-4 w-10 h-10 flex items-center justify-center
           rounded-full text-gray-400 hover:bg-gray-100 hover:text-gray-600 transition-colors"
       >
         ✕

@@ -56,7 +56,7 @@ const Home: React.FC = () => {
         {isSidebarOpen && (
           <button
             onClick={toggleSidebar}
-            className="fixed top-4 right-4 z-50 w-10 h-10 bg-white rounded-full shadow-lg border border-gray-200 flex items-center justify-center md:hidden"
+            className="fixed top-4 right-4 z-50 w-11 h-11 bg-white rounded-full shadow-lg border border-gray-200 flex items-center justify-center md:hidden"
             aria-label="닫기"
           >
             <FiX className="text-gray-600 text-lg" />

@@ -37,7 +37,7 @@ const ModalBase = ({
           // 모바일: 풀스크린 / 데스크톱: 중앙 모달
           "w-full h-full rounded-none md:rounded-2xl md:h-auto",
           type === "auth"
-            ? "md:max-h-fit md:w-modal-auth justify-center md:justify-start"
+            ? "md:max-h-fit md:w-modal-auth"
             : "md:max-h-[90vh] md:overflow-hidden",
           { "md:w-modal-auth": type === "auth" },
           { "md:w-modal-lg": type === "mypage" },
