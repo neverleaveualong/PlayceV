@@ -172,51 +172,30 @@ const SearchPage = () => {
                   <FiChevronDown className="w-3.5 h-3.5 text-gray-400 ml-1 flex-shrink-0" />
                 </button>
               </div>
-              {/* 날짜 필터 */}
-              <div className="space-y-1.5">
-                <div className="flex items-center gap-1.5 text-xs text-gray-500">
-                  <FiCalendar className="text-[11px]" />
-                  <span>날짜</span>
-                </div>
-                <div className="flex gap-1.5">
-                  {(
-                    [
-                      ["today", "오늘"],
-                      ["weekend", "이번 주말"],
-                      ["week", "이번 주"],
-                    ] as const
-                  ).map(([key, label]) => (
-                    <button
-                      key={key}
-                      onClick={() =>
-                        handleDatePreset(activeDatePreset === key ? "clear" : key)
-                      }
-                      className={`px-3 py-1.5 text-xs rounded-full border transition-colors ${
-                        activeDatePreset === key
-                          ? "bg-primary5 text-white border-primary5"
-                          : "bg-white text-gray-500 border-gray-200 hover:border-primary5 hover:text-primary5"
-                      }`}
-                    >
-                      {label}
-                    </button>
-                  ))}
-                </div>
-                {/* 직접 선택 */}
-                <div className="flex gap-2 items-center">
-                  <input
-                    type="date"
-                    value={dateFrom}
-                    onChange={(e) => setDateFrom(e.target.value)}
-                    className="flex-1 px-2.5 py-1.5 border border-gray-200 rounded-lg text-xs text-gray-600 bg-gray-50 focus:border-primary5 focus:outline-none"
-                  />
-                  <span className="text-xs text-gray-400">~</span>
-                  <input
-                    type="date"
-                    value={dateTo}
-                    onChange={(e) => setDateTo(e.target.value)}
-                    className="flex-1 px-2.5 py-1.5 border border-gray-200 rounded-lg text-xs text-gray-600 bg-gray-50 focus:border-primary5 focus:outline-none"
-                  />
-                </div>
+              {/* 날짜 필터 — 칩 형태 */}
+              <div className="flex items-center gap-1.5 flex-wrap">
+                <FiCalendar className="text-xs text-gray-400" />
+                {(
+                  [
+                    ["today", "오늘"],
+                    ["weekend", "주말"],
+                    ["week", "이번 주"],
+                  ] as const
+                ).map(([key, label]) => (
+                  <button
+                    key={key}
+                    onClick={() =>
+                      handleDatePreset(activeDatePreset === key ? "clear" : key)
+                    }
+                    className={`px-3 py-1.5 text-xs rounded-full border transition-colors ${
+                      activeDatePreset === key
+                        ? "bg-primary5 text-white border-primary5"
+                        : "bg-white text-gray-500 border-gray-200 hover:border-primary5 hover:text-primary5"
+                    }`}
+                  >
+                    {label}
+                  </button>
+                ))}
               </div>
               <SearchInput className="w-full" />
               {showRegionModal && (
