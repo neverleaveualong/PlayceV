@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useRef, useEffect } from "react";
 import { FiChevronDown, FiSearch, FiStar, FiCalendar } from "react-icons/fi";
 import RegionModal from "@/components/search/RegionModal";
 import { useRegionStore } from "@/stores/regionStore";
@@ -94,6 +94,27 @@ const SearchPage = () => {
         }곳`;
 
   const [showSportModal, setShowSportModal] = useState(false);
+  const [showDatePicker, setShowDatePicker] = useState(false);
+  const datePickerRef = useRef<HTMLDivElement>(null);
+
+  // 날짜 라벨
+  const dateLabel = !dateFrom && !dateTo
+    ? "날짜"
+    : activeDatePreset === "today" ? "오늘"
+    : activeDatePreset === "weekend" ? "주말"
+    : activeDatePreset === "week" ? "이번 주"
+    : `${dateFrom?.slice(5)} ~ ${dateTo?.slice(5)}`;
+
+  // 외부 클릭 닫기
+  useEffect(() => {
+    const handler = (e: MouseEvent) => {
+      if (datePickerRef.current && !datePickerRef.current.contains(e.target as Node)) {
+        setShowDatePicker(false);
+      }
+    };
+    if (showDatePicker) document.addEventListener("mousedown", handler);
+    return () => document.removeEventListener("mousedown", handler);
+  }, [showDatePicker]);
   const { sport, selectedLeagues } = useSportStore();
 
   const selectedSportLabel = !sport
@@ -172,30 +193,91 @@ const SearchPage = () => {
                   <FiChevronDown className="w-3.5 h-3.5 text-gray-400 ml-1 flex-shrink-0" />
                 </button>
               </div>
-              {/* 날짜 필터 — 칩 형태 */}
-              <div className="flex items-center gap-1.5 flex-wrap">
-                <FiCalendar className="text-xs text-gray-400" />
-                {(
-                  [
-                    ["today", "오늘"],
-                    ["weekend", "주말"],
-                    ["week", "이번 주"],
-                  ] as const
-                ).map(([key, label]) => (
-                  <button
-                    key={key}
-                    onClick={() =>
-                      handleDatePreset(activeDatePreset === key ? "clear" : key)
-                    }
-                    className={`px-3 py-1.5 text-xs rounded-full border transition-colors ${
-                      activeDatePreset === key
-                        ? "bg-primary5 text-white border-primary5"
-                        : "bg-white text-gray-500 border-gray-200 hover:border-primary5 hover:text-primary5"
-                    }`}
-                  >
-                    {label}
-                  </button>
-                ))}
+
+              {/* 날짜 필터 — 드롭다운 스타일 */}
+              <div className="relative" ref={datePickerRef}>
+                <button
+                  onClick={() => setShowDatePicker(!showDatePicker)}
+                  className={`w-full flex items-center justify-between px-3.5 py-2.5 border rounded-xl text-sm transition-colors min-w-0 ${
+                    dateFrom || dateTo
+                      ? "border-primary5 bg-primary4/20 text-primary5 font-medium"
+                      : "border-gray-200 bg-gray-50 text-gray-600 hover:border-primary5 hover:bg-white"
+                  }`}
+                >
+                  <span className="flex items-center gap-1.5">
+                    <FiCalendar className="text-sm flex-shrink-0" />
+                    <span className="truncate">{dateLabel}</span>
+                  </span>
+                  <FiChevronDown className={`w-3.5 h-3.5 ml-1 flex-shrink-0 transition-transform ${showDatePicker ? "rotate-180" : ""} ${dateFrom ? "text-primary5" : "text-gray-400"}`} />
+                </button>
+
+                {showDatePicker && (
+                  <div className="absolute left-0 right-0 top-full mt-1.5 bg-white border border-gray-200 rounded-xl shadow-lg z-20 p-3 space-y-3 animate-slide-up">
+                    {/* 프리셋 */}
+                    <div className="flex gap-1.5">
+                      {(
+                        [
+                          ["today", "오늘"],
+                          ["weekend", "주말"],
+                          ["week", "이번 주"],
+                        ] as const
+                      ).map(([key, label]) => (
+                        <button
+                          key={key}
+                          onClick={() => {
+                            handleDatePreset(activeDatePreset === key ? "clear" : key);
+                            if (activeDatePreset !== key) setShowDatePicker(false);
+                          }}
+                          className={`flex-1 py-2 text-xs font-medium rounded-lg border transition-colors ${
+                            activeDatePreset === key
+                              ? "bg-primary5 text-white border-primary5"
+                              : "bg-gray-50 text-gray-600 border-gray-200 hover:border-primary5 hover:text-primary5"
+                          }`}
+                        >
+                          {label}
+                        </button>
+                      ))}
+                    </div>
+
+                    {/* 직접 선택 */}
+                    <div className="border-t border-gray-100 pt-2.5">
+                      <p className="text-[11px] text-gray-400 mb-1.5">직접 선택</p>
+                      <div className="flex gap-2 items-center">
+                        <input
+                          type="date"
+                          value={dateFrom}
+                          onChange={(e) => { setDateFrom(e.target.value); }}
+                          className="flex-1 px-2.5 py-2 border border-gray-200 rounded-lg text-xs text-gray-600 bg-gray-50 focus:border-primary5 focus:outline-none"
+                        />
+                        <span className="text-xs text-gray-400">~</span>
+                        <input
+                          type="date"
+                          value={dateTo}
+                          onChange={(e) => { setDateTo(e.target.value); }}
+                          className="flex-1 px-2.5 py-2 border border-gray-200 rounded-lg text-xs text-gray-600 bg-gray-50 focus:border-primary5 focus:outline-none"
+                        />
+                      </div>
+                    </div>
+
+                    {/* 초기화 + 적용 */}
+                    {(dateFrom || dateTo) && (
+                      <div className="flex gap-2 pt-1">
+                        <button
+                          onClick={() => { handleDatePreset("clear"); setShowDatePicker(false); }}
+                          className="flex-1 py-2 text-xs text-gray-500 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors"
+                        >
+                          초기화
+                        </button>
+                        <button
+                          onClick={() => setShowDatePicker(false)}
+                          className="flex-1 py-2 text-xs text-white bg-primary5 rounded-lg hover:brightness-95 transition-colors"
+                        >
+                          적용
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                )}
               </div>
               <SearchInput className="w-full" />
               {showRegionModal && (
