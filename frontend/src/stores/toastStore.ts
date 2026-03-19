@@ -31,6 +31,8 @@ const useToastStore = create<ToastState>((set, get) => ({
     setTimeout(() => get().dismissToast(id), TOAST_DURATION);
   },
   dismissToast: (id) => {
+    const toast = get().toasts.find((t) => t.id === id);
+    if (!toast || toast.isExiting) return;
     set((state) => ({
       toasts: state.toasts.map((t) =>
         t.id === id ? { ...t, isExiting: true } : t

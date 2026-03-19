@@ -32,10 +32,11 @@ const Toast = memo(function Toast() {
           {iconMap[toast.type]}
           <span className="flex-1 text-sm font-medium">{toast.message}</span>
           <button
+            aria-label="알림 닫기"
             onClick={() => dismissToast(toast.id)}
             className="opacity-40 hover:opacity-100 transition-opacity"
           >
-            <FiX />
+            <FiX aria-hidden="true" />
           </button>
         </div>
       ))}

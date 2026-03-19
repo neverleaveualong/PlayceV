@@ -28,6 +28,8 @@ const PlayceMap: React.FC = () => {
   const isRefreshTriggered = useRef(false);
   const prevRefreshBtn = useRef(isRefreshBtnOn);
   const prevFetching = useRef(false);
+  const restaurantsRef = useRef(restaurants);
+  restaurantsRef.current = restaurants;
 
   // 재탐색 버튼 클릭 감지: isRefreshBtnOn이 true → false로 바뀔 때
   useEffect(() => {
@@ -40,11 +42,11 @@ const PlayceMap: React.FC = () => {
   // fetch 완료 감지: isFetching이 true → false로 바뀔 때
   useEffect(() => {
     if (prevFetching.current && !isFetching && isRefreshTriggered.current) {
-      addToast(`주변 가게 ${restaurants.length}곳을 찾았습니다`, "success");
+      addToast(`주변 가게 ${restaurantsRef.current.length}곳을 찾았습니다`, "success");
       isRefreshTriggered.current = false;
     }
     prevFetching.current = isFetching;
-  }, [isFetching, restaurants.length, addToast]);
+  }, [isFetching, addToast]);
 
   const mapRef = useRef<kakao.maps.Map | null>(null);
 
