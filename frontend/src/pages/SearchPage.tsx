@@ -176,21 +176,29 @@ const SearchPage = () => {
               <div className="flex gap-2">
                 <button
                   onClick={() => setShowSportModal(true)}
-                  className="flex-1 flex items-center justify-between px-3.5 py-2.5 border border-gray-200 rounded-xl bg-gray-50 text-sm hover:border-primary5 hover:bg-white transition-colors min-w-0"
+                  className={`flex-1 flex items-center justify-between px-3.5 py-2.5 border rounded-xl text-sm transition-colors min-w-0 ${
+                    sport
+                      ? "border-primary5 bg-primary4/20 text-primary5 font-medium"
+                      : "border-gray-200 bg-gray-50 text-gray-600 hover:border-primary5 hover:bg-white"
+                  }`}
                 >
-                  <span className="truncate text-gray-600" title={selectedSportLabel}>
+                  <span className="truncate" title={selectedSportLabel}>
                     {selectedSportLabel}
                   </span>
-                  <FiChevronDown className="w-3.5 h-3.5 text-gray-400 ml-1 flex-shrink-0" />
+                  <FiChevronDown className={`w-3.5 h-3.5 ml-1 flex-shrink-0 ${sport ? "text-primary5" : "text-gray-400"}`} />
                 </button>
                 <button
                   onClick={() => setShowRegionModal(true)}
-                  className="flex-1 flex items-center justify-between px-3.5 py-2.5 border border-gray-200 rounded-xl bg-gray-50 text-sm hover:border-primary5 hover:bg-white transition-colors min-w-0"
+                  className={`flex-1 flex items-center justify-between px-3.5 py-2.5 border rounded-xl text-sm transition-colors min-w-0 ${
+                    selectedRegions.length > 0
+                      ? "border-primary5 bg-primary4/20 text-primary5 font-medium"
+                      : "border-gray-200 bg-gray-50 text-gray-600 hover:border-primary5 hover:bg-white"
+                  }`}
                 >
-                  <span className="truncate text-gray-600" title={selectedRegionLabel}>
+                  <span className="truncate" title={selectedRegionLabel}>
                     {selectedRegionLabel}
                   </span>
-                  <FiChevronDown className="w-3.5 h-3.5 text-gray-400 ml-1 flex-shrink-0" />
+                  <FiChevronDown className={`w-3.5 h-3.5 ml-1 flex-shrink-0 ${selectedRegions.length > 0 ? "text-primary5" : "text-gray-400"}`} />
                 </button>
               </div>
 
@@ -224,10 +232,7 @@ const SearchPage = () => {
                       ).map(([key, label]) => (
                         <button
                           key={key}
-                          onClick={() => {
-                            handleDatePreset(activeDatePreset === key ? "clear" : key);
-                            if (activeDatePreset !== key) setShowDatePicker(false);
-                          }}
+                          onClick={() => handleDatePreset(activeDatePreset === key ? "clear" : key)}
                           className={`flex-1 py-2 text-xs font-medium rounded-lg border transition-colors ${
                             activeDatePreset === key
                               ? "bg-primary5 text-white border-primary5"
@@ -260,22 +265,20 @@ const SearchPage = () => {
                     </div>
 
                     {/* 초기화 + 적용 */}
-                    {(dateFrom || dateTo) && (
-                      <div className="flex gap-2 pt-1">
-                        <button
-                          onClick={() => { handleDatePreset("clear"); setShowDatePicker(false); }}
-                          className="flex-1 py-2 text-xs text-gray-500 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors"
-                        >
-                          초기화
-                        </button>
-                        <button
-                          onClick={() => setShowDatePicker(false)}
-                          className="flex-1 py-2 text-xs text-white bg-primary5 rounded-lg hover:brightness-95 transition-colors"
-                        >
-                          적용
-                        </button>
-                      </div>
-                    )}
+                    <div className="flex gap-2 pt-1">
+                      <button
+                        onClick={() => { handleDatePreset("clear"); }}
+                        className="py-2 px-4 text-xs text-gray-500 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors"
+                      >
+                        초기화
+                      </button>
+                      <button
+                        onClick={() => setShowDatePicker(false)}
+                        className="flex-1 py-2 text-xs text-white bg-primary5 rounded-lg hover:brightness-95 transition-colors font-medium"
+                      >
+                        적용
+                      </button>
+                    </div>
                   </div>
                 )}
               </div>
