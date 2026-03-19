@@ -16,7 +16,8 @@ const AuthHeader: React.FC = () => {
   const { userLogout } = useAuth();
 
   // 모바일: 아이콘만 (w-10 h-10 원형), 데스크톱: 아이콘+텍스트
-  const mobileIconBtn = "w-10 h-10 md:w-auto md:h-auto md:px-4 md:py-1.5";
+  // 모바일: padding 0 + 아이콘 margin 제거 → 원 안 중앙 정렬
+  const mobileIconBtn = "!p-0 w-10 h-10 md:!px-4 md:!py-1.5 md:w-auto md:h-auto [&>span:first-child]:!mr-0 md:[&>span:first-child]:!mr-2";
 
   return (
     <div className="absolute top-3 right-3 md:top-4 md:right-4 z-10">
