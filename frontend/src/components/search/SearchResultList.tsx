@@ -1,11 +1,15 @@
-import { useCallback, useMemo } from "react";
+import { useCallback, useMemo, useState } from "react";
 import SearchResultItem from "./SearchResultItem";
 import { useSearchStore } from "@/stores/searchStore";
 import { sortSearchResults } from "@/utils/sortUtils";
+import type { SortOrder } from "@/utils/sortUtils";
 import useMapStore from "@/stores/mapStore";
 import type { SearchResultItem as SearchResultItemType } from "@/types/search";
 import LoadingSpinner from "@/components/common/LoadingSpinner";
 import EmptyMessage from "@/components/restaurant/EmptyMessage";
+import { FiChevronUp, FiChevronDown } from "react-icons/fi";
+
+const PAGE_SIZE = 10;
 
 interface SearchResultListProps {
   results: SearchResultItemType[];
@@ -22,89 +26,132 @@ const SearchResultList = ({
   const setSort = useSearchStore((state) => state.setSort);
   const openDetail = useMapStore((state) => state.openDetail);
 
-  const handleSortByDistance = useCallback(() => setSort("distance"), [setSort]);
-  const handleSortByDatetime = useCallback(() => setSort("datetime"), [setSort]);
+  const [order, setOrder] = useState<SortOrder>("asc");
+  const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
+
+  const handleSort = useCallback((type: "distance" | "datetime") => {
+    if (sort === type) {
+      setOrder((prev) => (prev === "asc" ? "desc" : "asc"));
+    } else {
+      setSort(type);
+      setOrder("asc");
+    }
+    setVisibleCount(PAGE_SIZE);
+  }, [sort, setSort]);
 
   const sortedResults = useMemo(
-    () => sortSearchResults(results, sort),
-    [results, sort]
+    () => sortSearchResults(results, sort, order),
+    [results, sort, order]
   );
+
+  const visibleResults = sortedResults.slice(0, visibleCount);
+  const hasMore = visibleCount < sortedResults.length;
 
   if (!hasSearched && !isSearching) return null;
 
+  const SortIcon = ({ active, currentOrder }: { active: boolean; currentOrder: SortOrder }) => {
+    if (!active) return null;
+    return currentOrder === "asc"
+      ? <FiChevronUp className="text-xs" />
+      : <FiChevronDown className="text-xs" />;
+  };
+
   return (
     <div>
-      <div className="flex justify-between border-b border-gray-200 bg-gray-50 px-4 py-2.5">
-        <p className="text-sm font-medium text-gray-700 flex items-center">
+      {/* 헤더: 건수 + 정렬 */}
+      <div className="flex justify-between items-center border-b border-gray-200 bg-gray-50 px-4 py-2.5">
+        <p className="text-sm font-medium text-gray-700">
           검색 결과
+          {!isSearching && sortedResults.length > 0 && (
+            <span className="text-primary5 font-bold ml-1.5">{sortedResults.length}건</span>
+          )}
         </p>
         <div className="flex items-center gap-1">
           <button
-            className={`text-sm px-2.5 py-1 rounded-md transition-colors ${
+            className={`text-sm px-2.5 py-1 rounded-md transition-colors flex items-center gap-0.5 ${
               sort === "distance"
                 ? "text-primary5 font-bold bg-white shadow-sm"
                 : "text-gray-500 hover:text-gray-700 hover:bg-gray-100"
             }`}
-            onClick={handleSortByDistance}
+            onClick={() => handleSort("distance")}
           >
             거리순
+            <SortIcon active={sort === "distance"} currentOrder={order} />
           </button>
           <button
-            className={`text-sm px-2.5 py-1 rounded-md transition-colors ${
+            className={`text-sm px-2.5 py-1 rounded-md transition-colors flex items-center gap-0.5 ${
               sort === "datetime"
                 ? "text-primary5 font-bold bg-white shadow-sm"
                 : "text-gray-500 hover:text-gray-700 hover:bg-gray-100"
             }`}
-            onClick={handleSortByDatetime}
+            onClick={() => handleSort("datetime")}
           >
             날짜순
+            <SortIcon active={sort === "datetime"} currentOrder={order} />
           </button>
         </div>
       </div>
 
+      {/* 결과 목록 */}
       <div>
         {isSearching ? (
           <div className="py-12"><LoadingSpinner message="검색 중..." /></div>
         ) : sortedResults.length === 0 ? (
           <EmptyMessage message="검색 결과가 없습니다." />
         ) : (
-          sortedResults.map((item) => {
-            const date = item.broadcast
-              ? new Date(item.broadcast.match_date)
-              : null;
+          <>
+            {visibleResults.map((item, index) => {
+              const date = item.broadcast
+                ? new Date(item.broadcast.match_date)
+                : null;
 
-            const matchInfo =
-              date && item.broadcast
-                ? item.broadcast.team_one && item.broadcast.team_two
-                  ? `${date.getMonth() + 1}/${date.getDate()} · ${
-                      item.broadcast.team_one
-                    } vs ${item.broadcast.team_two}`
-                  : `${date.getMonth() + 1}/${date.getDate()} · ${
-                      item.broadcast.league
-                    }`
-                : "";
+              const matchInfo =
+                date && item.broadcast
+                  ? item.broadcast.team_one && item.broadcast.team_two
+                    ? `${date.getMonth() + 1}/${date.getDate()} · ${
+                        item.broadcast.team_one
+                      } vs ${item.broadcast.team_two}`
+                    : `${date.getMonth() + 1}/${date.getDate()} · ${
+                        item.broadcast.league
+                      }`
+                  : "";
 
-            const displayItem = {
-              storeName: item.store_name,
-              address: item.address,
-              distance: item.distance,
-              matchInfo,
-              imgUrl: item.img_url || "/noimg.png",
-            };
+              const displayItem = {
+                storeName: item.store_name,
+                address: item.address,
+                distance: item.distance,
+                matchInfo,
+                imgUrl: item.img_url || "/noimg.png",
+                rank: index + 1,
+              };
 
-            return (
-              <SearchResultItem
-                key={item.id}
-                data={displayItem}
-                onClick={() => {
-                  openDetail(item.id);
-                }}
-              />
-            );
-          })
+              return (
+                <SearchResultItem
+                  key={item.id}
+                  data={displayItem}
+                  onClick={() => openDetail(item.id)}
+                />
+              );
+            })}
+
+            {/* 더보기 / 페이지 정보 */}
+            <div className="px-4 py-3 border-t border-gray-100">
+              {hasMore ? (
+                <button
+                  onClick={() => setVisibleCount((prev) => prev + PAGE_SIZE)}
+                  className="w-full py-2.5 text-sm font-medium text-primary5 bg-primary4/30 hover:bg-primary4/50 rounded-xl transition-colors"
+                >
+                  더보기 ({visibleCount}/{sortedResults.length})
+                </button>
+              ) : (
+                <p className="text-xs text-center text-gray-400">
+                  전체 {sortedResults.length}건을 모두 확인했습니다
+                </p>
+              )}
+            </div>
+          </>
         )}
       </div>
-
     </div>
   );
 };
