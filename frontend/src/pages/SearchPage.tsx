@@ -101,17 +101,10 @@ const SearchPage = () => {
           <>
             {/* 검색 영역 */}
             <div className="px-4 py-4 space-y-3 border-b border-gray-100">
-              <SearchInput className="w-full" />
+              <p className="text-xs text-darkgray">
+                보고 싶은 경기를 선택하면 중계 가게를 찾아드려요
+              </p>
               <div className="flex gap-2">
-                <button
-                  onClick={() => setShowRegionModal(true)}
-                  className="flex-1 flex items-center justify-between px-3.5 py-2.5 border border-gray-200 rounded-xl bg-gray-50 text-sm hover:border-primary5 hover:bg-white transition-colors min-w-0"
-                >
-                  <span className="truncate text-gray-600" title={selectedRegionLabel}>
-                    {selectedRegionLabel}
-                  </span>
-                  <FiChevronDown className="w-3.5 h-3.5 text-gray-400 ml-1 flex-shrink-0" />
-                </button>
                 <button
                   onClick={() => setShowSportModal(true)}
                   className="flex-1 flex items-center justify-between px-3.5 py-2.5 border border-gray-200 rounded-xl bg-gray-50 text-sm hover:border-primary5 hover:bg-white transition-colors min-w-0"
@@ -121,7 +114,17 @@ const SearchPage = () => {
                   </span>
                   <FiChevronDown className="w-3.5 h-3.5 text-gray-400 ml-1 flex-shrink-0" />
                 </button>
+                <button
+                  onClick={() => setShowRegionModal(true)}
+                  className="flex-1 flex items-center justify-between px-3.5 py-2.5 border border-gray-200 rounded-xl bg-gray-50 text-sm hover:border-primary5 hover:bg-white transition-colors min-w-0"
+                >
+                  <span className="truncate text-gray-600" title={selectedRegionLabel}>
+                    {selectedRegionLabel}
+                  </span>
+                  <FiChevronDown className="w-3.5 h-3.5 text-gray-400 ml-1 flex-shrink-0" />
+                </button>
               </div>
+              <SearchInput className="w-full" />
               {showRegionModal && (
                 <RegionModal
                   onClose={() => setShowRegionModal(false)}
