@@ -1,5 +1,6 @@
 import { AppDataSource } from "../data-source";
 import { Store } from "../entities/Store";
+import { Broadcast } from "../entities/Broadcast";
 import { SmallRegion } from "../entities/SmallRegion";
 import { Sport } from "../entities/Sport";
 import { League } from "../entities/League";
@@ -10,18 +11,23 @@ import { log } from "../utils/logUtils";
 
 const searchService = {
   // 화면 영역(bounds) 기반 검색
-  getNearbyStores: async (swLat: number, swLng: number, neLat: number, neLng: number) => {
+  getNearbyStores: async (swLat: number, swLng: number, neLat: number, neLng: number, date?: string) => {
     const storeRepo = AppDataSource.getRepository(Store);
 
-    const stores = await storeRepo
+    const query = storeRepo
       .createQueryBuilder("store")
       .leftJoinAndSelect("store.images", "image", "image.isMain = true")
       .leftJoinAndSelect("store.broadcasts", "broadcast")
       .leftJoinAndSelect("broadcast.sport", "sport")
       .leftJoinAndSelect("broadcast.league", "league")
       .where("store.lat BETWEEN :swLat AND :neLat", { swLat, neLat })
-      .andWhere("store.lng BETWEEN :swLng AND :neLng", { swLng, neLng })
-      .getMany();
+      .andWhere("store.lng BETWEEN :swLng AND :neLng", { swLng, neLng });
+
+    if (date) {
+      query.andWhere("broadcast.matchDate = :date", { date });
+    }
+
+    const stores = await query.getMany();
 
     return stores.map((store) => ({
       store_id: store.id,
@@ -52,6 +58,8 @@ const searchService = {
     team?: string;
     big_regions?: string[];
     small_regions?: string[];
+    date_from?: string;
+    date_to?: string;
     sort?: "date" | "name" | "distance";
   }) => {
     //  캐시 키 생성
@@ -74,6 +82,8 @@ const searchService = {
       team,
       big_regions = [],
       small_regions = [],
+      date_from,
+      date_to,
       sort,
     } = filters;
 
@@ -102,6 +112,14 @@ const searchService = {
       );
     }
 
+
+    // 날짜 필터
+    if (date_from) {
+      query.andWhere("broadcast.matchDate >= :date_from", { date_from });
+    }
+    if (date_to) {
+      query.andWhere("broadcast.matchDate <= :date_to", { date_to });
+    }
 
     if (sports.length > 0) {
       const matchedSports = await sportRepo

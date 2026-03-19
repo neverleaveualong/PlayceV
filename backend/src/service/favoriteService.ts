@@ -1,6 +1,7 @@
 import { AppDataSource } from "../data-source";
 import { Favorite } from "../entities/Favorite";
 import { Store } from "../entities/Store";
+import { Broadcast } from "../entities/Broadcast";
 import { createError } from "../utils/errorUtils";
 import { formatDateToKST } from "../utils/dateFormatter";
 import { log } from "../utils/logUtils";
@@ -35,6 +36,7 @@ const favoriteService = {
 
     const cacheKey = `favorites:user:${userId}`;
     await deleteCache(cacheKey);
+    await deleteCache(`favorites:upcoming:${userId}`);
     log("Redis 캐시 무효화 완료:", cacheKey);
 
     log("즐겨찾기 저장 완료 - ID:", saved.id);
@@ -63,7 +65,8 @@ const favoriteService = {
     await favoriteRepository.remove(favorite);
 
     const cacheKey = `favorites:user:${userId}`;
-    await deleteCache(cacheKey); 
+    await deleteCache(cacheKey);
+    await deleteCache(`favorites:upcoming:${userId}`);
     log("Redis 캐시 무효화 완료:", cacheKey);
 
     log("즐겨찾기 삭제 완료");
@@ -104,6 +107,76 @@ const favoriteService = {
     await setCache(cacheKey, result);
     log("📝 Redis 캐시 저장 완료:", cacheKey);
 
+    return result;
+  },
+  getUpcomingBroadcasts: async (userId: number) => {
+    log("[Service]즐겨찾기 다가오는 중계 조회 - userId:", userId);
+
+    const cacheKey = `favorites:upcoming:${userId}`;
+    const cached = await getCache(cacheKey);
+    if (cached) {
+      log("✅ Redis 캐시 사용:", cacheKey);
+      return cached;
+    }
+
+    const today = formatDateToKST(new Date()).slice(0, 10);
+
+    const broadcastRepo = AppDataSource.getRepository(Broadcast);
+    const broadcasts = await broadcastRepo
+      .createQueryBuilder("broadcast")
+      .innerJoin("broadcast.store", "store")
+      .innerJoin("favorites", "fav", "fav.store_id = store.id AND fav.user_id = :userId", { userId })
+      .leftJoinAndSelect("broadcast.sport", "sport")
+      .leftJoinAndSelect("broadcast.league", "league")
+      .leftJoin("store.images", "image", "image.isMain = true")
+      .addSelect(["store.id", "store.storeName", "store.address", "store.type", "store.lat", "store.lng"])
+      .addSelect("image.imgUrl", "main_img")
+      .where("broadcast.matchDate >= :today", { today })
+      .orderBy("broadcast.matchDate", "ASC")
+      .addOrderBy("broadcast.matchTime", "ASC")
+      .limit(20)
+      .getMany();
+
+    // store 관계를 포함하여 다시 조회
+    const broadcastIds = broadcasts.map((b) => b.id);
+    if (broadcastIds.length === 0) {
+      await setCache(cacheKey, [], 60);
+      return [];
+    }
+
+    const fullBroadcasts = await broadcastRepo
+      .createQueryBuilder("broadcast")
+      .leftJoinAndSelect("broadcast.store", "store")
+      .leftJoinAndSelect("store.images", "image", "image.isMain = true")
+      .leftJoinAndSelect("broadcast.sport", "sport")
+      .leftJoinAndSelect("broadcast.league", "league")
+      .where("broadcast.id IN (:...ids)", { ids: broadcastIds })
+      .orderBy("broadcast.matchDate", "ASC")
+      .addOrderBy("broadcast.matchTime", "ASC")
+      .getMany();
+
+    const result = fullBroadcasts.map((b) => ({
+      broadcast_id: b.id,
+      match_date: b.matchDate,
+      match_time: b.matchTime?.slice(0, 5),
+      sport: b.sport.name,
+      league: b.league.name,
+      team_one: b.teamOne,
+      team_two: b.teamTwo,
+      etc: b.etc,
+      store: {
+        store_id: b.store.id,
+        store_name: b.store.storeName,
+        address: b.store.address,
+        type: b.store.type,
+        main_img: b.store.images?.[0]?.imgUrl ?? null,
+        lat: b.store.lat,
+        lng: b.store.lng,
+      },
+    }));
+
+    await setCache(cacheKey, result, 60);
+    log("📝 Redis 캐시 저장 완료:", cacheKey);
     return result;
   },
 };
