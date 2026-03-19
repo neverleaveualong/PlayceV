@@ -54,7 +54,7 @@ export const useSearchStore = create<SearchState>((set) => ({
   leagues: [],
   dateFrom: "",
   dateTo: "",
-  sort: "distance",
+  sort: "datetime",
   submittedParams: null,
 
   setSearchText: (value) => set({ searchText: value }),
@@ -76,7 +76,7 @@ export const useSearchStore = create<SearchState>((set) => ({
       leagues: [],
       dateFrom: "",
       dateTo: "",
-      sort: "distance",
+      sort: "datetime",
       submittedParams: null,
     }),
 }));

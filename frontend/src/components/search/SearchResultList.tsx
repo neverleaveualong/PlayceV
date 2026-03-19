@@ -69,17 +69,6 @@ const SearchResultList = ({
         <div className="flex items-center gap-1">
           <button
             className={`text-sm px-2.5 py-1 rounded-md transition-colors flex items-center gap-0.5 ${
-              sort === "distance"
-                ? "text-primary5 font-bold bg-white shadow-sm"
-                : "text-gray-500 hover:text-gray-700 hover:bg-gray-100"
-            }`}
-            onClick={() => handleSort("distance")}
-          >
-            거리순
-            <SortIcon active={sort === "distance"} currentOrder={order} />
-          </button>
-          <button
-            className={`text-sm px-2.5 py-1 rounded-md transition-colors flex items-center gap-0.5 ${
               sort === "datetime"
                 ? "text-primary5 font-bold bg-white shadow-sm"
                 : "text-gray-500 hover:text-gray-700 hover:bg-gray-100"
@@ -88,6 +77,17 @@ const SearchResultList = ({
           >
             날짜순
             <SortIcon active={sort === "datetime"} currentOrder={order} />
+          </button>
+          <button
+            className={`text-sm px-2.5 py-1 rounded-md transition-colors flex items-center gap-0.5 ${
+              sort === "distance"
+                ? "text-primary5 font-bold bg-white shadow-sm"
+                : "text-gray-500 hover:text-gray-700 hover:bg-gray-100"
+            }`}
+            onClick={() => handleSort("distance")}
+          >
+            거리순
+            <SortIcon active={sort === "distance"} currentOrder={order} />
           </button>
         </div>
       </div>
