@@ -10,6 +10,8 @@ interface SearchParams {
   leagues: string[];
   bigRegions: string[];
   smallRegions: string[];
+  dateFrom: string;
+  dateTo: string;
   sort: string;
 }
 
@@ -25,6 +27,8 @@ export const useSearchResults = (params: SearchParams, enabled: boolean) => {
         leagues: params.leagues,
         big_regions: params.bigRegions,
         small_regions: params.smallRegions,
+        date_from: params.dateFrom || undefined,
+        date_to: params.dateTo || undefined,
         sort: params.sort,
       });
 
