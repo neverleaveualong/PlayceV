@@ -4,7 +4,7 @@ import useMapStore from "@/stores/mapStore";
 import { useFavorites, useRemoveFavorite, useUpcomingBroadcasts } from "@/hooks/useFavorites";
 import type { UpcomingBroadcast } from "@/hooks/useFavorites";
 import { FiStar, FiTrash2, FiMapPin, FiTv, FiClock } from "react-icons/fi";
-import LoadingSpinner from "@/components/common/LoadingSpinner";
+import { ListSkeleton } from "@/components/common/Skeleton";
 import Button from "@/components/common/Button";
 import FallbackImage from "@/components/common/FallbackImage";
 
@@ -75,7 +75,7 @@ export default function FavoriteSidebar() {
   }
 
   if (isLoading) {
-    return <LoadingSpinner message="즐겨찾기를 불러오는 중..." />;
+    return <ListSkeleton count={3} />;
   }
 
   if (favorites.length === 0) {

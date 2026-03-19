@@ -5,6 +5,7 @@ import "./index.css";
 import App from "@/App";
 import { ConfigProvider } from "antd";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { reportWebVitals } from "@/utils/webVitals";
 
 const queryClient = new QueryClient();
 
@@ -23,3 +24,7 @@ createRoot(document.getElementById("root")!).render(
     </QueryClientProvider>
   </StrictMode>
 );
+
+reportWebVitals(({ name, value, rating }) => {
+  console.log(`[Web Vitals] ${name}: ${value} (${rating})`);
+});
