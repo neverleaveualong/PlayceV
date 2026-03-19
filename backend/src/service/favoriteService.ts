@@ -36,6 +36,7 @@ const favoriteService = {
 
     const cacheKey = `favorites:user:${userId}`;
     await deleteCache(cacheKey);
+    await deleteCache(`favorites:upcoming:${userId}`);
     log("Redis 캐시 무효화 완료:", cacheKey);
 
     log("즐겨찾기 저장 완료 - ID:", saved.id);
@@ -64,7 +65,8 @@ const favoriteService = {
     await favoriteRepository.remove(favorite);
 
     const cacheKey = `favorites:user:${userId}`;
-    await deleteCache(cacheKey); 
+    await deleteCache(cacheKey);
+    await deleteCache(`favorites:upcoming:${userId}`);
     log("Redis 캐시 무효화 완료:", cacheKey);
 
     log("즐겨찾기 삭제 완료");
@@ -117,7 +119,7 @@ const favoriteService = {
       return cached;
     }
 
-    const today = new Date().toISOString().slice(0, 10);
+    const today = formatDateToKST(new Date()).slice(0, 10);
 
     const broadcastRepo = AppDataSource.getRepository(Broadcast);
     const broadcasts = await broadcastRepo
