@@ -24,6 +24,7 @@ const Toast = memo(function Toast() {
       {toasts.map((toast) => (
         <div
           key={toast.id}
+          role="alert"
           className={`flex items-center gap-3 px-4 md:px-5 py-3.5 rounded-xl border shadow-xl min-w-0 w-[90vw] md:min-w-[280px] md:w-auto md:max-w-[400px] animate-slide-up ${colorMap[toast.type]}`}
         >
           {iconMap[toast.type]}

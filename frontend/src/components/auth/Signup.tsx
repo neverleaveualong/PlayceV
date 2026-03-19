@@ -167,6 +167,7 @@ const SignupModal = () => {
         onClick={handleCancel}
         className="absolute top-4 right-4 w-10 h-10 flex items-center justify-center
           rounded-full text-gray-400 hover:bg-gray-100 hover:text-gray-600 transition-colors"
+        aria-label="닫기"
       >
         ✕
       </button>

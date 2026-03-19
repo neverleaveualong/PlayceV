@@ -87,7 +87,7 @@ export default function ImageUpload({
             onClick={() => openImagePreview(img)}
           />
           <button
-            className="absolute top-1 right-1 w-7 h-7 bg-white rounded-full flex items-center justify-center text-black hover:bg-gray-100 hidden group-hover:flex"
+            className="absolute top-1 right-1 w-7 h-7 bg-white rounded-full flex items-center justify-center text-black hover:bg-gray-100 md:hidden md:group-hover:flex"
             type="button"
             onClick={() => closeImage(index)}
           >

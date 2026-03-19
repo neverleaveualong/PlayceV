@@ -18,7 +18,6 @@ export default function AppLogoHeader() {
           resetSearch();
           resetRegions();
           resetSport();
-          window.scrollTo(0, 0);
         }}
         aria-label="홈으로 이동"
       >
