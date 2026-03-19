@@ -10,13 +10,14 @@ const searchController = {
     try {
       log("\n📍 [현재 위치 기반 검색] 요청");
 
-      const { swLat, swLng, neLat, neLng } = req.query;
+      const { swLat, swLng, neLat, neLng, date } = req.query;
 
       const result = await searchService.getNearbyStores(
         Number(swLat),
         Number(swLng),
         Number(neLat),
-        Number(neLng)
+        Number(neLng),
+        date ? String(date) : undefined
       );
 
       log("✅ [현재 위치 기반 검색] 성공");
@@ -46,6 +47,8 @@ const searchController = {
         team: String(req.query.team || ''),
         big_regions: parseToArray(req.query.big_regions),
         small_regions: parseToArray(req.query.small_regions),
+        date_from: req.query.date_from ? String(req.query.date_from) : undefined,
+        date_to: req.query.date_to ? String(req.query.date_to) : undefined,
         sort: String(req.query.sort || 'distance') as 'date' | 'name' | 'distance',
       });
 
