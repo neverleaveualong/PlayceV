@@ -23,7 +23,25 @@ const PlayceMap: React.FC = () => {
   const setZoomLevel = useMapStore((state) => state.setZoomLevel);
   const openDetail = useMapStore((state) => state.openDetail);
 
-  const { data: restaurants = [] } = useNearbyRestaurants(bounds);
+  const addToast = useToastStore((state) => state.addToast);
+  const { data: restaurants = [], isFetching } = useNearbyRestaurants(bounds);
+  const isRefreshTriggered = useRef(false);
+  const prevFetchingRef = useRef(false);
+
+  // 재탐색 버튼 클릭 시 isRefreshBtnOn이 false로 바뀜 → 트리거 감지
+  useEffect(() => {
+    if (!isRefreshBtnOn && prevFetchingRef.current) {
+      isRefreshTriggered.current = true;
+    }
+  }, [isRefreshBtnOn]);
+
+  useEffect(() => {
+    if (prevFetchingRef.current && !isFetching && isRefreshTriggered.current) {
+      addToast(`주변 가게 ${restaurants.length}곳을 찾았습니다`, "success");
+      isRefreshTriggered.current = false;
+    }
+    prevFetchingRef.current = isFetching;
+  }, [isFetching, restaurants.length, addToast]);
 
   const mapRef = useRef<kakao.maps.Map | null>(null);
 
