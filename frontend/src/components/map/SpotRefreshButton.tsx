@@ -1,5 +1,6 @@
 import Button from "@/components/common/Button";
 import useMapStore from "@/stores/mapStore";
+import useToastStore from "@/stores/toastStore";
 import { IoReloadOutline } from "react-icons/io5";
 import type { Bounds } from "@/types/map";
 
@@ -9,6 +10,7 @@ interface SpotRefreshButtonProps {
 
 const SpotRefreshButton = ({ mapRef }: SpotRefreshButtonProps) => {
   const search = useMapStore((state) => state.search);
+  const addToast = useToastStore((state) => state.addToast);
 
   const handleClick = () => {
     const map = mapRef.current;
@@ -26,6 +28,7 @@ const SpotRefreshButton = ({ mapRef }: SpotRefreshButtonProps) => {
     };
 
     search(bounds);
+    addToast("현재 위치 기준으로 재탐색 중...", "info");
   };
 
   return (
