@@ -1,5 +1,6 @@
 import { lazy, Suspense } from "react";
 import LoadingSpinner from "@/components/common/LoadingSpinner";
+import ErrorBoundary from "@/components/common/ErrorBoundary";
 import AuthHeader from "@/components/auth/AuthHeader";
 import Map from "@/components/map/PlayceMap";
 import RestaurantDetailComponent from "@/components/restaurant/RestaurantDetail";
@@ -42,15 +43,17 @@ const Home: React.FC = () => {
           }
         `}
       >
-        {selectedStoreId !== null ? (
-          <RestaurantDetailComponent
-            key={selectedStoreId}
-            storeId={selectedStoreId}
-            onClose={closeDetail}
-          />
-        ) : (
-          <SearchPage />
-        )}
+        <ErrorBoundary>
+          {selectedStoreId !== null ? (
+            <RestaurantDetailComponent
+              key={selectedStoreId}
+              storeId={selectedStoreId}
+              onClose={closeDetail}
+            />
+          ) : (
+            <SearchPage />
+          )}
+        </ErrorBoundary>
 
         {/* 모바일 닫기는 AppHeader에 통합됨 */}
       </div>
