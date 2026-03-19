@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { FiChevronDown, FiSearch, FiStar } from "react-icons/fi";
+import { useState, useMemo } from "react";
+import { FiChevronDown, FiSearch, FiStar, FiCalendar } from "react-icons/fi";
 import RegionModal from "@/components/search/RegionModal";
 import { useRegionStore } from "@/stores/regionStore";
 import SportModal from "@/components/search/SportModal";
@@ -22,6 +22,8 @@ const SearchPage = () => {
   const { selectedRegions } = useRegionStore();
   const { submittedParams } = useSearchStore();
 
+  const { dateFrom, dateTo, setDateFrom, setDateTo } = useSearchStore();
+
   const { data: results, isLoading: isSearching } = useSearchResults(
     submittedParams ?? {
       searchText: "",
@@ -29,10 +31,56 @@ const SearchPage = () => {
       leagues: [],
       bigRegions: [],
       smallRegions: [],
+      dateFrom: "",
+      dateTo: "",
       sort: "distance",
     },
     submittedParams !== null
   );
+
+  // 날짜 프리셋
+  const today = useMemo(() => {
+    const d = new Date();
+    return d.toISOString().slice(0, 10);
+  }, []);
+
+  const getWeekend = () => {
+    const d = new Date();
+    const day = d.getDay();
+    const satOffset = day === 0 ? -1 : 6 - day;
+    const sat = new Date(d);
+    sat.setDate(d.getDate() + satOffset);
+    const sun = new Date(sat);
+    sun.setDate(sat.getDate() + 1);
+    return { from: sat.toISOString().slice(0, 10), to: sun.toISOString().slice(0, 10) };
+  };
+
+  const handleDatePreset = (preset: "today" | "weekend" | "week" | "clear") => {
+    if (preset === "today") {
+      setDateFrom(today);
+      setDateTo(today);
+    } else if (preset === "weekend") {
+      const { from, to } = getWeekend();
+      setDateFrom(from);
+      setDateTo(to);
+    } else if (preset === "week") {
+      const to = new Date();
+      to.setDate(to.getDate() + 7);
+      setDateFrom(today);
+      setDateTo(to.toISOString().slice(0, 10));
+    } else {
+      setDateFrom("");
+      setDateTo("");
+    }
+  };
+
+  const activeDatePreset = dateFrom === today && dateTo === today
+    ? "today"
+    : dateFrom && dateTo && dateFrom === getWeekend().from && dateTo === getWeekend().to
+    ? "weekend"
+    : dateFrom === today && dateTo
+    ? "week"
+    : "";
 
   const hasSearched = submittedParams !== null;
 
@@ -123,6 +171,52 @@ const SearchPage = () => {
                   </span>
                   <FiChevronDown className="w-3.5 h-3.5 text-gray-400 ml-1 flex-shrink-0" />
                 </button>
+              </div>
+              {/* 날짜 필터 */}
+              <div className="space-y-1.5">
+                <div className="flex items-center gap-1.5 text-xs text-gray-500">
+                  <FiCalendar className="text-[11px]" />
+                  <span>날짜</span>
+                </div>
+                <div className="flex gap-1.5">
+                  {(
+                    [
+                      ["today", "오늘"],
+                      ["weekend", "이번 주말"],
+                      ["week", "이번 주"],
+                    ] as const
+                  ).map(([key, label]) => (
+                    <button
+                      key={key}
+                      onClick={() =>
+                        handleDatePreset(activeDatePreset === key ? "clear" : key)
+                      }
+                      className={`px-3 py-1.5 text-xs rounded-full border transition-colors ${
+                        activeDatePreset === key
+                          ? "bg-primary5 text-white border-primary5"
+                          : "bg-white text-gray-500 border-gray-200 hover:border-primary5 hover:text-primary5"
+                      }`}
+                    >
+                      {label}
+                    </button>
+                  ))}
+                </div>
+                {/* 직접 선택 */}
+                <div className="flex gap-2 items-center">
+                  <input
+                    type="date"
+                    value={dateFrom}
+                    onChange={(e) => setDateFrom(e.target.value)}
+                    className="flex-1 px-2.5 py-1.5 border border-gray-200 rounded-lg text-xs text-gray-600 bg-gray-50 focus:border-primary5 focus:outline-none"
+                  />
+                  <span className="text-xs text-gray-400">~</span>
+                  <input
+                    type="date"
+                    value={dateTo}
+                    onChange={(e) => setDateTo(e.target.value)}
+                    className="flex-1 px-2.5 py-1.5 border border-gray-200 rounded-lg text-xs text-gray-600 bg-gray-50 focus:border-primary5 focus:outline-none"
+                  />
+                </div>
               </div>
               <SearchInput className="w-full" />
               {showRegionModal && (

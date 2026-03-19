@@ -17,6 +17,12 @@ interface SearchState {
   setSports: (value: string[]) => void;
   setLeagues: (value: string[]) => void;
 
+  // 날짜 필터
+  dateFrom: string;
+  dateTo: string;
+  setDateFrom: (value: string) => void;
+  setDateTo: (value: string) => void;
+
   // 정렬 기준
   sort: "distance" | "datetime";
   setSort: (value: "distance" | "datetime") => void;
@@ -35,6 +41,8 @@ export interface SubmittedSearchParams {
   leagues: string[];
   bigRegions: string[];
   smallRegions: string[];
+  dateFrom: string;
+  dateTo: string;
   sort: string;
 }
 
@@ -44,6 +52,8 @@ export const useSearchStore = create<SearchState>((set) => ({
   smallRegions: [],
   sports: [],
   leagues: [],
+  dateFrom: "",
+  dateTo: "",
   sort: "distance",
   submittedParams: null,
 
@@ -52,6 +62,8 @@ export const useSearchStore = create<SearchState>((set) => ({
   setSmallRegions: (value) => set({ smallRegions: value }),
   setSports: (value) => set({ sports: value }),
   setLeagues: (value) => set({ leagues: value }),
+  setDateFrom: (value) => set({ dateFrom: value }),
+  setDateTo: (value) => set({ dateTo: value }),
   setSort: (value) => set({ sort: value }),
   setSubmittedParams: (params) => set({ submittedParams: params }),
 
@@ -62,6 +74,8 @@ export const useSearchStore = create<SearchState>((set) => ({
       smallRegions: [],
       sports: [],
       leagues: [],
+      dateFrom: "",
+      dateTo: "",
       sort: "distance",
       submittedParams: null,
     }),
