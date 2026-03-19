@@ -121,7 +121,7 @@ export default function ImageUpload({
       {showModal && selectedImage && (
         <div
           onClick={closeImagePreview}
-          className="fixed inset-0 bg-black/60 flex justify-center items-center z-[9999] animate-fade-in"
+          className="fixed inset-0 bg-black/60 flex justify-center items-center z-[10002] animate-fade-in"
         >
           <img
             src={selectedImage}

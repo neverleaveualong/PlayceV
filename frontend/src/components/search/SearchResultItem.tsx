@@ -18,8 +18,11 @@ const SearchResultItem: FC<SearchResultItemProps> = memo(function SearchResultIt
 
   return (
     <div
-      className="w-full hover:bg-primary3/30 transition-colors cursor-pointer border-b border-gray-200"
+      role="button"
+      tabIndex={0}
+      className="w-full hover:bg-primary3/30 transition-colors cursor-pointer border-b border-gray-200 focus:outline-none focus:bg-primary3/20"
       onClick={onClick}
+      onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") onClick?.(); }}
     >
       <div className="flex justify-between items-center px-4 py-3">
         <div className="flex flex-col leading-tight min-w-0 flex-1">
