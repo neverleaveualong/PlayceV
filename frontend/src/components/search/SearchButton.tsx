@@ -56,7 +56,7 @@ const SearchButton = () => {
     const leagues = selectedLeagues.map((l) => l.league);
     setLeagues(leagues);
 
-    const { dateFrom, dateTo, sort } = useSearchStore.getState();
+    const { sort } = useSearchStore.getState();
     setSubmittedParams({
       searchText,
       sports: uniqueSports,
