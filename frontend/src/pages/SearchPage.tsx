@@ -177,7 +177,7 @@ const SearchPage = () => {
                 <button
                   onClick={() => setShowSportModal(true)}
                   className={`flex-1 flex items-center justify-between px-3.5 py-2.5 border rounded-xl text-sm transition-colors min-w-0 ${
-                    sport
+                    selectedLeagues.length > 0
                       ? "border-primary5 bg-primary4/20 text-primary5 font-medium"
                       : "border-gray-200 bg-gray-50 text-gray-600 hover:border-primary5 hover:bg-white"
                   }`}
@@ -185,7 +185,7 @@ const SearchPage = () => {
                   <span className="truncate" title={selectedSportLabel}>
                     {selectedSportLabel}
                   </span>
-                  <FiChevronDown className={`w-3.5 h-3.5 ml-1 flex-shrink-0 ${sport ? "text-primary5" : "text-gray-400"}`} />
+                  <FiChevronDown className={`w-3.5 h-3.5 ml-1 flex-shrink-0 ${selectedLeagues.length > 0 ? "text-primary5" : "text-gray-400"}`} />
                 </button>
                 <button
                   onClick={() => setShowRegionModal(true)}
