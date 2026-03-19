@@ -9,7 +9,7 @@ import LoadingSpinner from "@/components/common/LoadingSpinner";
 import EmptyMessage from "@/components/restaurant/EmptyMessage";
 import { FiChevronUp, FiChevronDown } from "react-icons/fi";
 
-const PAGE_SIZE = 10;
+const PAGE_SIZE = 20;
 
 interface SearchResultListProps {
   results: SearchResultItemType[];
