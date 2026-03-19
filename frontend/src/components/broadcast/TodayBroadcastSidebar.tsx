@@ -133,7 +133,7 @@ function BroadcastCard({
   );
 }
 
-const TodayBroadcastSidebar = memo(function TodayBroadcastSidebar() {
+const TodayBroadcastSidebar = memo(function TodayBroadcastSidebar({ hideHeader = false }: { hideHeader?: boolean } = {}) {
   const myPosition = useMapStore((state) => state.myPosition);
   const bounds = useMapStore((state) => state.bounds);
   const { data: restaurants = [], isLoading } = useNearbyRestaurants(bounds);
@@ -229,20 +229,22 @@ const TodayBroadcastSidebar = memo(function TodayBroadcastSidebar() {
   return (
     <section className="w-full">
       {/* 헤더 */}
-      <div className="mb-4">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <FiTv className="text-primary5" />
-            <span className="text-sm font-bold text-gray-800">오늘의 중계</span>
+      {!hideHeader && (
+        <div className="mb-4">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <FiTv className="text-primary5" />
+              <span className="text-sm font-bold text-gray-800">오늘의 중계</span>
+            </div>
+            <span className="text-[11px] text-gray-400">
+              {formattedDate} ({dayName})
+            </span>
           </div>
-          <span className="text-[11px] text-gray-400">
-            {formattedDate} ({dayName})
-          </span>
+          <p className="text-[11px] text-gray-400 mt-1 ml-6">
+            지도 위치 기준 주변 가게 · {todayBroadcasts.length}경기
+          </p>
         </div>
-        <p className="text-[11px] text-gray-400 mt-1 ml-6">
-          지도 위치 기준 주변 가게 · {todayBroadcasts.length}경기
-        </p>
-      </div>
+      )}
 
       {isLoading ? (
         <LoadingSpinner message="중계 일정을 불러오는 중..." />

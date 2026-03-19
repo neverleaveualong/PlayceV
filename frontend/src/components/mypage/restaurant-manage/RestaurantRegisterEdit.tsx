@@ -208,9 +208,11 @@ const RestaurantRegisterEdit = ({ mode }: StoreFormModalProps) => {
       )}
 
       {/* 제출 버튼 */}
-      <Button type="submit" scheme="primary" size="medium" fullWidth className="!py-3 rounded-xl text-base">
-        {mode === "edit" ? "수정 완료" : "식당 등록하기"}
-      </Button>
+      <div className="pb-4">
+        <Button type="submit" scheme="primary" size="medium" fullWidth className="!py-2.5 rounded-xl text-sm">
+          {mode === "edit" ? "수정 완료" : "식당 등록하기"}
+        </Button>
+      </div>
     </form>
   );
 };
