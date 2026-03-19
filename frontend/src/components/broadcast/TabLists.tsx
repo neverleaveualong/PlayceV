@@ -179,7 +179,7 @@ const TabList = ({ tabRef, itemRefs, scrollToDate }: TabListProps) => {
 
               {/* 팀 정보 */}
               {b.team_one && b.team_two ? (
-                <p className="text-sm font-semibold text-mainText">
+                <p className="text-sm font-semibold text-mainText truncate pr-16">
                   {b.team_one}
                   <span className="text-gray-400 mx-1.5">vs</span>
                   {b.team_two}
@@ -193,7 +193,7 @@ const TabList = ({ tabRef, itemRefs, scrollToDate }: TabListProps) => {
               )}
 
               {/* 액션 버튼 — hover 시 표시 */}
-              <div className="absolute right-2 top-1/2 -translate-y-1/2 flex gap-1.5 opacity-0 group-hover:opacity-100 transition-all duration-150">
+              <div className="absolute right-2 top-1/2 -translate-y-1/2 flex gap-1.5 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-all duration-150">
                 <button
                   onClick={() => {
                     setEditingId(b.broadcast_id);

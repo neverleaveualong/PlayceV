@@ -59,7 +59,7 @@ const SignupModal = () => {
 
   return (
     <ModalBase onClose={handleCancel} hideHeader type="auth" className="p-0">
-      <div className="px-7 pt-6 pb-5">
+      <div className="px-6 pt-14 pb-5 md:px-7 md:pt-6">
         {/* 로고 + 환영 문구 */}
         <div className="text-center mb-4">
           <div className="flex items-center justify-center gap-2 mb-1.5">
@@ -165,8 +165,9 @@ const SignupModal = () => {
       <button
         type="button"
         onClick={handleCancel}
-        className="absolute top-3 right-3 w-8 h-8 flex items-center justify-center
+        className="absolute top-4 right-4 w-10 h-10 flex items-center justify-center
           rounded-full text-gray-400 hover:bg-gray-100 hover:text-gray-600 transition-colors"
+        aria-label="닫기"
       >
         ✕
       </button>

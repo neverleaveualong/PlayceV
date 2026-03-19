@@ -9,6 +9,7 @@ import { useMyStores } from "@/hooks/useMyStores";
 import { useFavorites } from "@/hooks/useFavorites";
 import ModalBase from "@/components/common/ModalBase";
 import LoadingSpinner from "@/components/common/LoadingSpinner";
+import MobileTabBar from "./MobileTabBar";
 
 export interface MypageProps {
   onClose: () => void;
@@ -23,23 +24,32 @@ const MypageModal = ({ onClose }: MypageProps) => {
 
   return (
     <ModalBase onClose={onClose} type="mypage" hideHeader>
-      <div className="flex h-modal-h w-full bg-white rounded-2xl overflow-hidden shadow-2xl">
-        {/* 왼쪽 사이드바 */}
-        <div className="w-[200px] h-full bg-primary4 flex-shrink-0">
+      <div className="flex flex-col md:flex-row h-full md:h-modal-h w-full bg-white md:rounded-2xl overflow-hidden md:shadow-2xl">
+        {/* 모바일: 상단 탭바 */}
+        <div className="md:hidden">
+          <MobileTabBar
+            selected={selectedTab}
+            onSelect={setSelectedTab}
+            onClose={onClose}
+          />
+        </div>
+
+        {/* 데스크톱: 왼쪽 사이드바 */}
+        <div className="hidden md:block w-[200px] h-full bg-primary4 flex-shrink-0">
           <Sidebar selected={selectedTab} onSelect={setSelectedTab} />
         </div>
 
         {/* 오른쪽 콘텐츠 영역 */}
-        <div className="relative flex-1 h-full overflow-y-auto">
-          {/* 모달 닫기 — 항상 우측 상단 고정 */}
+        <div className="relative flex-1 overflow-y-auto">
+          {/* 모달 닫기 — 데스크톱에서만 (모바일은 MobileTabBar에 포함) */}
           <button
             onClick={onClose}
-            className="absolute top-4 right-4 z-10 w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-100 text-darkgray hover:text-mainText transition-colors"
+            className="hidden md:flex absolute top-4 right-4 z-10 w-8 h-8 items-center justify-center rounded-full hover:bg-gray-100 text-darkgray hover:text-mainText transition-colors"
           >
             <FaTimes className="text-sm" />
           </button>
 
-          <div className="p-5 h-full">
+          <div className="p-4 md:p-5 h-full">
             {selectedTab === "profile" && (
               <>
                 {isLoading && (

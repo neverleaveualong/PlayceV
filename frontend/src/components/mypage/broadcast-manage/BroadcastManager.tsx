@@ -5,6 +5,7 @@ import BroadcastRegister from "@/components/broadcast/BroadcastRegister";
 import BroadcastEdit from "@/components/broadcast/BroadcastEdit";
 import BroadcastStoreList from "./BroadcastStoreList";
 import BroadcastView from "@/components/broadcast/BroadcastView";
+import ConfirmModal from "@/components/common/ConfirmModal";
 import { useState, useEffect } from "react";
 
 type BroadcastSubpage =
@@ -17,6 +18,7 @@ const BroadcastManager = () => {
   const { resetYMD, resetStore } = useBroadcastStore();
   const { restaurantSubpage, setRestaurantSubpage } = useMypageStore();
   const [subpage, setSubpage] = useState<BroadcastSubpage>("store-list");
+  const [showBackConfirm, setShowBackConfirm] = useState(false);
 
   useEffect(() => {
     resetStore();
@@ -44,8 +46,10 @@ const BroadcastManager = () => {
 
   const handleBack = () => {
     if (subpage === "broadcast-register" || subpage === "broadcast-edit") {
-      setSubpage("schedule-view");
-    } else if (subpage === "schedule-view") {
+      setShowBackConfirm(true);
+      return;
+    }
+    if (subpage === "schedule-view") {
       setSubpage("store-list");
       resetYMD();
     }
@@ -65,7 +69,7 @@ const BroadcastManager = () => {
         {isSubpage && (
           <button
             onClick={handleBack}
-            className="p-1.5 rounded-lg text-darkgray hover:text-primary5 hover:bg-primary4/30 transition-colors"
+            className="p-2.5 -ml-1 rounded-lg text-darkgray hover:text-primary5 hover:bg-primary4/30 transition-colors"
           >
             <FaArrowLeft className="text-sm" />
           </button>
@@ -89,6 +93,18 @@ const BroadcastManager = () => {
           <BroadcastEdit />
         )}
       </div>
+      {showBackConfirm && (
+        <ConfirmModal
+          message="작성 중인 내용이 사라집니다. 정말 나가시겠습니까?"
+          variant="danger"
+          confirmLabel="나가기"
+          onConfirm={() => {
+            setShowBackConfirm(false);
+            setSubpage("schedule-view");
+          }}
+          onCancel={() => setShowBackConfirm(false)}
+        />
+      )}
     </div>
   );
 };

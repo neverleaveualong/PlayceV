@@ -45,7 +45,7 @@ const UserInfo = ({
   };
 
   return (
-    <div className="flex flex-col justify-center h-full gap-3">
+    <div className="flex flex-col gap-3">
       {/* 타이틀 */}
       <h2 className="text-xl font-semibold text-mainText flex-shrink-0">내 정보</h2>
 
@@ -93,18 +93,18 @@ const UserInfo = ({
                   <button
                     onClick={handleSaveNickname}
                     disabled={isPending}
-                    className="p-1.5 text-primary5 hover:bg-primary4 rounded-lg transition-colors"
+                    className="p-2 text-primary5 hover:bg-primary4 rounded-lg transition-colors"
                     aria-label="저장"
                   >
-                    <FaCheck size={12} />
+                    <FaCheck size={14} />
                   </button>
                   <button
                     onClick={handleCancelEdit}
                     disabled={isPending}
-                    className="p-1.5 text-gray-400 hover:bg-gray-100 rounded-lg transition-colors"
+                    className="p-2 text-gray-400 hover:bg-gray-100 rounded-lg transition-colors"
                     aria-label="취소"
                   >
-                    <FaTimes size={12} />
+                    <FaTimes size={14} />
                   </button>
                 </div>
               ) : (
@@ -112,10 +112,10 @@ const UserInfo = ({
                   <span className="text-sm text-mainText">{nickname}</span>
                   <button
                     onClick={() => setIsEditingNickname(true)}
-                    className="p-1 text-gray-400 hover:text-primary5 hover:bg-primary4 rounded-lg transition-colors"
+                    className="p-2 text-gray-400 hover:text-primary5 hover:bg-primary4 rounded-lg transition-colors"
                     aria-label="닉네임 수정"
                   >
-                    <FaPen size={10} />
+                    <FaPen size={12} />
                   </button>
                 </div>
               )}

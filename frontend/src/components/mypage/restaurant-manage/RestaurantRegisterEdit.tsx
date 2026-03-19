@@ -149,7 +149,7 @@ const RestaurantRegisterEdit = ({ mode }: StoreFormModalProps) => {
           </div>
         </Field>
 
-        <div className="grid grid-cols-2 gap-3">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
           <Field label="전화번호" required error={errors.phone?.message}>
             <input className={INPUT} {...register("phone", { required: "전화번호를 입력해주세요" })} placeholder="02-0000-0000" />
           </Field>
@@ -257,7 +257,7 @@ const FormSkeleton = () => (
       <Bone className="h-4 w-16" />
       <Bone className="h-10 w-full" />
       <Bone className="h-10 w-full" />
-      <div className="grid grid-cols-2 gap-3">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
         <Bone className="h-10 w-full" />
         <Bone className="h-10 w-full" />
       </div>

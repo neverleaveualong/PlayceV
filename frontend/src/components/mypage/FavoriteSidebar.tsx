@@ -110,7 +110,7 @@ export default function FavoriteSidebar() {
                 e.stopPropagation();
                 handleRemove(store.store_id);
               }}
-              className="absolute top-2.5 right-2.5 w-6 h-6 flex items-center justify-center rounded-full bg-black/5 opacity-0 group-hover:opacity-100 hover:bg-red-500 hover:text-white transition-all duration-200"
+              className="absolute top-2.5 right-2.5 w-8 h-8 flex items-center justify-center rounded-full bg-black/5 opacity-100 md:opacity-0 md:group-hover:opacity-100 hover:bg-red-500 hover:text-white transition-all duration-200"
               aria-label="삭제"
             >
               <FiTrash2 className="text-gray-500 group-hover:text-gray-500 hover:!text-white text-[11px]" />
