@@ -78,7 +78,7 @@ const Home: React.FC = () => {
         >
           <img src="/favicon.svg" alt="" className="w-9 h-9 drop-shadow-md" />
           <span className="text-lg font-bold text-primary5 drop-shadow-[0_1px_2px_rgba(255,255,255,0.8)] tracking-tight">
-            PlayceV
+            Playce
           </span>
         </div>
 
