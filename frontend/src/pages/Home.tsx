@@ -7,7 +7,7 @@ import { useGeoLocation } from "@/hooks/useGeoLocation";
 import useMapStore from "@/stores/mapStore";
 import useMypageStore from "@/stores/mypageStore";
 import SearchPage from "./SearchPage";
-import { FiChevronLeft, FiChevronRight, FiX } from "react-icons/fi";
+import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
 
 const LoginModal = lazy(() => import("@/components/auth/Login"));
 const SignupModal = lazy(() => import("@/components/auth/Signup"));
@@ -52,16 +52,7 @@ const Home: React.FC = () => {
           <SearchPage />
         )}
 
-        {/* 모바일 닫기 버튼 — 사이드바 열렸을 때만 표시 */}
-        {isSidebarOpen && (
-          <button
-            onClick={toggleSidebar}
-            className="fixed top-4 right-4 z-50 w-11 h-11 bg-white rounded-full shadow-lg border border-gray-200 flex items-center justify-center md:hidden"
-            aria-label="닫기"
-          >
-            <FiX className="text-gray-600 text-lg" />
-          </button>
-        )}
+        {/* 모바일 닫기는 AppHeader에 통합됨 */}
       </div>
 
       {/* 토글 버튼 — 데스크톱 전용 */}
@@ -111,7 +102,7 @@ const Home: React.FC = () => {
       {!isSidebarOpen && (
         <button
           onClick={toggleSidebar}
-          className="fixed bottom-6 left-4 z-30 md:hidden w-12 h-12 bg-primary5 text-white rounded-full shadow-lg flex items-center justify-center hover:brightness-95 transition-all"
+          className="fixed bottom-8 left-4 z-30 md:hidden w-12 h-12 bg-primary5 text-white rounded-full shadow-lg flex items-center justify-center hover:brightness-95 transition-all"
           aria-label="검색 열기"
         >
           <FiChevronRight className="text-xl" />
