@@ -87,7 +87,7 @@ export default function ImageUpload({
             onClick={() => openImagePreview(img)}
           />
           <button
-            className="absolute top-1 right-1 w-7 h-7 bg-white rounded-full flex items-center justify-center text-black hover:bg-gray-100 hidden group-hover:flex"
+            className="absolute top-1 right-1 w-7 h-7 bg-white rounded-full flex items-center justify-center text-black hover:bg-gray-100 md:hidden md:group-hover:flex"
             type="button"
             onClick={() => closeImage(index)}
           >
@@ -121,12 +121,12 @@ export default function ImageUpload({
       {showModal && selectedImage && (
         <div
           onClick={closeImagePreview}
-          className="fixed inset-0 bg-black bg-opacity-60 flex justify-center items-center z-50"
+          className="fixed inset-0 bg-black/60 flex justify-center items-center z-[10002] animate-fade-in"
         >
           <img
             src={selectedImage}
             alt="preview"
-            className="max-w-[90%] max-h-[90%] rounded shadow-lg"
+            className="max-w-[90%] max-h-[90%] rounded-xl shadow-2xl animate-scale-in"
           />
         </div>
       )}

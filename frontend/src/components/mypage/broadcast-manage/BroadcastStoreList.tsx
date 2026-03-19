@@ -45,13 +45,13 @@ const BroadcastStoreList = ({ onSelectStore }: BroadcastStoreListProps) => {
             <FallbackImage
               src={store.main_img || "/noimg.png"}
               alt={store.store_name}
-              className="w-14 h-14 rounded-xl object-cover bg-gray-100 flex-shrink-0"
+              className="w-16 h-16 rounded-xl object-cover bg-gray-100 flex-shrink-0"
             />
             <div className="flex-1 min-w-0 py-0.5">
               <span className="font-bold text-[15px] text-mainText truncate block">
                 {store.store_name}
               </span>
-              <div className="flex items-center gap-1 mt-1">
+              <div className="flex items-center gap-1 mt-1.5">
                 <FiMapPin className="text-[11px] text-gray-400 flex-shrink-0" />
                 <p className="text-xs text-darkgray truncate">{store.address}</p>
               </div>

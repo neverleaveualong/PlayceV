@@ -18,7 +18,7 @@ interface RestaurantDetailComponentProps {
   onClose: () => void;
 }
 
-const ASIDE_BASE = "w-sidebar h-screen bg-white border-r border-gray-100 flex flex-col font-pretendard";
+const ASIDE_BASE = "w-full md:w-sidebar h-screen bg-white border-r border-gray-100 flex flex-col font-pretendard";
 
 export default function RestaurantDetailComponent({
   storeId,

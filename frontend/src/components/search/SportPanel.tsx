@@ -24,7 +24,7 @@ const SportPanel = () => {
 
   return (
     <div className="flex flex-col">
-      <div className="flex overflow-hidden rounded-lg border border-gray-200 h-[280px]">
+      <div className="flex overflow-hidden rounded-lg border border-gray-200 h-[55vh] md:h-[280px]">
         {/* 종목 */}
         <div className="w-1/2 overflow-y-auto bg-gray-50 border-r border-gray-200">
           {sportsLoading ? (
