@@ -26,7 +26,7 @@ const AuthHeader: React.FC = () => {
               className="bg-white/90 backdrop-blur-sm text-gray-600 hover:text-primary5 hover:bg-white rounded-full shadow-md border border-gray-100"
               onClick={() => userLogout()}
             >
-              로그아웃
+              <span className="hidden md:inline">로그아웃</span>
             </Button>
             <Button
               icon={<FaUserAlt />}
@@ -35,7 +35,7 @@ const AuthHeader: React.FC = () => {
               className="bg-primary5 text-white hover:brightness-95 rounded-full shadow-md"
               onClick={() => setIsMypageOpen(true)}
             >
-              마이페이지
+              <span className="hidden md:inline">마이페이지</span>
             </Button>
           </>
         ) : (
@@ -47,7 +47,7 @@ const AuthHeader: React.FC = () => {
               className="bg-white/90 backdrop-blur-sm text-gray-600 hover:text-primary5 hover:bg-white rounded-full shadow-md border border-gray-100"
               onClick={() => setIsLoginModalOpen(true)}
             >
-              로그인
+              <span className="hidden md:inline">로그인</span>
             </Button>
             <Button
               icon={<FaUserPlus />}
@@ -56,7 +56,7 @@ const AuthHeader: React.FC = () => {
               className="bg-primary5 text-white hover:brightness-95 rounded-full shadow-md"
               onClick={() => setIsSignupModalOpen(true)}
             >
-              회원가입
+              <span className="hidden md:inline">회원가입</span>
             </Button>
           </>
         )}

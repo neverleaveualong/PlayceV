@@ -59,9 +59,9 @@ const SearchPage = () => {
       }개`;
 
   return (
-    <div className="h-screen bg-white w-sidebar">
+    <div className="h-screen bg-white w-full md:w-sidebar">
       <aside
-        className="w-sidebar h-screen overflow-y-auto border-r bg-white"
+        className="w-full md:w-sidebar h-screen overflow-y-auto border-r bg-white"
         style={{
           scrollbarWidth: "none",
           msOverflowStyle: "none",

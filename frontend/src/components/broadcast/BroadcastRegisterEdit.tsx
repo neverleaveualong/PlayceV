@@ -153,7 +153,7 @@ const BroadcastRegisterEdit = (props: BroadcastRegisterEditProps) => {
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-3">
       {/* 경기 일시 */}
       <Section title="경기 일시">
-        <div className="grid grid-cols-2 gap-3">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
           <Field label="날짜" required>
             <Controller
               name="date"
@@ -190,7 +190,7 @@ const BroadcastRegisterEdit = (props: BroadcastRegisterEditProps) => {
 
       {/* 종목 · 리그 */}
       <Section title="종목 · 리그">
-        <div className="grid grid-cols-2 gap-3">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
           <Controller
             name="sportId"
             control={control}
@@ -234,7 +234,7 @@ const BroadcastRegisterEdit = (props: BroadcastRegisterEditProps) => {
 
       {/* 팀 정보 */}
       <Section title="팀 정보">
-        <div className="grid grid-cols-2 gap-3">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
           <Field label="홈팀">
             <input
               placeholder={isTeamCompetition ? "홈팀 이름" : "입력 불필요"}

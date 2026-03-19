@@ -33,11 +33,15 @@ const ModalBase = ({
     >
       <div
         className={classNames(
-          "bg-white rounded-2xl shadow-2xl flex flex-col relative",
-          type === "auth" ? "max-h-fit" : "max-h-[90vh] overflow-hidden",
-          { "w-modal-auth": type === "auth" },
-          { "w-modal-lg": type === "mypage" },
-          { "w-modal-md": type !== "auth" && type !== "mypage" },
+          "bg-white shadow-2xl flex flex-col relative",
+          // 모바일: 풀스크린 / 데스크톱: 중앙 모달
+          "w-full h-full rounded-none md:rounded-2xl md:h-auto",
+          type === "auth"
+            ? "md:max-h-fit md:w-modal-auth"
+            : "md:max-h-[90vh] md:overflow-hidden",
+          { "md:w-modal-auth": type === "auth" },
+          { "md:w-modal-lg": type === "mypage" },
+          { "md:w-modal-md": type !== "auth" && type !== "mypage" },
           className
         )}
         onClick={(e) => e.stopPropagation()}
