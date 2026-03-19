@@ -15,7 +15,7 @@ const colorMap = {
 };
 
 const Toast = memo(function Toast() {
-  const { toasts, removeToast } = useToastStore();
+  const { toasts, dismissToast } = useToastStore();
 
   if (toasts.length === 0) return null;
 
@@ -25,12 +25,14 @@ const Toast = memo(function Toast() {
         <div
           key={toast.id}
           role="alert"
-          className={`flex items-center gap-3 px-4 md:px-5 py-3.5 rounded-xl border shadow-xl min-w-0 w-[90vw] md:min-w-[280px] md:w-auto md:max-w-[400px] animate-slide-up ${colorMap[toast.type]}`}
+          className={`flex items-center gap-3 px-4 md:px-5 py-3.5 rounded-xl border shadow-xl min-w-0 w-[90vw] md:min-w-[280px] md:w-auto md:max-w-[400px] ${
+            toast.isExiting ? "animate-slide-out" : "animate-slide-up"
+          } ${colorMap[toast.type]}`}
         >
           {iconMap[toast.type]}
           <span className="flex-1 text-sm font-medium">{toast.message}</span>
           <button
-            onClick={() => removeToast(toast.id)}
+            onClick={() => dismissToast(toast.id)}
             className="opacity-40 hover:opacity-100 transition-opacity"
           >
             <FiX />
