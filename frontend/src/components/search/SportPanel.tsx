@@ -33,7 +33,17 @@ const SportPanel = () => {
             sports.map((s) => (
               <button
                 key={s.id}
-                onClick={() => setSport(s.name)}
+                onClick={() => {
+                  setSport(s.name);
+                  // 해당 종목에 세부 리그 선택이 없으면 자동으로 "전체" 추가
+                  const hasSelection = selectedLeagues.some(l => l.sport === s.name);
+                  if (!hasSelection) {
+                    setSelectedLeagues([
+                      ...selectedLeagues.filter(l => l.sport !== s.name),
+                      { sport: s.name, league: "전체" },
+                    ]);
+                  }
+                }}
                 className={`w-full text-left px-4 py-2.5 text-sm transition-colors ${
                   s.name === sport
                     ? "bg-white text-primary5 font-semibold border-r-2 border-primary5"

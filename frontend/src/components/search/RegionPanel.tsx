@@ -39,7 +39,17 @@ const RegionPanel = () => {
             bigRegions.map((region) => (
               <button
                 key={region.id}
-                onClick={() => setSelectedBigRegionName(region.name)}
+                onClick={() => {
+                  setSelectedBigRegionName(region.name);
+                  // 해당 시/도에 세부 선택이 없으면 자동으로 "전체" 추가
+                  const hasSelection = selectedRegions.some(r => r.bigRegion === region.name);
+                  if (!hasSelection) {
+                    setSelectedRegions([
+                      ...selectedRegions.filter(r => r.bigRegion !== region.name),
+                      { bigRegion: region.name, smallRegion: "전체" },
+                    ]);
+                  }
+                }}
                 className={`w-full text-left px-4 py-2.5 text-sm transition-colors ${
                   region.name === selectedBigRegionName
                     ? "bg-white text-primary5 font-semibold border-r-2 border-primary5"
