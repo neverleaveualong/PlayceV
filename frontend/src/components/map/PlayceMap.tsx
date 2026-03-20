@@ -23,6 +23,9 @@ const PlayceMap: React.FC = () => {
   const setZoomLevel = useMapStore((state) => state.setZoomLevel);
   const openDetail = useMapStore((state) => state.openDetail);
 
+  const pendingModalId = useMapStore((state) => state.pendingModalId);
+  const setOpenedModal = useMapStore((state) => state.setOpenedModal);
+
   const addToast = useToastStore((state) => state.addToast);
   const { data: restaurants = [], isFetching } = useNearbyRestaurants(bounds);
   const isRefreshTriggered = useRef(false);
@@ -30,6 +33,19 @@ const PlayceMap: React.FC = () => {
   const prevFetching = useRef(false);
   const restaurantsRef = useRef(restaurants);
   restaurantsRef.current = restaurants;
+
+  // pendingModalId가 있고 해당 식당이 로드되면 모달 열기
+  useEffect(() => {
+    const { selectedStoreId } = useMapStore.getState();
+    if (
+      pendingModalId &&
+      pendingModalId === selectedStoreId &&
+      restaurants.some((r) => r.store_id === pendingModalId)
+    ) {
+      setOpenedModal(pendingModalId);
+      useMapStore.setState({ pendingModalId: null });
+    }
+  }, [pendingModalId, restaurants, setOpenedModal]);
 
   // 재탐색 버튼 클릭 감지: isRefreshBtnOn이 true → false로 바뀔 때
   useEffect(() => {
@@ -77,6 +93,8 @@ const PlayceMap: React.FC = () => {
 
   const handleDragEnd = useCallback(() => {
     setRefreshBtn(true);
+    // 드래그하면 pendingModal 취소
+    useMapStore.setState({ pendingModalId: null });
     const pos = getCurPosition();
     if (!pos) {
       useToastStore.getState().addToast("위치 정보를 불러올 수 없습니다", "error");
@@ -123,7 +141,7 @@ const PlayceMap: React.FC = () => {
             />
           )}
         </Map>
-        {isRefreshBtnOn && openedModal === -1 && (
+        {isRefreshBtnOn && (
           <SpotRefreshButton mapRef={mapRef} />
         )}
         <GoToCurrentLocationButton mapRef={mapRef} />

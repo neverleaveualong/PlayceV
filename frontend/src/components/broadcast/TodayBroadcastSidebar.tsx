@@ -1,4 +1,4 @@
-import { useState, useMemo, useEffect, useCallback, memo } from "react";
+import { useState, useMemo, useEffect, useCallback, memo, useRef } from "react";
 import { FiTv, FiMapPin, FiClock, FiChevronDown } from "react-icons/fi";
 import useMapStore from "@/stores/mapStore";
 import useNearbyRestaurants from "@/hooks/useNearbyRestaurants";
@@ -48,7 +48,20 @@ function BroadcastCard({
   userPosition: { lat: number; lng: number };
   onClick: () => void;
 }) {
-  const status = game._status;
+  // 실시간 카운트다운: 매 30초마다 상태 갱신
+  const [status, setStatus] = useState(game._status);
+  const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
+
+  useEffect(() => {
+    setStatus(getMatchStatus(game.match_time));
+    intervalRef.current = setInterval(() => {
+      setStatus(getMatchStatus(game.match_time));
+    }, 30000);
+    return () => {
+      if (intervalRef.current) clearInterval(intervalRef.current);
+    };
+  }, [game.match_time]);
+
   const isLive = status === "live";
   const isEnded = status === "종료";
   const isGpsAvailable =
@@ -60,73 +73,70 @@ function BroadcastCard({
   return (
     <li
       onClick={onClick}
-      className={`group rounded-2xl p-3 cursor-pointer transition-all duration-150 ${
+      className={`group rounded-2xl p-4 cursor-pointer transition-all duration-200 ${
         isLive
-          ? "bg-red-50/60 border border-red-100 hover:bg-red-50"
+          ? "bg-primary4/50 border-l-[3px] border-l-primary5 border border-primary1 hover:bg-primary4/70 shadow-sm"
           : isEnded
-          ? "bg-white border border-gray-100 opacity-60"
-          : "bg-white border border-gray-100 hover:bg-primary4/30"
+          ? "bg-gray-50/50 border border-gray-100 opacity-50"
+          : "bg-white border border-gray-100 hover:border-primary5/30 hover:shadow-md"
       }`}
     >
-      {/* 상단: 가게 정보 */}
-      <div className="flex items-center gap-2.5">
+      <div className="flex items-start gap-3">
         <FallbackImage
           src={game.main_img || "/noimg.png"}
           alt={game.store_name}
-          className="w-10 h-10 rounded-xl object-cover bg-gray-100 flex-shrink-0"
+          className="w-12 h-12 rounded-xl object-cover bg-gray-100 flex-shrink-0"
         />
         <div className="flex-1 min-w-0">
-          <div className="flex items-center gap-1.5">
-            <span className="text-[13px] font-semibold text-gray-800 truncate">
-              {game.store_name}
-            </span>
-            {isLive && (
-              <span className="inline-flex items-center gap-0.5 text-[9px] bg-red-500 text-white rounded-full px-1.5 py-px font-bold flex-shrink-0">
-                <span className="w-1 h-1 bg-white rounded-full animate-pulse" />
-                LIVE
+          {/* 가게명 + 상태 */}
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-1.5 min-w-0">
+              <span className="text-sm font-bold text-gray-800 truncate">
+                {game.store_name}
               </span>
+              {isLive && (
+                <span className="inline-flex items-center gap-0.5 text-[9px] bg-primary5 text-white rounded-full px-1.5 py-0.5 font-bold flex-shrink-0">
+                  <span className="w-1 h-1 bg-white rounded-full animate-pulse" />
+                  LIVE
+                </span>
+              )}
+            </div>
+            <span className={`text-xs font-semibold flex-shrink-0 ml-2 ${
+              isLive ? "text-primary5" : isEnded ? "text-gray-400" : "text-primary5"
+            }`}>
+              {isLive ? "중계중" : status}
+            </span>
+          </div>
+
+          {/* 경기 정보 */}
+          <div className="mt-1.5">
+            {game.team_one && game.team_two ? (
+              <p className="text-[13px] text-gray-700">
+                <span className="font-semibold">{game.team_one}</span>
+                <span className="text-gray-300 mx-1.5">vs</span>
+                <span className="font-semibold">{game.team_two}</span>
+              </p>
+            ) : (
+              <p className="text-[13px] text-gray-500">{game.sport}</p>
             )}
           </div>
-          <div className="flex items-center gap-2 text-[11px] text-gray-400 mt-0.5">
+
+          {/* 메타 정보 */}
+          <div className="flex items-center gap-2.5 mt-1.5 text-[11px] text-gray-400">
+            <span className="bg-gray-100 text-gray-600 rounded-md px-1.5 py-0.5 font-medium">
+              {game.league}
+            </span>
+            <span className="flex items-center gap-0.5">
+              <FiClock className="text-[10px]" />
+              {formatTimeShort(game.match_time)}
+            </span>
             {distance !== null && (
               <span className="flex items-center gap-0.5">
                 <FiMapPin className="text-[10px]" />
                 {distance}km
               </span>
             )}
-            <span className="flex items-center gap-0.5">
-              <FiClock className="text-[10px]" />
-              {formatTimeShort(game.match_time)}
-            </span>
           </div>
-        </div>
-        {/* 상태 뱃지 */}
-        <div className="flex-shrink-0">
-          {isLive ? (
-            <span className="text-[10px] text-red-500 font-bold">중계중</span>
-          ) : isEnded ? (
-            <span className="text-[10px] text-gray-400">종료</span>
-          ) : (
-            <span className="text-[10px] text-primary5 font-semibold">{status}</span>
-          )}
-        </div>
-      </div>
-
-      {/* 하단: 경기 정보 */}
-      <div className="mt-2 pt-2 border-t border-gray-100/80">
-        <div className="flex items-center gap-2">
-          <span className="text-[10px] bg-gray-100 text-gray-600 rounded-md px-1.5 py-0.5 font-medium flex-shrink-0">
-            {game.league}
-          </span>
-          {game.team_one && game.team_two ? (
-            <span className="text-xs text-gray-700 truncate">
-              <span className="font-medium">{game.team_one}</span>
-              <span className="text-gray-300 mx-1">vs</span>
-              <span className="font-medium">{game.team_two}</span>
-            </span>
-          ) : (
-            <span className="text-xs text-gray-500">{game.sport}</span>
-          )}
         </div>
       </div>
     </li>
