@@ -1,14 +1,75 @@
 import { useState } from "react";
 import { FaStar } from "react-icons/fa";
-import { FiStar, FiImage } from "react-icons/fi";
+import { FiStar, FiImage, FiShare2 } from "react-icons/fi";
 import type { RestaurantDetail } from "@/types/restaurant.types";
+import useToastStore from "@/stores/toastStore";
 
 interface RestaurantDetailImageSectionProps {
+  storeId: number;
   detail: RestaurantDetail;
   isFavorite: boolean;
   isFavoritePending?: boolean;
   onToggleFavorite: () => void;
 }
+
+const ShareButton = ({ storeId, detail }: { storeId: number; detail: RestaurantDetail }) => {
+  const addToast = useToastStore((s) => s.addToast);
+
+  const getShareUrl = () => `${window.location.origin}?store=${storeId}`;
+
+  const handleShare = () => {
+    const kakao = window.Kakao;
+
+    // SDK 로드 안 됐으면 링크 복사로 대체
+    if (!kakao) {
+      copyLink();
+      return;
+    }
+
+    // lazy init
+    if (!kakao.isInitialized()) {
+      kakao.init(import.meta.env.VITE_KAKAO_JAVASCRIPT);
+    }
+
+    const url = getShareUrl();
+    try {
+      kakao.Share.sendDefault({
+        objectType: "feed",
+        content: {
+          title: detail.store_name,
+          description: detail.address,
+          imageUrl: detail.img_urls?.[0] || `${window.location.origin}/og-image.png`,
+          link: { mobileWebUrl: url, webUrl: url },
+        },
+        buttons: [
+          {
+            title: "Playce에서 보기",
+            link: { mobileWebUrl: url, webUrl: url },
+          },
+        ],
+      });
+    } catch {
+      copyLink();
+    }
+  };
+
+  const copyLink = () => {
+    navigator.clipboard.writeText(getShareUrl()).then(() => {
+      addToast("링크가 복사되었습니다.", "success");
+    });
+  };
+
+  return (
+    <button
+      onClick={handleShare}
+      className="bg-white/90 backdrop-blur-sm rounded-full p-2 shadow-md
+        hover:bg-white hover:scale-110 transition-all"
+      aria-label="카카오톡 공유"
+    >
+      <FiShare2 className="text-gray-500 text-lg" />
+    </button>
+  );
+};
 
 const FavoriteButton = ({
   isFavorite,
@@ -38,6 +99,7 @@ const FavoriteButton = ({
 );
 
 const NoImagePlaceholder = ({
+  storeId,
   detail,
   isFavorite,
   isFavoritePending = false,
@@ -46,12 +108,14 @@ const NoImagePlaceholder = ({
   <div className="w-full h-52 bg-gray-100 relative overflow-hidden flex items-center justify-center">
     <FiImage className="text-5xl text-gray-300" />
 
-    <FavoriteButton
-      isFavorite={isFavorite}
-      isFavoritePending={isFavoritePending}
-      onToggleFavorite={onToggleFavorite}
-      className="absolute left-4 top-4 z-10"
-    />
+    <div className="absolute left-4 top-4 z-10 flex gap-2">
+      <FavoriteButton
+        isFavorite={isFavorite}
+        isFavoritePending={isFavoritePending}
+        onToggleFavorite={onToggleFavorite}
+      />
+      <ShareButton storeId={storeId} detail={detail} />
+    </div>
 
     <div className="absolute bottom-0 left-0 right-0 px-5 pb-4 z-10">
       {detail.type && (
@@ -95,12 +159,14 @@ const RestaurantDetailImageSection = (props: RestaurantDetailImageSectionProps) 
 
         <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent pointer-events-none" />
 
-        <FavoriteButton
-          isFavorite={isFavorite}
-          isFavoritePending={isFavoritePending ?? false}
-          onToggleFavorite={onToggleFavorite}
-          className="absolute left-4 top-4 z-10"
-        />
+        <div className="absolute left-4 top-4 z-10 flex gap-2">
+          <FavoriteButton
+            isFavorite={isFavorite}
+            isFavoritePending={isFavoritePending ?? false}
+            onToggleFavorite={onToggleFavorite}
+          />
+          <ShareButton storeId={props.storeId} detail={detail} />
+        </div>
 
         <div className="absolute bottom-0 left-0 right-0 px-5 pb-4 z-10">
           {detail.type && (
