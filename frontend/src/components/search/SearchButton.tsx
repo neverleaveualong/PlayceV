@@ -5,6 +5,7 @@ import { useRegionStore } from "@/stores/regionStore";
 import { useSportStore } from "@/stores/sportStore";
 import Button from "@/components/common/Button";
 import useToastStore from "@/stores/toastStore";
+import useRecentSearches from "@/hooks/useRecentSearches";
 
 const SearchButton = () => {
   const searchText = useSearchStore((state) => state.searchText);
@@ -18,6 +19,7 @@ const SearchButton = () => {
   const selectedLeagues = useSportStore((state) => state.selectedLeagues);
 
   const addToast = useToastStore((state) => state.addToast);
+  const { addSearch } = useRecentSearches();
 
   const bigRegions = useMemo(
     () =>
@@ -55,6 +57,8 @@ const SearchButton = () => {
 
     const leagues = selectedLeagues.map((l) => l.league);
     setLeagues(leagues);
+
+    if (searchText.trim()) addSearch(searchText.trim());
 
     const { sort } = useSearchStore.getState();
     setSubmittedParams({
