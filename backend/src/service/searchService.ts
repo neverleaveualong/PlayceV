@@ -121,36 +121,12 @@ const searchService = {
       query.andWhere("broadcast.matchDate <= :date_to", { date_to });
     }
 
-    if (sports.length > 0) {
-      const matchedSports = await sportRepo
-        .createQueryBuilder("sport")
-        .leftJoinAndSelect("sport.leagues", "league")
-        .where("sport.name IN (:...sports)", { sports })
-        .getMany();
-
-      const leaguesFromSports = matchedSports.flatMap((s) =>
-        s.leagues.map((l) => l.name)
-      );
-
-      const sportNames = Array.from(new Set(matchedSports.map((s) => s.name)));
-      const leagueNamesFromSport = Array.from(new Set(leaguesFromSports));
-
-      query.andWhere(
-        new Brackets((qb) => {
-          qb.where("sport.name IN (:...sportNames)", { sportNames });
-
-          if (leagues.length > 0) {
-            const extraLeagues = leagues.filter(
-              (l) => !leagueNamesFromSport.includes(l)
-            );
-            if (extraLeagues.length > 0) {
-              qb.orWhere("league.name IN (:...extraLeagues)", { extraLeagues });
-            }
-          }
-        })
-      );
-    } else if (leagues.length > 0 && !leagues.includes("전체") && !leagues.includes("all")) {
+    if (leagues.length > 0 && !leagues.includes("전체") && !leagues.includes("all")) {
+      // 특정 리그가 선택된 경우 → 리그로 필터 (KBO만 선택하면 KBO만)
       query.andWhere("league.name IN (:...leagues)", { leagues });
+    } else if (sports.length > 0) {
+      // 종목만 선택하고 리그는 미선택 → 해당 종목 전체
+      query.andWhere("sport.name IN (:...sports)", { sports });
     }
 
     if (small_regions.length > 0) {
