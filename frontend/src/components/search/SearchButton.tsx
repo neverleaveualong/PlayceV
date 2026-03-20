@@ -5,7 +5,7 @@ import { useRegionStore } from "@/stores/regionStore";
 import { useSportStore } from "@/stores/sportStore";
 import Button from "@/components/common/Button";
 import useToastStore from "@/stores/toastStore";
-import useRecentSearches from "@/hooks/useRecentSearches";
+import useRecentSearchStore from "@/stores/recentSearchStore";
 
 const SearchButton = () => {
   const searchText = useSearchStore((state) => state.searchText);
@@ -19,7 +19,7 @@ const SearchButton = () => {
   const selectedLeagues = useSportStore((state) => state.selectedLeagues);
 
   const addToast = useToastStore((state) => state.addToast);
-  const { addSearch } = useRecentSearches();
+  const addSearch = useRecentSearchStore((state) => state.addSearch);
 
   const bigRegions = useMemo(
     () =>

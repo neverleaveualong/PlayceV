@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import { FiClock, FiX } from "react-icons/fi";
 import { useSearchStore } from "@/stores/searchStore";
-import useRecentSearches from "@/hooks/useRecentSearches";
+import useRecentSearchStore from "@/stores/recentSearchStore";
 import InputText from "@/components/common/InputText";
 
 interface SearchInputProps {
@@ -10,7 +10,7 @@ interface SearchInputProps {
 
 const SearchInput = ({ className }: SearchInputProps) => {
   const { searchText, setSearchText } = useSearchStore();
-  const { searches, removeSearch, clearAll } = useRecentSearches();
+  const { searches, removeSearch, clearAll } = useRecentSearchStore();
   const [isFocused, setIsFocused] = useState(false);
   const wrapperRef = useRef<HTMLDivElement>(null);
 
@@ -55,23 +55,23 @@ const SearchInput = ({ className }: SearchInputProps) => {
 
           <ul>
             {searches.map((keyword) => (
-              <li key={keyword} className="group">
+              <li
+                key={keyword}
+                className="group flex items-center gap-2.5 px-3 py-2 hover:bg-gray-50 transition-colors cursor-pointer"
+                onClick={() => handleSelect(keyword)}
+              >
+                <FiClock className="text-gray-300 text-xs flex-shrink-0" />
+                <span className="flex-1 text-left text-sm text-gray-700 truncate">{keyword}</span>
                 <button
-                  onClick={() => handleSelect(keyword)}
-                  className="w-full flex items-center gap-2.5 px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
+                  type="button"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    removeSearch(keyword);
+                  }}
+                  className="p-0.5 rounded-full opacity-0 group-hover:opacity-100 hover:bg-gray-200 transition-all"
+                  aria-label={`${keyword} 삭제`}
                 >
-                  <FiClock className="text-gray-300 text-xs flex-shrink-0" />
-                  <span className="flex-1 text-left truncate">{keyword}</span>
-                  <span
-                    role="button"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      removeSearch(keyword);
-                    }}
-                    className="p-0.5 rounded-full opacity-0 group-hover:opacity-100 hover:bg-gray-200 transition-all"
-                  >
-                    <FiX className="text-gray-400 text-xs" />
-                  </span>
+                  <FiX className="text-gray-400 text-xs" />
                 </button>
               </li>
             ))}
