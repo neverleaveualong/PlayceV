@@ -13,9 +13,11 @@ interface MapState {
   isSidebarOpen: boolean;
   selectedStoreId: number | null;
   detailInitialTab: string | null;
+  pendingModalId: number | null;
   setPosition: (pos: latlng) => void;
   initPosition: (pos: latlng) => void;
-  search: (bounds: Bounds) => void;
+  search: (bounds: Bounds, resetRefresh?: boolean) => void;
+  setBounds: (bounds: Bounds) => void;
   setOpenedModal: (modal: number) => void;
   closeModal: () => void;
   setRefreshBtn: (button: boolean) => void;
@@ -36,6 +38,7 @@ const useMapStore = create<MapState>((set, get) => ({
   isSidebarOpen: true,
   selectedStoreId: null,
   detailInitialTab: null,
+  pendingModalId: null,
   setPosition: (pos) => {
     set({ position: pos });
   },
@@ -54,8 +57,15 @@ const useMapStore = create<MapState>((set, get) => ({
       },
     });
   },
-  search: (bounds) => {
-    set({ searchPosition: get().position, bounds, isRefreshBtnOn: false });
+  search: (bounds, resetRefresh = true) => {
+    set({
+      searchPosition: get().position,
+      bounds,
+      ...(resetRefresh && { isRefreshBtnOn: false }),
+    });
+  },
+  setBounds: (bounds) => {
+    set({ bounds });
   },
   setOpenedModal: (modal) => {
     set({ openedModal: modal });
@@ -76,7 +86,7 @@ const useMapStore = create<MapState>((set, get) => ({
     set({ selectedStoreId: storeId, isSidebarOpen: true, detailInitialTab: initialTab ?? null });
   },
   closeDetail: () => {
-    set({ selectedStoreId: null, detailInitialTab: null });
+    set({ selectedStoreId: null, detailInitialTab: null, pendingModalId: null, openedModal: -1 });
   },
 }));
 

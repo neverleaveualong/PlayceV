@@ -29,14 +29,26 @@ export default function RestaurantDetailComponent({
     (detailInitialTab as Tab) || "홈"
   );
   const { data: detail, isLoading: loading, error } = useStoreDetail(storeId);
-  const { setPosition, setRefreshBtn } = useMapStore();
   const { isFavorite, toggleFavorite, isPending: isFavoritePending } = useFavoriteToggle(storeId);
 
   useEffect(() => {
     if (!detail) return;
-    setPosition({ lat: detail.lat, lng: detail.lng });
-    setRefreshBtn(false);
-  }, [detail, setPosition, setRefreshBtn]);
+    const pos = { lat: detail.lat, lng: detail.lng };
+    const offset = 0.045;
+    // 모든 상태를 한번에 업데이트 (리렌더 최소화)
+    useMapStore.setState({
+      position: pos,
+      zoomLevel: 3,
+      bounds: {
+        swLat: pos.lat - offset,
+        swLng: pos.lng - offset,
+        neLat: pos.lat + offset,
+        neLng: pos.lng + offset,
+      },
+      isRefreshBtnOn: false,
+      pendingModalId: storeId,
+    });
+  }, [detail, storeId]);
 
   if (loading) {
     return (

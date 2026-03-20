@@ -36,10 +36,8 @@
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css"
     />
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
+
+    <!-- Kakao SDK (React 앱보다 먼저 로드) -->
     <script
       type="text/javascript"
       src="//dapi.kakao.com/v2/maps/sdk.js?appkey=%VITE_KAKAO_JAVASCRIPT%"
@@ -47,8 +45,11 @@
     <script
       type="text/javascript"
       src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.4/kakao.min.js"
-      integrity="sha384-DKYJZ8NLiK8MN4/C5P2dtSmLQ4KwPaoqAfyA/DfmEc1VDxu4yyC7wy6K1Ber76O"
       crossorigin="anonymous"
     ></script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

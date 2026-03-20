@@ -1,5 +1,6 @@
 import { lazy, Suspense, useEffect } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Landing from "@/pages/Landing";
 import Home from "@/pages/Home";
 import useAuthStore from "@/stores/authStore";
 import LoadingSpinner from "@/components/common/LoadingSpinner";
@@ -24,7 +25,8 @@ function App() {
     <BrowserRouter>
       <main className="min-h-screen bg-gray-50 font-sans relative">
         <Routes>
-          <Route path="/" element={<Home />} />
+          <Route path="/" element={<Landing />} />
+          <Route path="/map" element={<Home />} />
           <Route
             path="/reset-password/:token"
             element={
