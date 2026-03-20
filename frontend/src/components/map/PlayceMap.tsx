@@ -36,10 +36,8 @@ const PlayceMap: React.FC = () => {
 
   // pendingModalId가 있고 해당 식당이 로드되면 모달 열기
   useEffect(() => {
-    const { selectedStoreId } = useMapStore.getState();
     if (
-      pendingModalId &&
-      pendingModalId === selectedStoreId &&
+      pendingModalId !== null &&
       restaurants.some((r) => r.store_id === pendingModalId)
     ) {
       setOpenedModal(pendingModalId);
