@@ -44,7 +44,7 @@ const SearchPage = () => {
     return d.toISOString().slice(0, 10);
   }, []);
 
-  const getWeekend = () => {
+  const weekend = useMemo(() => {
     const d = new Date();
     const day = d.getDay();
     const satOffset = day === 0 ? -1 : 6 - day;
@@ -53,21 +53,24 @@ const SearchPage = () => {
     const sun = new Date(sat);
     sun.setDate(sat.getDate() + 1);
     return { from: sat.toISOString().slice(0, 10), to: sun.toISOString().slice(0, 10) };
-  };
+  }, []);
+
+  const weekEnd = useMemo(() => {
+    const to = new Date();
+    to.setDate(to.getDate() + 7);
+    return to.toISOString().slice(0, 10);
+  }, []);
 
   const handleDatePreset = (preset: "today" | "weekend" | "week" | "clear") => {
     if (preset === "today") {
       setDateFrom(today);
       setDateTo(today);
     } else if (preset === "weekend") {
-      const { from, to } = getWeekend();
-      setDateFrom(from);
-      setDateTo(to);
+      setDateFrom(weekend.from);
+      setDateTo(weekend.to);
     } else if (preset === "week") {
-      const to = new Date();
-      to.setDate(to.getDate() + 7);
       setDateFrom(today);
-      setDateTo(to.toISOString().slice(0, 10));
+      setDateTo(weekEnd);
     } else {
       setDateFrom("");
       setDateTo("");
@@ -76,9 +79,9 @@ const SearchPage = () => {
 
   const activeDatePreset = dateFrom === today && dateTo === today
     ? "today"
-    : dateFrom && dateTo && dateFrom === getWeekend().from && dateTo === getWeekend().to
+    : dateFrom === weekend.from && dateTo === weekend.to
     ? "weekend"
-    : dateFrom === today && dateTo
+    : dateFrom === today && dateTo === weekEnd
     ? "week"
     : "";
 

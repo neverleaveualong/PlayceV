@@ -1,4 +1,4 @@
-import { useState, useMemo, useEffect, useCallback, memo, useRef } from "react";
+import { useState, useMemo, useEffect, useCallback, memo } from "react";
 import { FiTv, FiMapPin, FiClock, FiChevronDown } from "react-icons/fi";
 import useMapStore from "@/stores/mapStore";
 import useNearbyRestaurants from "@/hooks/useNearbyRestaurants";
@@ -48,20 +48,7 @@ function BroadcastCard({
   userPosition: { lat: number; lng: number };
   onClick: () => void;
 }) {
-  // 실시간 카운트다운: 매 30초마다 상태 갱신
-  const [status, setStatus] = useState(game._status);
-  const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
-
-  useEffect(() => {
-    setStatus(getMatchStatus(game.match_time));
-    intervalRef.current = setInterval(() => {
-      setStatus(getMatchStatus(game.match_time));
-    }, 30000);
-    return () => {
-      if (intervalRef.current) clearInterval(intervalRef.current);
-    };
-  }, [game.match_time]);
-
+  const status = game._status;
   const isLive = status === "live";
   const isEnded = status === "종료";
   const isGpsAvailable =
@@ -203,6 +190,13 @@ const TodayBroadcastSidebar = memo(function TodayBroadcastSidebar() {
     return counts;
   }, [todayBroadcasts]);
 
+  // 30초마다 tick 올려서 status 재계산
+  const [tick, setTick] = useState(0);
+  useEffect(() => {
+    const id = setInterval(() => setTick((t) => t + 1), 30000);
+    return () => clearInterval(id);
+  }, []);
+
   // status를 한 번만 계산 + 정렬: LIVE → 곧 시작(시간순) → 종료
   const filtered: BroadcastWithStatus[] = useMemo(() => {
     const withStatus = todayBroadcasts
@@ -214,7 +208,8 @@ const TodayBroadcastSidebar = memo(function TodayBroadcastSidebar() {
       return a.match_time.localeCompare(b.match_time);
     });
     return withStatus;
-  }, [todayBroadcasts, effectiveSport]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [todayBroadcasts, effectiveSport, tick]);
 
   const activeGames = useMemo(
     () => filtered.filter((g) => g._status !== "종료"),
