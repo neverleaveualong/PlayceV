@@ -54,9 +54,9 @@ const ShareButton = ({ storeId, detail }: { storeId: number; detail: RestaurantD
   };
 
   const copyLink = () => {
-    navigator.clipboard.writeText(getShareUrl()).then(() => {
-      addToast("링크가 복사되었습니다.", "success");
-    });
+    navigator.clipboard.writeText(getShareUrl())
+      .then(() => addToast("링크가 복사되었습니다.", "success"))
+      .catch(() => addToast("링크 복사에 실패했습니다.", "error"));
   };
 
   return (
@@ -64,7 +64,7 @@ const ShareButton = ({ storeId, detail }: { storeId: number; detail: RestaurantD
       onClick={handleShare}
       className="bg-white/90 backdrop-blur-sm rounded-full p-2 shadow-md
         hover:bg-white hover:scale-110 transition-all"
-      aria-label="카카오톡 공유"
+      aria-label="공유하기"
     >
       <FiShare2 className="text-gray-500 text-lg" />
     </button>

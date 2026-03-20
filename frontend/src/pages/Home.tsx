@@ -27,7 +27,7 @@ const Home: React.FC = () => {
     const storeParam = params.get("store");
     if (storeParam) {
       const storeId = Number(storeParam);
-      if (!Number.isNaN(storeId)) openDetail(storeId);
+      if (!Number.isNaN(storeId) && storeId > 0) openDetail(storeId);
       // 파라미터 제거 (히스토리 깔끔하게)
       window.history.replaceState({}, "", window.location.pathname);
     }
