@@ -33,21 +33,47 @@ export default function RestaurantDetailComponent({
 
   useEffect(() => {
     if (!detail) return;
-    const pos = { lat: detail.lat, lng: detail.lng };
-    const offset = 0.045;
-    // 모든 상태를 한번에 업데이트 (리렌더 최소화)
-    useMapStore.setState({
-      position: pos,
-      zoomLevel: 3,
-      bounds: {
-        swLat: pos.lat - offset,
-        swLng: pos.lng - offset,
-        neLat: pos.lat + offset,
-        neLng: pos.lng + offset,
-      },
-      isRefreshBtnOn: false,
-      pendingModalId: storeId,
-    });
+    const { zoomLevel, bounds } = useMapStore.getState();
+    const storeLat = detail.lat;
+    const storeLng = detail.lng;
+
+    // 줌 레벨에 따른 동적 offset (마커 모달이 잘리지 않게 중심을 위로)
+    // 줌 레벨 1=가장 가까움, 14=가장 멀리
+    const offsetMap: Record<number, number> = {
+      1: 0.001, 2: 0.002, 3: 0.004, 4: 0.008,
+      5: 0.015, 6: 0.03, 7: 0.06, 8: 0.12,
+      9: 0.24, 10: 0.5, 11: 1, 12: 2, 13: 4, 14: 8,
+    };
+    const latOffset = offsetMap[zoomLevel] ?? 0.004;
+    const pos = { lat: storeLat + latOffset, lng: storeLng };
+
+    // 가게가 현재 bounds 안에 있는지 확인
+    const isInBounds =
+      storeLat >= bounds.swLat && storeLat <= bounds.neLat &&
+      storeLng >= bounds.swLng && storeLng <= bounds.neLng;
+
+    if (isInBounds) {
+      // bounds 안에 있으면 position만 이동
+      useMapStore.setState({
+        position: pos,
+        isRefreshBtnOn: false,
+        pendingModalId: storeId,
+      });
+    } else {
+      // bounds 밖이면 bounds도 갱신해서 마커 로드
+      const boundsOffset = 0.045;
+      useMapStore.setState({
+        position: pos,
+        bounds: {
+          swLat: storeLat - boundsOffset,
+          swLng: storeLng - boundsOffset,
+          neLat: storeLat + boundsOffset,
+          neLng: storeLng + boundsOffset,
+        },
+        isRefreshBtnOn: false,
+        pendingModalId: storeId,
+      });
+    }
   }, [detail, storeId]);
 
   if (loading) {
