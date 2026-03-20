@@ -1,4 +1,4 @@
-import { lazy, Suspense } from "react";
+import { lazy, Suspense, useEffect } from "react";
 import LoadingSpinner from "@/components/common/LoadingSpinner";
 import AuthHeader from "@/components/auth/AuthHeader";
 import Map from "@/components/map/PlayceMap";
@@ -17,9 +17,21 @@ const PasswordResetRequestModal = lazy(
 const MypageModal = lazy(() => import("@/components/mypage/MypageModal"));
 
 const Home: React.FC = () => {
-  const { position, isSidebarOpen, toggleSidebar, selectedStoreId, closeDetail } =
+  const { position, isSidebarOpen, toggleSidebar, selectedStoreId, closeDetail, openDetail } =
     useMapStore();
   const { isMypageOpen, setIsMypageOpen } = useMypageStore();
+
+  // URL ?store= 파라미터로 식당 상세 자동 열기 (공유 링크)
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const storeParam = params.get("store");
+    if (storeParam) {
+      const storeId = Number(storeParam);
+      if (!Number.isNaN(storeId) && storeId > 0) openDetail(storeId);
+      // 파라미터 제거 (히스토리 깔끔하게)
+      window.history.replaceState({}, "", window.location.pathname);
+    }
+  }, [openDetail]);
 
   const geolocationOptions = {
     enableHighAccuracy: true,
