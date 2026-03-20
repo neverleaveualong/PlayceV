@@ -82,15 +82,6 @@ const PlayceMap: React.FC = () => {
     return () => clearTimeout(timer);
   }, [isSidebarOpen]);
 
-  // 윈도우 리사이즈 시 맵 크기 재조정
-  useEffect(() => {
-    const handleResize = () => {
-      setTimeout(() => mapRef.current?.relayout(), 100);
-    };
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
-
   const getCurPosition = () => {
     const map = mapRef.current;
     if (!map) return;
