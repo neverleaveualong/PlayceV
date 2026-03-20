@@ -15,7 +15,7 @@ interface RestaurantDetailImageSectionProps {
 const ShareButton = ({ storeId, detail }: { storeId: number; detail: RestaurantDetail }) => {
   const addToast = useToastStore((s) => s.addToast);
 
-  const getShareUrl = () => `${window.location.origin}?store=${storeId}`;
+  const getShareUrl = () => `${window.location.origin}/map?store=${storeId}`;
 
   const handleShare = () => {
     const kakao = window.Kakao;

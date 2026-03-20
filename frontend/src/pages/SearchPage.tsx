@@ -1,5 +1,5 @@
-import { useState, useMemo } from "react";
-import { FiChevronDown, FiSearch, FiStar, FiCalendar } from "react-icons/fi";
+import { useState, useMemo, useEffect } from "react";
+import { FiChevronDown, FiChevronUp, FiSearch, FiStar, FiCalendar } from "react-icons/fi";
 import RegionModal from "@/components/search/RegionModal";
 import { useRegionStore } from "@/stores/regionStore";
 import SportModal from "@/components/search/SportModal";
@@ -44,7 +44,7 @@ const SearchPage = () => {
     return d.toISOString().slice(0, 10);
   }, []);
 
-  const getWeekend = () => {
+  const weekend = useMemo(() => {
     const d = new Date();
     const day = d.getDay();
     const satOffset = day === 0 ? -1 : 6 - day;
@@ -53,21 +53,24 @@ const SearchPage = () => {
     const sun = new Date(sat);
     sun.setDate(sat.getDate() + 1);
     return { from: sat.toISOString().slice(0, 10), to: sun.toISOString().slice(0, 10) };
-  };
+  }, []);
+
+  const weekEnd = useMemo(() => {
+    const to = new Date();
+    to.setDate(to.getDate() + 7);
+    return to.toISOString().slice(0, 10);
+  }, []);
 
   const handleDatePreset = (preset: "today" | "weekend" | "week" | "clear") => {
     if (preset === "today") {
       setDateFrom(today);
       setDateTo(today);
     } else if (preset === "weekend") {
-      const { from, to } = getWeekend();
-      setDateFrom(from);
-      setDateTo(to);
+      setDateFrom(weekend.from);
+      setDateTo(weekend.to);
     } else if (preset === "week") {
-      const to = new Date();
-      to.setDate(to.getDate() + 7);
       setDateFrom(today);
-      setDateTo(to.toISOString().slice(0, 10));
+      setDateTo(weekEnd);
     } else {
       setDateFrom("");
       setDateTo("");
@@ -76,13 +79,19 @@ const SearchPage = () => {
 
   const activeDatePreset = dateFrom === today && dateTo === today
     ? "today"
-    : dateFrom && dateTo && dateFrom === getWeekend().from && dateTo === getWeekend().to
+    : dateFrom === weekend.from && dateTo === weekend.to
     ? "weekend"
-    : dateFrom === today && dateTo
+    : dateFrom === today && dateTo === weekEnd
     ? "week"
     : "";
 
   const hasSearched = submittedParams !== null;
+  const [searchCollapsed, setSearchCollapsed] = useState(false);
+
+  // 검색 실행 시 자동으로 검색 패널 접기
+  useEffect(() => {
+    if (hasSearched) setSearchCollapsed(true);
+  }, [submittedParams, hasSearched]);
 
   const selectedRegionLabel =
     selectedRegions.length === 0
@@ -148,10 +157,21 @@ const SearchPage = () => {
         {activeTab === "search" ? (
           <>
             {/* 검색 영역 */}
-            <div className="px-4 py-4 space-y-3 border-b border-gray-100">
-              <p className="text-xs text-darkgray">
-                보고 싶은 경기를 선택하면 중계 가게를 찾아드려요
-              </p>
+            <div className="border-b border-gray-100">
+              <button
+                onClick={() => setSearchCollapsed(!searchCollapsed)}
+                className="w-full flex items-center justify-between px-4 py-3 hover:bg-gray-50 transition-colors"
+              >
+                <p className="text-xs text-darkgray">
+                  {hasSearched ? "검색 조건 수정하기" : "보고 싶은 경기를 선택하면 중계 가게를 찾아드려요"}
+                </p>
+                {hasSearched && (
+                  searchCollapsed
+                    ? <FiChevronDown className="text-gray-400 text-sm" />
+                    : <FiChevronUp className="text-gray-400 text-sm" />
+                )}
+              </button>
+            <div className={`px-4 pb-4 space-y-3 ${searchCollapsed && hasSearched ? "hidden" : ""}`}>
               <div className="flex gap-2">
                 <button
                   onClick={() => setShowSportModal(true)}
@@ -239,6 +259,7 @@ const SearchPage = () => {
                   <ResetButton />
                 </div>
               </div>
+            </div>
             </div>
             {hasSearched || isSearching ? (
               <div className="mt-4 px-3">

@@ -11,6 +11,8 @@ const useNearbyRestaurants = (bounds: Bounds, enabled = true) => {
       return res.data;
     },
     enabled,
+    staleTime: 30000,
+    refetchOnWindowFocus: false,
   });
 };
 
