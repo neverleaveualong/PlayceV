@@ -33,17 +33,30 @@ export default function RestaurantDetailComponent({
 
   useEffect(() => {
     if (!detail) return;
-    const pos = { lat: detail.lat, lng: detail.lng };
-    const offset = 0.045;
-    // 모든 상태를 한번에 업데이트 (리렌더 최소화)
+    const { zoomLevel } = useMapStore.getState();
+    const storeLat = detail.lat;
+    const storeLng = detail.lng;
+
+    // 줌 레벨에 따른 동적 offset (마커 모달이 잘리지 않게 중심을 약간 위로)
+    // 기존 값이 너무 커서 가게가 화면 밖으로 밀리는 문제가 있었음
+    const offsetMap: Record<number, number> = {
+      1: 0.0004, 2: 0.0008, 3: 0.0015, 4: 0.003,
+      5: 0.006, 6: 0.012, 7: 0.025, 8: 0.05,
+      9: 0.1, 10: 0.2, 11: 0.4, 12: 0.8, 13: 1.6, 14: 3.2,
+    };
+    const latOffset = offsetMap[zoomLevel] ?? 0.0015;
+    const pos = { lat: storeLat + latOffset, lng: storeLng };
+
+    // 항상 bounds 갱신 + pendingModalId 사용
+    // (드래그 시 bounds가 갱신되지 않아 isInBounds 판단이 부정확했던 문제 해결)
+    const boundsOffset = 0.045;
     useMapStore.setState({
       position: pos,
-      zoomLevel: 3,
       bounds: {
-        swLat: pos.lat - offset,
-        swLng: pos.lng - offset,
-        neLat: pos.lat + offset,
-        neLng: pos.lng + offset,
+        swLat: storeLat - boundsOffset,
+        swLng: storeLng - boundsOffset,
+        neLat: storeLat + boundsOffset,
+        neLng: storeLng + boundsOffset,
       },
       isRefreshBtnOn: false,
       pendingModalId: storeId,
