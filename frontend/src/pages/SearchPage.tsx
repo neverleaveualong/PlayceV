@@ -159,15 +159,14 @@ const SearchPage = () => {
                 className="w-full flex items-center justify-between px-4 py-3 hover:bg-gray-50 transition-colors"
               >
                 <p className="text-xs text-darkgray">
-                  {hasSearched ? "검색 조건 수정하기" : "보고 싶은 경기를 선택하면 중계 가게를 찾아드려요"}
+                  {hasSearched ? "검색 조건 수정하기" : searchCollapsed ? "검색 조건 열기" : "보고 싶은 경기를 선택하면 중계 가게를 찾아드려요"}
                 </p>
-                {hasSearched && (
-                  searchCollapsed
-                    ? <FiChevronDown className="text-gray-400 text-sm" />
-                    : <FiChevronUp className="text-gray-400 text-sm" />
-                )}
+                {searchCollapsed
+                  ? <FiChevronDown className="text-gray-400 text-sm" />
+                  : <FiChevronUp className="text-gray-400 text-sm" />
+                }
               </button>
-            <div className={`px-4 pb-4 space-y-3 ${searchCollapsed && hasSearched ? "hidden" : ""}`}>
+            <div className={`px-4 pb-4 space-y-3 ${searchCollapsed ? "hidden" : ""}`}>
               <div className="flex gap-2">
                 <button
                   onClick={() => setShowSportModal(true)}
