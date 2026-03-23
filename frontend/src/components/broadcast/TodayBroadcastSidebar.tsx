@@ -82,7 +82,7 @@ function BroadcastCard({
                 {game.store_name}
               </span>
               {game.address && (
-                <span className="text-[10px] text-gray-400 truncate flex-shrink-0 max-w-[80px]">
+                <span className="text-[10px] text-gray-400 truncate max-w-[80px]">
                   {game.address.split(" ").slice(0, 2).join(" ")}
                 </span>
               )}
