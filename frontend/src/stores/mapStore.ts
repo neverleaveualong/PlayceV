@@ -25,7 +25,7 @@ interface MapState {
   toggleSidebar: () => void;
   openDetail: (storeId: number, initialTab?: string) => void;
   closeDetail: () => void;
-  navigateToStore: (pos: { lat: number; lng: number }, bounds: Bounds, storeId: number) => void;
+  navigateToStore: (pos: latlng, bounds: Bounds, storeId: number) => void;
 }
 
 const useMapStore = create<MapState>((set, get) => ({
