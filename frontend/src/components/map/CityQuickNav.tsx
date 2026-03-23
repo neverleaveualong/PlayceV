@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { FiMapPin, FiChevronUp } from "react-icons/fi";
 import useMapStore from "@/stores/mapStore";
 import { QUICK_CITIES, getCityBounds } from "@/constants/mapConstant";
@@ -8,8 +8,14 @@ const INITIAL_VISIBLE = 5;
 const CityQuickNav = () => {
   const setPosition = useMapStore((s) => s.setPosition);
   const search = useMapStore((s) => s.search);
+  const isRefreshBtnOn = useMapStore((s) => s.isRefreshBtnOn);
   const [expanded, setExpanded] = useState(false);
   const [activeCity, setActiveCity] = useState<string | null>(null);
+
+  // 맵 드래그 시 하이라이트 해제
+  useEffect(() => {
+    if (isRefreshBtnOn) setActiveCity(null);
+  }, [isRefreshBtnOn]);
 
   const handleCity = (city: (typeof QUICK_CITIES)[number]) => {
     const pos = { lat: city.lat, lng: city.lng };

@@ -141,13 +141,16 @@ const PlayceMap: React.FC = () => {
               restaurant={restaurant}
             />
           ))}
-          {openedModal !== -1 && (
-            <PlayceModal
-              restaurant={restaurants.find((r) => r.store_id === openedModal)!}
-              onDetailClick={handleDetailClick}
-              onClose={closeModal}
-            />
-          )}
+          {openedModal !== -1 && (() => {
+            const target = restaurants.find((r) => r.store_id === openedModal);
+            return target ? (
+              <PlayceModal
+                restaurant={target}
+                onDetailClick={handleDetailClick}
+                onClose={closeModal}
+              />
+            ) : null;
+          })()}
         </Map>
         {isRefreshBtnOn && (
           <SpotRefreshButton mapRef={mapRef} />
