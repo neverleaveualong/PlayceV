@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import type { latlng, Bounds } from "@/types/map";
-import { CITY_STATION, INITIAL_BOUNDS } from "@/constants/mapConstant";
+import { CITY_STATION, INITIAL_BOUNDS, BOUNDS_OFFSET } from "@/constants/mapConstant";
 
 interface MapState {
   position: latlng;
@@ -25,6 +25,7 @@ interface MapState {
   toggleSidebar: () => void;
   openDetail: (storeId: number, initialTab?: string) => void;
   closeDetail: () => void;
+  navigateToStore: (pos: { lat: number; lng: number }, bounds: Bounds, storeId: number) => void;
 }
 
 const useMapStore = create<MapState>((set, get) => ({
@@ -43,8 +44,7 @@ const useMapStore = create<MapState>((set, get) => ({
     set({ position: pos });
   },
   initPosition: (pos) => {
-    // 현재 위치 기준 약 5km 범위 bounds 생성
-    const offset = 0.045;
+    const offset = BOUNDS_OFFSET;
     set({
       position: pos,
       myPosition: pos,
@@ -87,6 +87,9 @@ const useMapStore = create<MapState>((set, get) => ({
   },
   closeDetail: () => {
     set({ selectedStoreId: null, detailInitialTab: null, pendingModalId: null, openedModal: -1 });
+  },
+  navigateToStore: (pos, bounds, storeId) => {
+    set({ position: pos, bounds, isRefreshBtnOn: false, pendingModalId: storeId });
   },
 }));
 

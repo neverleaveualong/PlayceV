@@ -11,8 +11,8 @@ export const INITIAL_BOUNDS = {
   neLng: 127.02058,
 };
 
-// 퀵 이동 도시 목록
-const BOUNDS_OFFSET = 0.045;
+// 약 5km 검색 반경 offset
+export const BOUNDS_OFFSET = 0.045;
 
 const makeBounds = (lat: number, lng: number) => ({
   swLat: lat - BOUNDS_OFFSET,

@@ -9,6 +9,7 @@ import RestaurantDetailMenuTab from "./RestaurantDetailMenuTab";
 import RestaurantDetailBroadcastTab from "./RestaurantDetailBroadcastTab";
 import RestaurantDetailPhotoTab from "./RestaurantDetailPhotoTab";
 import useMapStore from "@/stores/mapStore";
+import { BOUNDS_OFFSET } from "@/constants/mapConstant";
 import LoadingSpinner from "@/components/common/LoadingSpinner";
 
 type Tab = "홈" | "중계" | "메뉴" | "사진";
@@ -49,18 +50,16 @@ export default function RestaurantDetailComponent({
 
     // 항상 bounds 갱신 + pendingModalId 사용
     // (드래그 시 bounds가 갱신되지 않아 isInBounds 판단이 부정확했던 문제 해결)
-    const boundsOffset = 0.045;
-    useMapStore.setState({
-      position: pos,
-      bounds: {
-        swLat: storeLat - boundsOffset,
-        swLng: storeLng - boundsOffset,
-        neLat: storeLat + boundsOffset,
-        neLng: storeLng + boundsOffset,
+    useMapStore.getState().navigateToStore(
+      pos,
+      {
+        swLat: storeLat - BOUNDS_OFFSET,
+        swLng: storeLng - BOUNDS_OFFSET,
+        neLat: storeLat + BOUNDS_OFFSET,
+        neLng: storeLng + BOUNDS_OFFSET,
       },
-      isRefreshBtnOn: false,
-      pendingModalId: storeId,
-    });
+      storeId,
+    );
   }, [detail, storeId]);
 
   if (loading) {
