@@ -75,12 +75,17 @@ function BroadcastCard({
           className="w-12 h-12 rounded-xl object-cover bg-gray-100 flex-shrink-0"
         />
         <div className="flex-1 min-w-0">
-          {/* 가게명 + 상태 */}
+          {/* 가게명 + 지역 + 상태 */}
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-1.5 min-w-0">
               <span className="text-sm font-bold text-gray-800 truncate">
                 {game.store_name}
               </span>
+              {game.address && (
+                <span className="text-[10px] text-gray-400 truncate max-w-[80px]">
+                  {game.address.split(" ").slice(0, 2).join(" ")}
+                </span>
+              )}
               {isLive && (
                 <span className="inline-flex items-center gap-0.5 text-[9px] bg-primary5 text-white rounded-full px-1.5 py-0.5 font-bold flex-shrink-0">
                   <span className="w-1 h-1 bg-white rounded-full animate-pulse" />
@@ -162,19 +167,19 @@ const TodayBroadcastSidebar = memo(function TodayBroadcastSidebar() {
     () => Array.from(new Set(todayBroadcasts.map((b) => b.sport))),
     [todayBroadcasts]
   );
-  const [selectedSport, setSelectedSport] = useState<string>("");
+  const [selectedSport, setSelectedSport] = useState<string>("전체");
   const [showEnded, setShowEnded] = useState(false);
   const [visibleCount, setVisibleCount] = useState(5);
   const INITIAL_COUNT = 5;
 
   useEffect(() => {
-    if (!SPORTS.includes(selectedSport)) {
-      if (SPORTS.length > 0) setSelectedSport(SPORTS[0]);
-      else setSelectedSport("");
+    if (selectedSport !== "전체" && !SPORTS.includes(selectedSport)) {
+      setSelectedSport("전체");
     }
   }, [SPORTS, selectedSport]);
 
-  const effectiveSport = SPORTS.includes(selectedSport) ? selectedSport : SPORTS[0] ?? "";
+  const isAll = selectedSport === "전체";
+  const effectiveSport = isAll ? "전체" : SPORTS.includes(selectedSport) ? selectedSport : "전체";
 
   // 종목 탭 바뀌면 더보기 초기화
   useEffect(() => {
@@ -200,7 +205,7 @@ const TodayBroadcastSidebar = memo(function TodayBroadcastSidebar() {
   // status를 한 번만 계산 + 정렬: LIVE → 곧 시작(시간순) → 종료
   const filtered: BroadcastWithStatus[] = useMemo(() => {
     const withStatus = todayBroadcasts
-      .filter((b) => b.sport === effectiveSport)
+      .filter((b) => isAll || b.sport === effectiveSport)
       .map((b) => ({ ...b, _status: getMatchStatus(b.match_time) }));
     const order = (s: string) => (s === "live" ? 0 : s === "종료" ? 2 : 1);
     withStatus.sort((a, b) => {
@@ -209,7 +214,7 @@ const TodayBroadcastSidebar = memo(function TodayBroadcastSidebar() {
     });
     return withStatus;
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [todayBroadcasts, effectiveSport, tick]);
+  }, [todayBroadcasts, effectiveSport, isAll, tick]);
 
   const activeGames = useMemo(
     () => filtered.filter((g) => g._status !== "종료"),
@@ -256,13 +261,23 @@ const TodayBroadcastSidebar = memo(function TodayBroadcastSidebar() {
       ) : (
         <>
           {/* 종목 필터 */}
-          <div className="flex gap-1.5 mb-3">
+          <div className="flex gap-1.5 mb-3 overflow-x-auto" style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}>
+            <button
+              onClick={() => setSelectedSport("전체")}
+              className={`flex-shrink-0 px-3 py-1.5 text-[11px] font-semibold rounded-full transition-all ${
+                isAll
+                  ? "bg-primary5 text-white shadow-sm"
+                  : "bg-white border border-gray-200 text-gray-500 hover:border-primary5 hover:text-primary5"
+              }`}
+            >
+              전체 {todayBroadcasts.length}
+            </button>
             {SPORTS.map((sport) => (
               <button
                 key={sport}
                 onClick={() => setSelectedSport(sport)}
-                className={`px-3 py-1.5 text-[11px] font-semibold rounded-full transition-all ${
-                  effectiveSport === sport
+                className={`flex-shrink-0 px-3 py-1.5 text-[11px] font-semibold rounded-full transition-all ${
+                  effectiveSport === sport && !isAll
                     ? "bg-primary5 text-white shadow-sm"
                     : "bg-white border border-gray-200 text-gray-500 hover:border-primary5 hover:text-primary5"
                 }`}
