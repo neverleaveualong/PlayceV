@@ -1,10 +1,41 @@
 import { test, expect } from "@playwright/test";
 
+const TODAY = new Date().toISOString().slice(0, 10);
+
+const MOCK_STORE = {
+  store_id: 1,
+  store_name: "교촌치킨 서울시청점",
+  type: "치킨",
+  main_img: "/noimg.png",
+  address: "서울 중구 세종대로18길 6",
+  opening_hours: "매일 12:00 ~ 24:00",
+  lat: 37.5665,
+  lng: 126.978,
+  broadcasts: [
+    { match_date: TODAY, match_time: "16:30", sport: "축구", league: "K리그 1", team_one: "대전 시티즌", team_two: "수원 삼성", etc: "" },
+  ],
+};
+
+async function setupMocks(page: import("@playwright/test").Page) {
+  await page.route("**/search/nearby*", (r) => r.fulfill({
+    status: 200, contentType: "application/json",
+    body: JSON.stringify({ success: true, data: [MOCK_STORE] }),
+  }));
+
+  await page.route("**/stores/1", (r) => r.fulfill({
+    status: 200, contentType: "application/json",
+    body: JSON.stringify({
+      success: true,
+      data: { ...MOCK_STORE, images: [{ imgUrl: "/noimg.png", isMain: true }], menus: [], description: "" },
+    }),
+  }));
+}
+
 test.describe("지도 네비게이션", () => {
   test.beforeEach(async ({ page }) => {
+    await setupMocks(page);
     await page.goto("/map");
     await expect(page.getByText("오늘의 중계")).toBeVisible({ timeout: 15000 });
-    // 사이드바 닫기 → 맵 노출
     const closeBtn = page.locator('button[aria-label="사이드바 닫기"]');
     if (await closeBtn.isVisible({ timeout: 1000 }).catch(() => false)) {
       await closeBtn.click();
@@ -26,7 +57,6 @@ test.describe("지도 네비게이션", () => {
   test("도시 클릭 → 지도 이동", async ({ page }) => {
     const busanBtn = page.getByRole("button", { name: "부산", exact: true });
     await busanBtn.click();
-    // 부산 버튼이 활성 상태 (primary5 배경)
     await expect(busanBtn).toHaveClass(/bg-primary5/);
   });
 

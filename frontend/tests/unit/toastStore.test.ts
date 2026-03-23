@@ -1,9 +1,10 @@
 import { describe, it, expect, beforeEach, vi, afterEach } from "vitest";
-import useToastStore from "@/stores/toastStore";
+import useToastStore, { resetToastCounter } from "@/stores/toastStore";
 
 beforeEach(() => {
   vi.useFakeTimers();
   useToastStore.setState({ toasts: [] });
+  resetToastCounter();
 });
 
 afterEach(() => {
