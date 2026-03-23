@@ -61,7 +61,6 @@ test.describe("지도 네비게이션", () => {
   });
 
   test("마커 클릭 → 팝업 모달 표시", async ({ page }) => {
-    test.skip(!!process.env.CI, "카카오맵 마커는 CI에서 렌더링 불가");
     const marker = page.locator('button[aria-label*="상세보기"]').first();
     await expect(marker).toBeVisible({ timeout: 10000 });
     await marker.click();

@@ -112,7 +112,6 @@ test.describe("시나리오 1: 검색 → 상세", () => {
 
 test.describe("시나리오 2: 맵 마커 → 상세보기", () => {
   test("마커 클릭 → 팝업 → 상세보기 → 가게 정보 확인", async ({ page }) => {
-    test.skip(!!process.env.CI, "카카오맵 마커는 CI에서 렌더링 불가");
     await setupMocks(page);
     await page.goto("/map");
     await expect(page.getByText("오늘의 중계")).toBeVisible({ timeout: 15000 });
