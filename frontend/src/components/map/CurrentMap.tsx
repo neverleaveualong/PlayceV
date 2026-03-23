@@ -3,6 +3,7 @@ import { IoLocateOutline } from "react-icons/io5";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import useToastStore from "@/stores/toastStore";
 import useMapStore from "@/stores/mapStore";
+import { BOUNDS_OFFSET } from "@/constants/mapConstant";
 
 interface GoToCurrentLocationButtonProps {
   mapRef: React.RefObject<kakao.maps.Map | null>;
@@ -30,10 +31,9 @@ function GoToCurrentLocationButton({ mapRef }: GoToCurrentLocationButtonProps) {
         if (map && window.kakao && window.kakao.maps) {
           map.setCenter(new window.kakao.maps.LatLng(lat, lng));
         }
-        const offset = 0.045;
         setPosition({ lat, lng });
         search(
-          { swLat: lat - offset, swLng: lng - offset, neLat: lat + offset, neLng: lng + offset },
+          { swLat: lat - BOUNDS_OFFSET, swLng: lng - BOUNDS_OFFSET, neLat: lat + BOUNDS_OFFSET, neLng: lng + BOUNDS_OFFSET },
           true
         );
         setIsLocating(false);
