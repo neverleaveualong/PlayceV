@@ -94,42 +94,42 @@ const Landing = () => {
       </nav>
 
       {/* Hero */}
-      <section className="relative pt-32 pb-20 md:pt-44 md:pb-32 overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-primary4/60 via-white to-primary3/30 -z-10" />
-        <div className="absolute top-20 right-0 w-[500px] h-[500px] bg-primary1/20 rounded-full blur-[120px] -z-10" />
+      <section className="relative pt-36 pb-20 md:pt-48 md:pb-36 overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-b from-primary4/40 via-white to-white -z-10" />
+        <div className="absolute top-10 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-primary1/15 rounded-full blur-[140px] -z-10" />
 
-        <div className="max-w-6xl mx-auto px-6">
-          <div className="max-w-2xl">
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-primary4 rounded-full text-sm text-primary5 font-medium mb-6">
-              <FiMapPin className="text-sm" />
-              스포츠 중계 맛집 찾기
-            </div>
+        <div className="max-w-6xl mx-auto px-6 text-center">
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-primary4/80 backdrop-blur-sm rounded-full text-sm text-primary5 font-medium mb-8">
+            <FiMapPin className="text-sm" />
+            스포츠 중계 맛집 찾기
+          </div>
 
-            <h1 className="text-4xl md:text-6xl font-extrabold text-mainText leading-tight tracking-tight">
-              경기장은 멀어도
-              <br />
-              <span className="text-primary5">응원은 가까이</span>
-            </h1>
+          <h1 className="text-5xl md:text-7xl font-extrabold text-mainText leading-[1.15] tracking-tight">
+            경기장은 멀어도
+            <br />
+            <span className="bg-gradient-to-r from-primary5 to-[#4A9030] bg-clip-text text-transparent">
+              응원은 가까이
+            </span>
+          </h1>
 
-            <p className="mt-6 text-lg md:text-xl text-darkgray leading-relaxed max-w-lg">
-              직관은 어렵지만, 근처에서 함께 응원할 수는 있잖아요.
-              <br className="hidden md:block" />
-              내 주변 중계 식당을 찾고, 무료로 Playce를 시작해보세요.
-            </p>
+          <p className="mt-8 text-lg md:text-xl text-darkgray leading-relaxed max-w-xl mx-auto">
+            직관은 어렵지만, 근처에서 함께 응원할 수는 있잖아요.
+            <br className="hidden md:block" />
+            내 주변 중계 식당을 찾고, 무료로 Playce를 시작해보세요.
+          </p>
 
-            <div className="mt-10 flex flex-col sm:flex-row gap-3">
-              <Link
-                to="/map"
-                className="inline-flex items-center justify-center gap-2 px-8 py-3.5 bg-primary5 text-white font-semibold rounded-2xl text-base hover:brightness-95 hover:scale-[1.02] transition-all shadow-lg shadow-primary5/25"
-              >
-                <FiMap className="text-lg" />
-                무료로 시작하기
-              </Link>
-            </div>
+          <div className="mt-10 flex justify-center">
+            <Link
+              to="/map"
+              className="inline-flex items-center justify-center gap-2 px-10 py-4 bg-primary5 text-white font-semibold rounded-2xl text-base hover:brightness-95 hover:scale-[1.02] transition-all shadow-lg shadow-primary5/25"
+            >
+              <FiMap className="text-lg" />
+              무료로 시작하기
+            </Link>
           </div>
 
           {/* Hero 영상 */}
-          <div className="mt-16 md:mt-20">
+          <div className="mt-16 md:mt-24 max-w-5xl mx-auto">
             <div className="relative rounded-2xl overflow-hidden shadow-2xl shadow-black/10 border border-gray-200/60">
               <video
                 src="/landing/search-video.webm"
