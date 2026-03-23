@@ -1,6 +1,4 @@
-import axios from "axios";
-import { requestHandler } from "./http";
-import { getToken } from "@/stores/authStore";
+import { requestHandler, httpClient } from "./http";
 import type { MenuItem } from "@/types/restaurant.types";
 
 export const getStoreDetail = (storeId: number) =>
@@ -28,8 +26,6 @@ export interface EditStoreProps {
   images: string[];
   description: string;
 }
-
-const BASE_URL = import.meta.env.VITE_BASE_URL;
 
 function base64ToFile(base64: string, filename: string): File {
   const arr = base64.split(",");
@@ -69,11 +65,8 @@ export const registerStore = async (data: RegisterStoreProps) => {
     formData.append("images", image);
   });
 
-  const res = await axios.post(`${BASE_URL}/stores`, formData, {
-    headers: {
-      "Content-Type": "multipart/form-data",
-      Authorization: `Bearer ${getToken()}`,
-    },
+  const res = await httpClient.post("/stores", formData, {
+    headers: { "Content-Type": "multipart/form-data" },
   });
 
   return res;
@@ -113,11 +106,8 @@ export const editStore = async (data: EditStoreProps, storeId: number) => {
     formData.append("img_urls", url); // 서버에서 기존 이미지 유지 처리
   });
 
-  const res = await axios.patch(`${BASE_URL}/stores/${storeId}`, formData, {
-    headers: {
-      "Content-Type": "multipart/form-data",
-      Authorization: `Bearer ${getToken()}`,
-    },
+  const res = await httpClient.patch(`/stores/${storeId}`, formData, {
+    headers: { "Content-Type": "multipart/form-data" },
   });
 
   return res;
