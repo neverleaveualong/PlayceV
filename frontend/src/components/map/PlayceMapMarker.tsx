@@ -19,6 +19,7 @@ const PlayceMapMarker = memo(function PlayceMapMarker({ restaurant }: PlayceMapM
       yAnchor={1.3}
     >
       <button
+        onTouchEnd={(e) => { e.stopPropagation(); }}
         onClick={() => {
           // 모달이 상단에 뜨므로 pan 위치를 아래로 오프셋 (위도 기준 약간 위로)
           const projection = map.getProjection();
