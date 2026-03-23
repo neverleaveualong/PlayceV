@@ -57,7 +57,10 @@ const PlayceModal = ({
       position={{ lat: restaurant.lat, lng: restaurant.lng }}
       yAnchor={1.15}
     >
-      <div className="relative w-[85vw] md:w-[360px] bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden font-pretendard">
+      <div
+        className="relative w-[85vw] md:w-[360px] bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden font-pretendard"
+        onTouchStart={(e) => e.stopPropagation()}
+      >
         {/* 닫기 */}
         <button
           onClick={onClose}
