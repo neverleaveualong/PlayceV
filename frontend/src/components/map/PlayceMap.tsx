@@ -6,6 +6,7 @@ import PlayceModal from "./PlayceModal";
 import SpotRefreshButton from "./SpotRefreshButton";
 import useToastStore from "@/stores/toastStore";
 import GoToCurrentLocationButton from "./CurrentMap";
+import CityQuickNav from "./CityQuickNav";
 import useNearbyRestaurants from "@/hooks/useNearbyRestaurants";
 import type { RestaurantBasic } from "@/types/restaurant.types";
 import { CITY_STATION } from "@/constants/mapConstant";
@@ -129,7 +130,7 @@ const PlayceMap: React.FC = () => {
           className="w-full h-full"
           ref={mapRef}
           center={position ? position : CITY_STATION}
-          isPanto={true}
+          isPanto={pendingModalId === null}
           onClick={closeModal}
           onDragEnd={handleDragEnd}
           onZoomChanged={handleZoomChanged}
@@ -151,6 +152,7 @@ const PlayceMap: React.FC = () => {
         {isRefreshBtnOn && (
           <SpotRefreshButton mapRef={mapRef} />
         )}
+        <CityQuickNav />
         <GoToCurrentLocationButton mapRef={mapRef} />
       </div>
     </>

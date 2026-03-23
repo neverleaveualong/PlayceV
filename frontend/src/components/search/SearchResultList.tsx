@@ -7,7 +7,7 @@ import useMapStore from "@/stores/mapStore";
 import type { SearchResultItem as SearchResultItemType } from "@/types/search";
 import LoadingSpinner from "@/components/common/LoadingSpinner";
 import EmptyMessage from "@/components/restaurant/EmptyMessage";
-import { FiChevronUp, FiChevronDown } from "react-icons/fi";
+import { FiChevronUp, FiChevronDown, FiX } from "react-icons/fi";
 
 const PAGE_SIZE = 20;
 
@@ -15,12 +15,14 @@ interface SearchResultListProps {
   results: SearchResultItemType[];
   isSearching: boolean;
   hasSearched: boolean;
+  onClose: () => void;
 }
 
 const SearchResultList = ({
   results,
   isSearching,
   hasSearched,
+  onClose,
 }: SearchResultListProps) => {
   const sort = useSearchStore((state) => state.sort);
   const setSort = useSearchStore((state) => state.setSort);
@@ -58,9 +60,9 @@ const SearchResultList = ({
 
   return (
     <div>
-      {/* 헤더: 건수 + 정렬 */}
-      <div className="flex justify-between items-center border-b border-gray-200 bg-gray-50 px-4 py-2.5">
-        <p className="text-sm font-medium text-gray-700">
+      {/* 헤더: 건수 + 정렬 + 닫기 */}
+      <div className="flex items-center border-b border-gray-200 bg-gray-50 px-4 py-2.5">
+        <p className="text-sm font-medium text-gray-700 flex-1 min-w-0">
           검색 결과
           {!isSearching && sortedResults.length > 0 && (
             <span className="text-primary5 font-bold ml-1.5">{sortedResults.length}건</span>
@@ -88,6 +90,13 @@ const SearchResultList = ({
           >
             날짜순
             <SortIcon active={sort === "datetime"} currentOrder={order} />
+          </button>
+          <button
+            onClick={onClose}
+            className="ml-1 w-7 h-7 flex items-center justify-center rounded-md text-gray-400 hover:text-gray-600 hover:bg-gray-200 transition-colors"
+            aria-label="검색 결과 닫기"
+          >
+            <FiX className="text-sm" />
           </button>
         </div>
       </div>

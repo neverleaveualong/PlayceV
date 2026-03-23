@@ -33,47 +33,34 @@ export default function RestaurantDetailComponent({
 
   useEffect(() => {
     if (!detail) return;
-    const { zoomLevel, bounds } = useMapStore.getState();
+    const { zoomLevel } = useMapStore.getState();
     const storeLat = detail.lat;
     const storeLng = detail.lng;
 
-    // 줌 레벨에 따른 동적 offset (마커 모달이 잘리지 않게 중심을 위로)
-    // 줌 레벨 1=가장 가까움, 14=가장 멀리
+    // 줌 레벨에 따른 동적 offset (마커 모달이 잘리지 않게 중심을 약간 위로)
+    // 기존 값이 너무 커서 가게가 화면 밖으로 밀리는 문제가 있었음
     const offsetMap: Record<number, number> = {
-      1: 0.001, 2: 0.002, 3: 0.004, 4: 0.008,
-      5: 0.015, 6: 0.03, 7: 0.06, 8: 0.12,
-      9: 0.24, 10: 0.5, 11: 1, 12: 2, 13: 4, 14: 8,
+      1: 0.0004, 2: 0.0008, 3: 0.0015, 4: 0.003,
+      5: 0.006, 6: 0.012, 7: 0.025, 8: 0.05,
+      9: 0.1, 10: 0.2, 11: 0.4, 12: 0.8, 13: 1.6, 14: 3.2,
     };
-    const latOffset = offsetMap[zoomLevel] ?? 0.004;
+    const latOffset = offsetMap[zoomLevel] ?? 0.0015;
     const pos = { lat: storeLat + latOffset, lng: storeLng };
 
-    // 가게가 현재 bounds 안에 있는지 확인
-    const isInBounds =
-      storeLat >= bounds.swLat && storeLat <= bounds.neLat &&
-      storeLng >= bounds.swLng && storeLng <= bounds.neLng;
-
-    if (isInBounds) {
-      // bounds 안에 있으면 position만 이동
-      useMapStore.setState({
-        position: pos,
-        isRefreshBtnOn: false,
-        pendingModalId: storeId,
-      });
-    } else {
-      // bounds 밖이면 bounds도 갱신해서 마커 로드
-      const boundsOffset = 0.045;
-      useMapStore.setState({
-        position: pos,
-        bounds: {
-          swLat: storeLat - boundsOffset,
-          swLng: storeLng - boundsOffset,
-          neLat: storeLat + boundsOffset,
-          neLng: storeLng + boundsOffset,
-        },
-        isRefreshBtnOn: false,
-        pendingModalId: storeId,
-      });
-    }
+    // 항상 bounds 갱신 + pendingModalId 사용
+    // (드래그 시 bounds가 갱신되지 않아 isInBounds 판단이 부정확했던 문제 해결)
+    const boundsOffset = 0.045;
+    useMapStore.setState({
+      position: pos,
+      bounds: {
+        swLat: storeLat - boundsOffset,
+        swLng: storeLng - boundsOffset,
+        neLat: storeLat + boundsOffset,
+        neLng: storeLng + boundsOffset,
+      },
+      isRefreshBtnOn: false,
+      pendingModalId: storeId,
+    });
   }, [detail, storeId]);
 
   if (loading) {

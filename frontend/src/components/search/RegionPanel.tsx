@@ -30,7 +30,7 @@ const RegionPanel = () => {
 
   return (
     <div className="flex flex-col">
-      <div className="flex overflow-hidden rounded-lg border border-gray-200 h-[55vh] md:h-[280px]">
+      <div className="flex overflow-hidden rounded-lg border border-gray-200 h-[35vh] md:h-[280px]">
         {/* 시/도 */}
         <div className="w-1/2 overflow-y-auto bg-gray-50 border-r border-gray-200">
           {bigRegionsLoading ? (
@@ -111,7 +111,7 @@ const RegionPanel = () => {
 
       {/* 선택된 태그 */}
       {selectedRegions.length > 0 && (
-        <div className="flex flex-wrap gap-1.5 pt-3">
+        <div className="flex flex-wrap gap-1.5 pt-3 max-h-[76px] overflow-y-auto">
           {selectedRegions.map((r) => {
             const label =
               r.smallRegion === "전체"
