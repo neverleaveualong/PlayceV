@@ -18,6 +18,10 @@ let toastCounter = 0;
 const TOAST_DURATION = 3000;
 const EXIT_ANIMATION_MS = 300;
 
+export const resetToastCounter = () => {
+  toastCounter = 0;
+};
+
 const useToastStore = create<ToastState>((set, get) => ({
   toasts: [],
   addToast: (message, type = "info") => {
