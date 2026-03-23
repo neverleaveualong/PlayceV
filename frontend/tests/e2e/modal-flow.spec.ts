@@ -1,7 +1,31 @@
 import { test, expect } from "@playwright/test";
 
+const TODAY = new Date().toISOString().slice(0, 10);
+
+const MOCK_STORE = {
+  store_id: 1,
+  store_name: "교촌치킨 서울시청점",
+  type: "치킨",
+  main_img: "/noimg.png",
+  address: "서울 중구 세종대로18길 6",
+  opening_hours: "매일 12:00 ~ 24:00",
+  lat: 37.5665,
+  lng: 126.978,
+  broadcasts: [
+    { match_date: TODAY, match_time: "16:30", sport: "축구", league: "K리그 1", team_one: "대전 시티즌", team_two: "수원 삼성", etc: "" },
+  ],
+};
+
+async function setupMocks(page: import("@playwright/test").Page) {
+  await page.route("**/search/nearby*", (r) => r.fulfill({
+    status: 200, contentType: "application/json",
+    body: JSON.stringify({ success: true, data: [MOCK_STORE] }),
+  }));
+}
+
 test.describe("모달 플로우", () => {
   test.beforeEach(async ({ page }) => {
+    await setupMocks(page);
     await page.goto("/map");
     await expect(page.getByText("오늘의 중계")).toBeVisible({ timeout: 15000 });
   });
@@ -23,7 +47,6 @@ test.describe("모달 플로우", () => {
   });
 
   test("지역 모달: 백드롭 클릭 → 선택 복원", async ({ page }) => {
-    // 초기 지역 버튼 텍스트 확인
     await expect(page.getByRole("button", { name: "지역", exact: true })).toBeVisible();
 
     await page.getByRole("button", { name: "지역" }).click();
