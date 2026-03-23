@@ -20,7 +20,7 @@ const SearchPage = () => {
   const [activeTab, setActiveTab] = useState<SidebarTab>("search");
   const [showRegionModal, setShowRegionModal] = useState(false);
   const { selectedRegions } = useRegionStore();
-  const { submittedParams } = useSearchStore();
+  const { submittedParams, setSubmittedParams } = useSearchStore();
 
   const { dateFrom, dateTo, setDateFrom, setDateTo } = useSearchStore();
 
@@ -116,13 +116,9 @@ const SearchPage = () => {
       }개`;
 
   return (
-    <div className="h-screen bg-white w-full md:w-sidebar">
+    <div className="h-screen bg-white w-full md:w-sidebar flex flex-col">
       <aside
-        className="w-full md:w-sidebar h-screen overflow-y-auto border-r bg-white"
-        style={{
-          scrollbarWidth: "none",
-          msOverflowStyle: "none",
-        }}
+        className="w-full md:w-sidebar flex-1 flex flex-col border-r bg-white overflow-hidden"
       >
         {/* 앱 이름/로고 */}
         <AppHeader />
@@ -155,9 +151,9 @@ const SearchPage = () => {
 
         {/* 탭 콘텐츠 */}
         {activeTab === "search" ? (
-          <>
+          <div className="flex-1 flex flex-col min-h-0">
             {/* 검색 영역 */}
-            <div className="border-b border-gray-100">
+            <div className="flex-shrink-0 border-b border-gray-100">
               <button
                 onClick={() => setSearchCollapsed(!searchCollapsed)}
                 className="w-full flex items-center justify-between px-4 py-3 hover:bg-gray-50 transition-colors"
@@ -262,19 +258,20 @@ const SearchPage = () => {
             </div>
             </div>
             {hasSearched || isSearching ? (
-              <div className="mt-4 px-3">
+              <div className="flex-1 overflow-y-auto" style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}>
                 <SearchResultList
                   results={results ?? []}
                   isSearching={isSearching}
                   hasSearched={hasSearched}
+                  onClose={() => setSubmittedParams(null)}
                 />
               </div>
             ) : (
-              <div className="px-4 py-4">
+              <div className="flex-1 overflow-y-auto px-4 py-4" style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}>
                 <TodayBroadcastSidebar />
               </div>
             )}
-          </>
+          </div>
         ) : (
           <FavoriteSidebar />
         )}
