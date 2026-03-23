@@ -6,6 +6,7 @@ import PlayceModal from "./PlayceModal";
 import SpotRefreshButton from "./SpotRefreshButton";
 import useToastStore from "@/stores/toastStore";
 import GoToCurrentLocationButton from "./CurrentMap";
+import CityQuickNav from "./CityQuickNav";
 import useNearbyRestaurants from "@/hooks/useNearbyRestaurants";
 import type { RestaurantBasic } from "@/types/restaurant.types";
 import { CITY_STATION } from "@/constants/mapConstant";
@@ -82,6 +83,15 @@ const PlayceMap: React.FC = () => {
     return () => clearTimeout(timer);
   }, [isSidebarOpen]);
 
+  // 윈도우 리사이즈 시 맵 크기 재조정
+  useEffect(() => {
+    const handleResize = () => {
+      setTimeout(() => mapRef.current?.relayout(), 100);
+    };
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   const getCurPosition = () => {
     const map = mapRef.current;
     if (!map) return;
@@ -120,7 +130,7 @@ const PlayceMap: React.FC = () => {
           className="w-full h-full"
           ref={mapRef}
           center={position ? position : CITY_STATION}
-          isPanto={true}
+          isPanto={pendingModalId === null}
           onClick={closeModal}
           onDragEnd={handleDragEnd}
           onZoomChanged={handleZoomChanged}
@@ -131,17 +141,21 @@ const PlayceMap: React.FC = () => {
               restaurant={restaurant}
             />
           ))}
-          {openedModal !== -1 && (
-            <PlayceModal
-              restaurant={restaurants.find((r) => r.store_id === openedModal)!}
-              onDetailClick={handleDetailClick}
-              onClose={closeModal}
-            />
-          )}
+          {openedModal !== -1 && (() => {
+            const target = restaurants.find((r) => r.store_id === openedModal);
+            return target ? (
+              <PlayceModal
+                restaurant={target}
+                onDetailClick={handleDetailClick}
+                onClose={closeModal}
+              />
+            ) : null;
+          })()}
         </Map>
         {isRefreshBtnOn && (
           <SpotRefreshButton mapRef={mapRef} />
         )}
+        <CityQuickNav />
         <GoToCurrentLocationButton mapRef={mapRef} />
       </div>
     </>
