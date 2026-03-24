@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: -apple-system, 'Pretendard', 'Segoe UI', sans-serif; background: #0d1117; color: #e6edf3; padding: 40px; }
+  .wrap { max-width: 960px; margin: 0 auto; }
+
+  /* Header */
+  .header { text-align: center; margin-bottom: 36px; }
+  .header h1 { font-size: 22px; font-weight: 800; color: #e6edf3; letter-spacing: -0.5px; }
+  .header p { font-size: 12px; color: #7d8590; margin-top: 4px; }
+
+  /* Stats Cards */
+  .stats { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; margin-bottom: 36px; }
+  .stat {
+    background: #161b22;
+    border: 1px solid #30363d;
+    border-radius: 12px;
+    padding: 20px 12px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .stat::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #66A648, #8bc34a);
+  }
+  .stat .num { font-size: 32px; font-weight: 800; color: #66A648; line-height: 1; }
+  .stat .label { font-size: 12px; color: #e6edf3; margin-top: 6px; font-weight: 600; }
+  .stat .sub { font-size: 10px; color: #7d8590; margin-top: 3px; }
+
+  /* Section Title */
+  .stitle {
+    font-size: 13px;
+    font-weight: 700;
+    color: #7d8590;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 16px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #21262d;
+  }
+
+  /* Why Section */
+  .why-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 36px; }
+  .why-card {
+    background: #161b22;
+    border: 1px solid #30363d;
+    border-radius: 12px;
+    padding: 18px;
+  }
+  .why-card .icon { font-size: 20px; margin-bottom: 8px; }
+  .why-card .problem { font-size: 12px; font-weight: 700; color: #f85149; margin-bottom: 6px; }
+  .why-card .desc { font-size: 11px; color: #7d8590; line-height: 1.6; }
+  .why-card .solution { font-size: 11px; color: #66A648; margin-top: 8px; font-weight: 600; }
+  .why-card .arrow { color: #30363d; margin: 0 4px; }
+
+  /* Timeline */
+  .timeline {
+    background: #161b22;
+    border: 1px solid #30363d;
+    border-radius: 12px;
+    padding: 24px 24px 24px 44px;
+    position: relative;
+  }
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 28px;
+    top: 24px;
+    bottom: 24px;
+    width: 2px;
+    background: #21262d;
+  }
+  .tl-item {
+    position: relative;
+    margin-bottom: 14px;
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+  }
+  .tl-item:last-child { margin-bottom: 0; }
+  .tl-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #30363d;
+    border: 2px solid #0d1117;
+    position: absolute;
+    left: -21px;
+    top: 4px;
+    z-index: 1;
+  }
+  .tl-dot.hi { background: #66A648; box-shadow: 0 0 8px #66A64840; }
+  .tl-phase {
+    font-size: 11px;
+    font-weight: 700;
+    color: #66A648;
+    min-width: 44px;
+    flex-shrink: 0;
+  }
+  .tl-text { font-size: 12px; color: #7d8590; line-height: 1.5; }
+  .tl-text strong { color: #e6edf3; }
+  .badge {
+    display: inline-block;
+    font-size: 9px;
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: 99px;
+    margin-left: 6px;
+    vertical-align: middle;
+  }
+  .badge.perf { background: #66A64818; color: #66A648; border: 1px solid #66A64830; }
+  .badge.arch { background: #3b82f618; color: #58a6ff; border: 1px solid #3b82f630; }
+  .badge.qual { background: #f59e0b18; color: #e3b341; border: 1px solid #f59e0b30; }
+  .badge.auto { background: #a855f718; color: #bc8cff; border: 1px solid #a855f730; }
+  .badge.ux { background: #f4364c18; color: #f85149; border: 1px solid #f4364c30; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="header">
+    <h1>Refactoring — 15 Phases · 61 PRs</h1>
+    <p>팀 개발 종료 후, 단독으로 수행한 코드 품질 · 성능 · 테스트 · CI 전면 개선</p>
+  </div>
+
+  <!-- Stats -->
+  <div class="stats">
+    <div class="stat"><div class="num">-42%</div><div class="label">메인 번들</div><div class="sub">510 → 295 KB</div></div>
+    <div class="stat"><div class="num">-90%</div><div class="label">MypageModal</div><div class="sub">311 → 31 KB</div></div>
+    <div class="stat"><div class="num">-36%</div><div class="label">TBT</div><div class="sub">280 → 180 ms</div></div>
+    <div class="stat"><div class="num">137</div><div class="label">테스트</div><div class="sub">Unit 109 + E2E 28</div></div>
+    <div class="stat"><div class="num">61</div><div class="label">Pull Requests</div><div class="sub">15단계 · 단독</div></div>
+  </div>
+
+  <!-- Why -->
+  <div class="stitle">왜 리팩토링했는가</div>
+  <div class="why-grid">
+    <div class="why-card">
+      <div class="problem">서버/클라이언트 상태 혼재</div>
+      <div class="desc">API 응답을 Zustand에 직접 저장하여 캐싱·리페칭·무효화를 전부 수동 관리. 데이터 불일치 버그 발생.</div>
+      <div class="solution">→ React Query로 서버 상태 분리</div>
+    </div>
+    <div class="why-card">
+      <div class="problem">번들 비대화 — 초기 로딩 저하</div>
+      <div class="desc">MypageModal(311KB) 등 모든 모달이 초기 번들에 포함. 사용하지 않는 코드가 FCP를 저하.</div>
+      <div class="solution">→ lazy() + Suspense + manualChunks</div>
+    </div>
+    <div class="why-card">
+      <div class="problem">테스트 0개 — 배포 불안</div>
+      <div class="desc">수동 클릭으로만 검증. 리팩토링 시 리그레션 감지 불가, 코드 변경에 대한 확신 부재.</div>
+      <div class="solution">→ Vitest 109 + Playwright 28 + CI</div>
+    </div>
+  </div>
+
+  <!-- Timeline -->
+  <div class="stitle">리팩토링 타임라인</div>
+  <div class="timeline">
+    <div class="tl-item"><div class="tl-dot"></div><div class="tl-phase">P1-3</div><div class="tl-text">데드코드 30+ 파일 제거 · 폴더 구조 재설계 · Path Alias · 버그 수정</div></div>
+    <div class="tl-item"><div class="tl-dot hi"></div><div class="tl-phase">P4</div><div class="tl-text"><strong>React Query 도입</strong> — 서버 상태를 Zustand에서 분리, 캐싱·리페칭 자동화 <span class="badge arch">아키텍처</span></div></div>
+    <div class="tl-item"><div class="tl-dot hi"></div><div class="tl-phase">P5</div><div class="tl-text"><strong>React Hook Form</strong> — useState 수동 폼 → 선언적 검증·에러 처리 <span class="badge arch">DX</span></div></div>
+    <div class="tl-item"><div class="tl-dot hi"></div><div class="tl-phase">P6</div><div class="tl-text"><strong>코드 스플리팅</strong> — MypageModal <strong>311 → 31 KB (-90%)</strong> lazy 로딩 <span class="badge perf">성능</span></div></div>
+    <div class="tl-item"><div class="tl-dot hi"></div><div class="tl-phase">P7</div><div class="tl-text"><strong>렌더링 + 번들 최적화</strong> — memo 10 · useMemo 17 · useCallback 11 · manualChunks 7개 <span class="badge perf">성능</span></div></div>
+    <div class="tl-item"><div class="tl-dot"></div><div class="tl-phase">P8-9</div><div class="tl-text">비동기 레이스 컨디션 수정 · Skeleton UI · 중복 제출 방지 <span class="badge ux">UX</span></div></div>
+    <div class="tl-item"><div class="tl-dot"></div><div class="tl-phase">P10</div><div class="tl-text">인증 시스템 (JWT 인터셉터) · 검색 고도화 (Query 캐싱 + URL 동기화)</div></div>
+    <div class="tl-item"><div class="tl-dot"></div><div class="tl-phase">P11-12</div><div class="tl-text">모바일 반응형 · 랜딩 리디자인 · UI 폴리싱 <span class="badge ux">UX</span></div></div>
+    <div class="tl-item"><div class="tl-dot hi"></div><div class="tl-phase">P13</div><div class="tl-text"><strong>테스트 137개</strong> — 로직은 Vitest(109), 유저 시나리오는 Playwright(28) <span class="badge qual">품질</span></div></div>
+    <div class="tl-item"><div class="tl-dot hi"></div><div class="tl-phase">P14</div><div class="tl-text"><strong>GitHub Actions CI</strong> — PR마다 Unit + E2E + npm audit 병렬 실행 <span class="badge auto">자동화</span></div></div>
+    <div class="tl-item"><div class="tl-dot"></div><div class="tl-phase">P15</div><div class="tl-text">ErrorBoundary 크래시 복구 · Skeleton UI · Web Vitals 측정 <span class="badge ux">UX</span></div></div>
+  </div>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: -apple-system, 'Pretendard', 'Segoe UI', sans-serif; background: #0d1117; color: #e6edf3; padding: 40px; }
+  .wrap { max-width: 960px; margin: 0 auto; }
+
+  .header { text-align: center; margin-bottom: 32px; }
+  .header h1 { font-size: 22px; font-weight: 800; color: #e6edf3; letter-spacing: -0.5px; }
+  .header p { font-size: 12px; color: #7d8590; margin-top: 4px; }
+
+  .stitle {
+    font-size: 13px; font-weight: 700; color: #7d8590;
+    text-transform: uppercase; letter-spacing: 1px;
+    margin-bottom: 16px; padding-bottom: 8px;
+    border-bottom: 1px solid #21262d;
+  }
+  .stitle span { color: #484f58; font-weight: 400; font-size: 11px; margin-left: 6px; text-transform: none; letter-spacing: 0; }
+  .section { margin-bottom: 36px; }
+
+  /* Fullstack */
+  .fullstack { display: grid; grid-template-columns: 1fr 56px 1fr; gap: 0; align-items: stretch; }
+  .fs-col {
+    background: #161b22;
+    border: 1px solid #30363d;
+    border-radius: 12px;
+    padding: 20px;
+  }
+  .fs-mid { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; }
+  .fs-arrow { color: #484f58; font-size: 18px; font-weight: 300; }
+  .fs-label { font-size: 9px; color: #484f58; letter-spacing: 0.5px; }
+  .fs-col h3 {
+    font-size: 12px; font-weight: 700; color: #e6edf3;
+    margin-bottom: 14px; padding-bottom: 8px;
+    border-bottom: 1px solid #21262d;
+  }
+  .fs-item { display: flex; align-items: center; gap: 10px; padding: 5px 0; font-size: 12px; color: #7d8590; }
+  .dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
+  .dot.g { background: #66A648; } .dot.b { background: #58a6ff; } .dot.a { background: #e3b341; } .dot.p { background: #bc8cff; }
+  .fname { color: #e6edf3; font-weight: 600; min-width: 110px; font-size: 12px; }
+  .fs-sub { margin-top: 14px; padding-top: 12px; border-top: 1px solid #21262d; }
+  .fs-sub h4 { font-size: 10px; color: #484f58; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
+
+  /* State Grid */
+  .state-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .state-card {
+    background: #161b22;
+    border: 1px solid #30363d;
+    border-radius: 12px;
+    padding: 20px;
+  }
+  .state-card h3 {
+    font-size: 12px; font-weight: 700; color: #e6edf3;
+    margin-bottom: 12px; padding-bottom: 8px;
+    border-bottom: 1px solid #21262d;
+  }
+  .state-card .tag { font-size: 10px; color: #7d8590; font-weight: 400; }
+
+  /* DB Grid */
+  .db-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; }
+  .db {
+    background: #161b22;
+    border: 1px solid #30363d;
+    border-radius: 10px;
+    padding: 14px 10px;
+    text-align: center;
+  }
+  .db .dn { font-size: 12px; font-weight: 700; color: #e6edf3; }
+  .db .dr { font-size: 9px; color: #484f58; margin-top: 4px; }
+  .db.core { border-color: #58a6ff40; }
+  .db.core .dn { color: #58a6ff; }
+
+  /* CI Pipeline */
+  .pipe { display: flex; align-items: center; gap: 10px; justify-content: center; }
+  .ps {
+    background: #161b22;
+    border: 1px solid #30363d;
+    border-radius: 10px;
+    padding: 14px 20px;
+    text-align: center;
+    min-width: 120px;
+  }
+  .ps .pn { font-size: 12px; font-weight: 700; color: #e6edf3; }
+  .ps .pd { font-size: 10px; color: #7d8590; margin-top: 3px; }
+  .ps.trigger { border-color: #66A648; }
+  .ps.trigger .pn { color: #66A648; }
+  .pa { color: #30363d; font-size: 18px; }
+  .parallel-wrap { display: flex; flex-direction: column; gap: 6px; }
+  .parallel-bracket {
+    border-left: 2px solid #30363d;
+    padding-left: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="header">
+    <h1>Architecture Overview</h1>
+    <p>Full-stack 구조 · 상태 관리 · DB 스키마 · CI 파이프라인</p>
+  </div>
+
+  <!-- Full-stack Architecture -->
+  <div class="section">
+    <div class="stitle">Full-stack Architecture</div>
+    <div class="fullstack">
+      <div class="fs-col">
+        <h3>Frontend — React 19 + Vite 6</h3>
+        <div class="fs-item"><span class="dot g"></span><span class="fname">Pages (3)</span>Landing · Home · Search</div>
+        <div class="fs-item"><span class="dot g"></span><span class="fname">Components (68)</span>10개 도메인 폴더</div>
+        <div class="fs-item"><span class="dot g"></span><span class="fname">Hooks (15)</span>커스텀 훅 (Query 기반)</div>
+        <div class="fs-item"><span class="dot g"></span><span class="fname">Stores (9)</span>Zustand UI 상태</div>
+        <div class="fs-item"><span class="dot g"></span><span class="fname">API (9)</span>Axios HTTP 클라이언트</div>
+        <div class="fs-item"><span class="dot g"></span><span class="fname">Utils (9)</span>유틸 함수</div>
+        <div class="fs-sub">
+          <h4>배포</h4>
+          <div class="fs-item"><span class="dot a"></span><span class="fname">Vercel</span>playce-app.vercel.app</div>
+        </div>
+      </div>
+      <div class="fs-mid">
+        <div class="fs-arrow">→</div>
+        <div class="fs-label">Axios</div>
+        <div class="fs-arrow">←</div>
+        <div class="fs-label">JSON</div>
+      </div>
+      <div class="fs-col">
+        <h3>Backend — Express 5 + TypeORM</h3>
+        <div class="fs-item"><span class="dot b"></span><span class="fname">Routes (6)</span>26개 엔드포인트</div>
+        <div class="fs-item"><span class="dot b"></span><span class="fname">Controllers (6)</span>요청 처리</div>
+        <div class="fs-item"><span class="dot b"></span><span class="fname">Services (6)</span>비즈니스 로직</div>
+        <div class="fs-item"><span class="dot b"></span><span class="fname">Entities (10)</span>TypeORM 모델</div>
+        <div class="fs-item"><span class="dot b"></span><span class="fname">Middlewares (6)</span>인증 · 검증 · 에러</div>
+        <div class="fs-sub">
+          <h4>인프라</h4>
+          <div class="fs-item"><span class="dot a"></span><span class="fname">Render</span>Express + MySQL</div>
+          <div class="fs-item"><span class="dot p"></span><span class="fname">Redis</span>JWT 세션 관리</div>
+          <div class="fs-item"><span class="dot p"></span><span class="fname">AWS S3</span>이미지 업로드</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- State Management -->
+  <div class="section">
+    <div class="stitle">State Management <span>서버 상태와 클라이언트 상태를 명확히 분리</span></div>
+    <div class="state-grid">
+      <div class="state-card">
+        <h3>Zustand — 클라이언트 상태 <span class="tag">(UI · 동기)</span></h3>
+        <div class="fs-item"><span class="dot g"></span><span class="fname">mapStore</span>좌표 · 줌 · 마커</div>
+        <div class="fs-item"><span class="dot g"></span><span class="fname">searchStore</span>검색 조건 · 쿼리</div>
+        <div class="fs-item"><span class="dot g"></span><span class="fname">authStore</span>로그인 · 토큰</div>
+        <div class="fs-item"><span class="dot g"></span><span class="fname">toastStore</span>알림 큐</div>
+        <div class="fs-item"><span class="dot g"></span><span class="fname">regionStore</span>지역 필터</div>
+        <div class="fs-item"><span class="dot g"></span><span class="fname">sportStore</span>종목 필터</div>
+        <div class="fs-item"><span class="dot g"></span><span class="fname">mypageStore</span>마이페이지 탭</div>
+      </div>
+      <div class="state-card">
+        <h3>React Query — 서버 상태 <span class="tag">(비동기 · 캐싱)</span></h3>
+        <div class="fs-item"><span class="dot b"></span><span class="fname">useNearbyRestaurants</span>주변 가게</div>
+        <div class="fs-item"><span class="dot b"></span><span class="fname">useSearchResults</span>검색 결과</div>
+        <div class="fs-item"><span class="dot b"></span><span class="fname">useFavorites</span>즐겨찾기</div>
+        <div class="fs-item"><span class="dot b"></span><span class="fname">useStoreDetail</span>가게 상세</div>
+        <div class="fs-item"><span class="dot b"></span><span class="fname">useBroadcasts</span>중계 일정</div>
+        <div class="fs-item"><span class="dot b"></span><span class="fname">useMyStores</span>내 가게</div>
+        <div class="fs-item"><span class="dot b"></span><span class="fname">useAuth</span>로그인 · 회원가입</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DB Schema -->
+  <div class="section">
+    <div class="stitle">Database Schema <span>MySQL + TypeORM · 10 entities</span></div>
+    <div class="db-grid">
+      <div class="db core"><div class="dn">User</div><div class="dr">→ Store, Favorite</div></div>
+      <div class="db core"><div class="dn">Store</div><div class="dr">→ Image, Broadcast</div></div>
+      <div class="db core"><div class="dn">Broadcast</div><div class="dr">→ Sport, League</div></div>
+      <div class="db"><div class="dn">Favorite</div><div class="dr">→ User, Store</div></div>
+      <div class="db"><div class="dn">StoreImage</div><div class="dr">→ Store (S3)</div></div>
+      <div class="db"><div class="dn">BigRegion</div><div class="dr">→ SmallRegion</div></div>
+      <div class="db"><div class="dn">SmallRegion</div><div class="dr">→ Store</div></div>
+      <div class="db"><div class="dn">Sport</div><div class="dr">→ League</div></div>
+      <div class="db"><div class="dn">League</div><div class="dr">→ Broadcast</div></div>
+      <div class="db"><div class="dn">BusinessNumber</div><div class="dr">검증용</div></div>
+    </div>
+  </div>
+
+  <!-- CI Pipeline -->
+  <div class="section">
+    <div class="stitle">CI Pipeline <span>PR 생성 시 3개 job 병렬 실행 — 하나라도 실패하면 머지 차단</span></div>
+    <div class="pipe">
+      <div class="ps trigger"><div class="pn">PR 생성</div><div class="pd">push to main</div></div>
+      <div class="pa">→</div>
+      <div class="parallel-bracket">
+        <div class="ps"><div class="pn">Unit Tests</div><div class="pd">Vitest 109개 · ~20s</div></div>
+        <div class="ps"><div class="pn">E2E Tests</div><div class="pd">Playwright 28개 · ~2m</div></div>
+        <div class="ps"><div class="pn">Security Audit</div><div class="pd">npm audit · high/critical</div></div>
+      </div>
+      <div class="pa">→</div>
+      <div class="ps trigger"><div class="pn">Merge</div><div class="pd">all passed</div></div>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>
