@@ -1,13 +1,18 @@
+import { useState } from "react";
 import { useAuth } from "@/hooks/useAuth";
 import { useForm } from "react-hook-form";
 import type { LoginProps } from "@/api/auth.api";
 import useAuthStore from "@/stores/authStore";
 import ErrorMessage from "@/components/common/ErrorMessage";
 import ModalBase from "@/components/common/ModalBase";
-import { FiMail, FiLock, FiLogIn, FiMapPin } from "react-icons/fi";
+import { FiMail, FiLock, FiLogIn, FiMapPin, FiPlay } from "react-icons/fi";
+
+const DEMO_EMAIL = import.meta.env.VITE_DEMO_EMAIL as string | undefined;
+const DEMO_PASSWORD = import.meta.env.VITE_DEMO_PASSWORD as string | undefined;
 
 const LoginModal = () => {
   const { userLogin, isPending } = useAuth();
+  const [isDemoLoading, setIsDemoLoading] = useState(false);
   const {
     isLoginModalOpen,
     setIsLoginModalOpen,
@@ -27,6 +32,16 @@ const LoginModal = () => {
 
   const handleCancel = () => {
     setIsLoginModalOpen(false);
+  };
+
+  const handleDemoLogin = async () => {
+    if (!DEMO_EMAIL || !DEMO_PASSWORD) return;
+    setIsDemoLoading(true);
+    try {
+      await userLogin({ email: DEMO_EMAIL, password: DEMO_PASSWORD });
+    } finally {
+      setIsDemoLoading(false);
+    }
   };
 
   const handleGoToSignup = () => {
@@ -123,6 +138,36 @@ const LoginModal = () => {
             {isPending ? "로그인 중..." : "로그인"}
           </button>
         </form>
+
+        {/* 데모 로그인 */}
+        {DEMO_EMAIL && DEMO_PASSWORD && (
+          <div className="mt-5">
+            <div className="flex items-center gap-3 mb-4">
+              <div className="flex-1 h-px bg-gray-200" />
+              <span className="text-xs text-gray-400">포트폴리오 방문자</span>
+              <div className="flex-1 h-px bg-gray-200" />
+            </div>
+            <button
+              type="button"
+              onClick={handleDemoLogin}
+              disabled={isDemoLoading || isPending}
+              className="w-full flex items-center justify-center gap-2 py-2.5 border border-primary5
+                text-primary5 font-semibold text-sm rounded-lg bg-primary1/30
+                hover:bg-primary1/60 active:scale-[0.98] transition-all
+                disabled:opacity-60 disabled:cursor-not-allowed"
+            >
+              {isDemoLoading ? (
+                <span className="w-4 h-4 border-2 border-primary5 border-t-transparent rounded-full animate-spin" />
+              ) : (
+                <FiPlay className="text-base" />
+              )}
+              {isDemoLoading ? "로그인 중..." : "데모 계정으로 체험하기"}
+            </button>
+            <p className="mt-1.5 text-center text-xs text-gray-400">
+              회원가입 없이 모든 기능 체험 가능
+            </p>
+          </div>
+        )}
 
         {/* 구분선 */}
         <div className="flex items-center gap-3 my-5">
