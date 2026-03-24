@@ -255,7 +255,7 @@ const TodayBroadcastSidebar = memo(function TodayBroadcastSidebar() {
       </div>
 
       {isLoading ? (
-        <ListSkeleton count={4} />
+        <ListSkeleton count={4} variant="broadcast" />
       ) : todayBroadcasts.length === 0 ? (
         <EmptyMessage message="오늘 중계되는 경기가 없습니다." />
       ) : (
