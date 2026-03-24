@@ -4,6 +4,7 @@ import Landing from "@/pages/Landing";
 import Home from "@/pages/Home";
 import useAuthStore from "@/stores/authStore";
 import LoadingSpinner from "@/components/common/LoadingSpinner";
+import ErrorBoundary from "@/components/common/ErrorBoundary";
 import { useQueryClient } from "@tanstack/react-query";
 import Toast from "@/components/common/Toast";
 
@@ -22,6 +23,7 @@ function App() {
   }, [isLoggedIn, queryClient]);
 
   return (
+    <ErrorBoundary>
     <BrowserRouter>
       <main className="min-h-screen bg-gray-50 font-sans relative">
         <Routes>
@@ -39,6 +41,7 @@ function App() {
         <Toast />
       </main>
     </BrowserRouter>
+    </ErrorBoundary>
   );
 }
 
