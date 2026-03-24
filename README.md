@@ -21,7 +21,6 @@
 
 - [프로젝트 개요](#프로젝트-개요)
 - [기술 스택](#기술-스택)
-- [주요 화면](#주요-화면)
 - [담당 기능 상세](#담당-기능-상세)
 - [리팩토링](#리팩토링)
 - [아키텍처](#아키텍처)
@@ -84,33 +83,11 @@
 
 ---
 
-## 주요 화면
-
-| 지도 검색 + 오늘의 중계 | 마커 팝업 → 상세 연결 |
-|:---:|:---:|
-| ![지도](pic/map-main.png) | ![마커](pic/03-map-marker-popup.png) |
-
-| 오늘의 중계 (모바일) | 즐겨찾기 (모바일) |
-|:---:|:---:|
-| ![중계](pic/06-broadcast-today-mobile.png) | ![즐겨찾기](pic/07-favorites-mobile.png) |
-
-| 식당 등록 폼 | 중계 캘린더 관리 |
-|:---:|:---:|
-| ![식당등록](pic/10-mypage-store-register.png) | ![캘린더](pic/11-mypage-broadcast-calendar.png) |
-
-| 검색 + 상세 (데스크톱) | 중계 상세 (데스크톱) |
-|:---:|:---:|
-| ![검색상세](pic/01-search-detail-desktop.png) | ![중계상세](pic/04-detail-broadcast-desktop.png) |
-
-<br>
-
----
-
 ## 담당 기능 상세
 
 ### 팀 개발 담당 (2025.06 ~ 07)
 
-<details>
+<details open>
 <summary><b>카카오맵 기반 식당 검색</b></summary>
 
 <br>
@@ -122,6 +99,10 @@
 - **도시 퀵네비게이션** — 12개 주요 도시 원클릭 이동 (서울, 부산, 대구 등)
 - **마커 → 팝업 → 상세** 3단계 인터랙션 플로우 설계
 - 지도 줌 레벨·중심 좌표 상태를 Zustand로 관리하여 페이지 이동 시에도 지도 상태 유지
+
+| 지도 검색 + 오늘의 중계 | 마커 클릭 → 팝업 → 상세 연결 |
+|:---:|:---:|
+| <img src="pic/map-main.png" width="450"> | <img src="pic/03-map-marker-popup.png" width="450"> |
 
 </details>
 
@@ -137,6 +118,10 @@
 - 식당 영업 상태(영업중/준비중/마감) 실시간 표시
 - 메뉴 리스트 · 사진 갤러리 · 주소 복사 기능
 
+| 식당 상세 + 중계 탭 | 중계 일정 날짜별 그룹핑 |
+|:---:|:---:|
+| <img src="pic/01-search-detail-desktop.png" width="450"> | <img src="pic/05-detail-broadcast-desktop2.png" width="450"> |
+
 </details>
 
 <details>
@@ -151,6 +136,8 @@
 - **거리순 정렬** — 현위치 기준으로 가까운 식당부터 표시
 - 모바일 반응형 카드 레이아웃
 
+<img src="pic/06-broadcast-today-mobile.png" width="360">
+
 </details>
 
 <details>
@@ -164,6 +151,8 @@
 - 가게별 **중계 일정 토글** — 즐겨찾기 목록에서 바로 중계 확인
 - 즐겨찾기 추가/삭제 API 연동 + 낙관적 업데이트
 
+<img src="pic/07-favorites-mobile.png" width="360">
+
 </details>
 
 <details>
@@ -176,6 +165,10 @@
 - **프로필 관리** — 닉네임 수정, 프로필 이미지 업로드 (AWS S3)
 - **식당 CRUD** — 등록 · 수정 · 삭제, 사업자번호 검증, 메뉴/사진 관리
 - **중계 캘린더** — 날짜별 중계 일정 등록/수정/삭제, 종목·리그·팀 선택 UI
+
+| 식당 등록 폼 | 중계 캘린더 관리 |
+|:---:|:---:|
+| <img src="pic/10-mypage-store-register.png" width="450"> | <img src="pic/11-mypage-broadcast-calendar.png" width="450"> |
 
 </details>
 
