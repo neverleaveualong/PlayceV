@@ -2,7 +2,7 @@ import { useState, useMemo, useEffect, useCallback, memo } from "react";
 import { FiTv, FiMapPin, FiClock, FiChevronDown } from "react-icons/fi";
 import useMapStore from "@/stores/mapStore";
 import useNearbyRestaurants from "@/hooks/useNearbyRestaurants";
-import LoadingSpinner from "@/components/common/LoadingSpinner";
+import { ListSkeleton } from "@/components/common/Skeleton";
 import FallbackImage from "@/components/common/FallbackImage";
 import EmptyMessage from "@/components/restaurant/EmptyMessage";
 import type { Broadcast } from "@/types/restaurant.types";
@@ -255,7 +255,7 @@ const TodayBroadcastSidebar = memo(function TodayBroadcastSidebar() {
       </div>
 
       {isLoading ? (
-        <LoadingSpinner message="중계 일정을 불러오는 중..." />
+        <ListSkeleton count={4} />
       ) : todayBroadcasts.length === 0 ? (
         <EmptyMessage message="오늘 중계되는 경기가 없습니다." />
       ) : (
