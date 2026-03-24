@@ -1,14 +1,13 @@
 <div align="center">
 
-# 🏟️ Playce
+# Playce
 
 **스포츠 중계 맛집 찾기 — 위치 기반 스포츠 중계 식당 검색 플랫폼**
 
 카카오맵 위에 스포츠 중계를 틀어주는 식당을 표시하고,<br>
 종목·리그·지역·날짜로 검색하고, 즐겨찾기로 관리하는 서비스
 
-[![Live](https://img.shields.io/badge/🌐_Live-playce--app.vercel.app-66A648?style=for-the-badge)](https://playce-app.vercel.app)
-[![API](https://img.shields.io/badge/🔌_API-playcev.onrender.com-3b82f6?style=for-the-badge)](https://playcev.onrender.com)
+[![Live](https://img.shields.io/badge/Live-playce--app.vercel.app-66A648?style=for-the-badge)](https://playce-app.vercel.app)
 
 <br>
 
@@ -18,22 +17,22 @@
 
 <br>
 
-## 📋 목차
+## 목차
 
-- [프로젝트 개요](#-프로젝트-개요)
-- [기술 스택](#-기술-스택)
-- [주요 화면](#-주요-화면)
-- [담당 기능 상세](#-담당-기능-상세)
-- [리팩토링](#-리팩토링)
-- [아키텍처](#-아키텍처)
-- [테스트 & CI](#-테스트--ci)
-- [실행 방법](#-실행-방법)
+- [프로젝트 개요](#프로젝트-개요)
+- [기술 스택](#기술-스택)
+- [주요 화면](#주요-화면)
+- [담당 기능 상세](#담당-기능-상세)
+- [리팩토링](#리팩토링)
+- [아키텍처](#아키텍처)
+- [테스트 & CI](#테스트--ci)
+- [실행 방법](#실행-방법)
 
 <br>
 
 ---
 
-## 📌 프로젝트 개요
+## 프로젝트 개요
 
 > "직관은 비싸고, 혼자 보기엔 아쉽다. 근처 식당에서 같이 응원하자."
 
@@ -49,7 +48,7 @@
 
 ---
 
-## 🛠 기술 스택
+## 기술 스택
 
 ### Frontend
 
@@ -85,7 +84,7 @@
 
 ---
 
-## 📸 주요 화면
+## 주요 화면
 
 | 지도 검색 + 오늘의 중계 | 마커 팝업 → 상세 연결 |
 |:---:|:---:|
@@ -107,12 +106,12 @@
 
 ---
 
-## 🎯 담당 기능 상세
+## 담당 기능 상세
 
 ### 팀 개발 담당 (2025.06 ~ 07)
 
 <details>
-<summary><b>🗺️ 카카오맵 기반 식당 검색</b></summary>
+<summary><b>카카오맵 기반 식당 검색</b></summary>
 
 <br>
 
@@ -127,7 +126,7 @@
 </details>
 
 <details>
-<summary><b>🏪 식당 상세보기</b></summary>
+<summary><b>식당 상세보기</b></summary>
 
 <br>
 
@@ -141,7 +140,7 @@
 </details>
 
 <details>
-<summary><b>📺 오늘의 중계</b></summary>
+<summary><b>오늘의 중계</b></summary>
 
 <br>
 
@@ -155,7 +154,7 @@
 </details>
 
 <details>
-<summary><b>⭐ 즐겨찾기</b></summary>
+<summary><b>즐겨찾기</b></summary>
 
 <br>
 
@@ -168,7 +167,7 @@
 </details>
 
 <details>
-<summary><b>👤 마이페이지</b></summary>
+<summary><b>마이페이지</b></summary>
 
 <br>
 
@@ -185,7 +184,7 @@
 ### 단독 리팩토링 후 추가 (2026.03)
 
 <details>
-<summary><b>🔐 인증 시스템</b></summary>
+<summary><b>인증 시스템</b></summary>
 
 <br>
 
@@ -199,7 +198,7 @@ JWT 기반 인증 플로우를 프론트엔드에서 전담 구현.
 </details>
 
 <details>
-<summary><b>🔍 검색 고도화</b></summary>
+<summary><b>검색 고도화</b></summary>
 
 <br>
 
@@ -215,7 +214,7 @@ JWT 기반 인증 플로우를 프론트엔드에서 전담 구현.
 
 ---
 
-## 🔧 리팩토링
+## 리팩토링
 
 팀 개발 종료 후, **단독으로 15단계 · 61 PR에 걸쳐 코드 품질 · 성능 · 테스트 · CI를 전면 개선.**
 
@@ -257,7 +256,7 @@ JWT 기반 인증 플로우를 프론트엔드에서 전담 구현.
 
 ---
 
-## 🏗 아키텍처
+## 아키텍처
 
 <div align="center">
 
@@ -304,7 +303,7 @@ User ──→ Store ──→ StoreImage
 
 ---
 
-## 🧪 테스트 & CI
+## 테스트 & CI
 
 ### 테스트 커버리지
 
@@ -337,7 +336,7 @@ PR 생성 ──→ ┌── Unit Tests     (Vitest 109개 · ~20s)
 
 ---
 
-## 🚀 실행 방법
+## 실행 방법
 
 ```bash
 # 프론트엔드
