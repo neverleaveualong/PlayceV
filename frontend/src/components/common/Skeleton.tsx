@@ -39,11 +39,31 @@ export function CardSkeleton() {
   );
 }
 
-export function ListSkeleton({ count = 3 }: { count?: number }) {
+export function BroadcastCardSkeleton() {
+  return (
+    <div className="flex items-start gap-3 p-4 rounded-2xl bg-white shadow-[0_1px_4px_rgba(0,0,0,0.06)]">
+      <Skeleton className="w-12 h-12 flex-shrink-0" />
+      <div className="flex-1 space-y-1.5 py-0.5">
+        <div className="flex items-center justify-between">
+          <Skeleton className="h-4 w-1/2" variant="text" />
+          <Skeleton className="h-3 w-10" variant="text" />
+        </div>
+        <Skeleton className="h-[18px] w-3/4" variant="text" />
+        <div className="flex gap-2">
+          <Skeleton className="h-[18px] w-12 rounded-md" />
+          <Skeleton className="h-3 w-10" variant="text" />
+          <Skeleton className="h-3 w-10" variant="text" />
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export function ListSkeleton({ count = 3, variant = "card" }: { count?: number; variant?: "card" | "broadcast" }) {
   return (
     <div className="flex flex-col gap-2.5 px-4 py-3">
       {Array.from({ length: count }, (_, i) => (
-        <CardSkeleton key={i} />
+        variant === "broadcast" ? <BroadcastCardSkeleton key={i} /> : <CardSkeleton key={i} />
       ))}
     </div>
   );

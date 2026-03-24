@@ -5,7 +5,7 @@ import { sortSearchResults } from "@/utils/sortUtils";
 import type { SortOrder } from "@/utils/sortUtils";
 import useMapStore from "@/stores/mapStore";
 import type { SearchResultItem as SearchResultItemType } from "@/types/search";
-import LoadingSpinner from "@/components/common/LoadingSpinner";
+import { ListSkeleton } from "@/components/common/Skeleton";
 import EmptyMessage from "@/components/restaurant/EmptyMessage";
 import { FiChevronUp, FiChevronDown, FiX } from "react-icons/fi";
 
@@ -104,7 +104,7 @@ const SearchResultList = ({
       {/* 결과 목록 */}
       <div>
         {isSearching ? (
-          <div className="py-12"><LoadingSpinner message="검색 중..." /></div>
+          <div className="py-4"><ListSkeleton count={4} /></div>
         ) : sortedResults.length === 0 ? (
           <EmptyMessage message="검색 결과가 없습니다." />
         ) : (
