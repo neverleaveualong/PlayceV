@@ -56,6 +56,7 @@ app.use(express.json());
 app.use(express.static(path.resolve(__dirname, "../../public")));
 
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+app.get("/health", (req, res) => res.status(200).json({ status: "ok" }));
 app.use("/users", userRoutes);
 app.use("/stores", storeRoutes);
 app.use("/search", searchRoutes);
