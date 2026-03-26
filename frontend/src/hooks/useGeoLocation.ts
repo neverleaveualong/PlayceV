@@ -5,7 +5,7 @@ import { CITY_STATION } from "@/constants/mapConstant";
 
 export const useGeoLocation = (options = {}) => {
   const { initPosition } = useMapStore();
-  const { addToast } = useToastStore();
+  const { addToast, updateToast } = useToastStore();
   const [error, setError] = useState("");
 
   useEffect(() => {
@@ -18,24 +18,24 @@ export const useGeoLocation = (options = {}) => {
       return;
     }
 
-    addToast("현재 위치를 찾고 있어요...", "info");
+    const toastId = addToast("현재 위치를 찾고 있어요...", "info");
 
     geolocation.getCurrentPosition(
       (pos) => {
         const { latitude, longitude } = pos.coords;
         initPosition({ lat: latitude, lng: longitude });
-        addToast("현재 위치로 이동했어요!", "success");
+        updateToast(toastId, "현재 위치로 이동했어요!", "success");
       },
       (err) => {
         setError(err.message);
         initPosition(CITY_STATION);
 
         if (err.code === err.PERMISSION_DENIED) {
-          addToast("위치 권한이 거부되었습니다. 기본 위치(서울)로 표시합니다.", "info");
+          updateToast(toastId, "위치 권한이 거부되었습니다. 기본 위치(서울)로 표시합니다.", "info");
         } else if (err.code === err.TIMEOUT) {
-          addToast("위치를 가져오는 데 시간이 초과되었습니다.", "info");
+          updateToast(toastId, "위치를 가져오는 데 시간이 초과되었습니다.", "info");
         } else {
-          addToast("위치를 가져올 수 없어 기본 위치로 표시합니다.", "info");
+          updateToast(toastId, "위치를 가져올 수 없어 기본 위치로 표시합니다.", "info");
         }
       },
       options
