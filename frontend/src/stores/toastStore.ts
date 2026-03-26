@@ -9,7 +9,8 @@ interface Toast {
 
 interface ToastState {
   toasts: Toast[];
-  addToast: (message: string, type?: Toast["type"]) => void;
+  addToast: (message: string, type?: Toast["type"]) => string;
+  updateToast: (id: string, message: string, type?: Toast["type"]) => void;
   dismissToast: (id: string) => void;
   removeToast: (id: string) => void;
 }
@@ -33,6 +34,14 @@ const useToastStore = create<ToastState>((set, get) => ({
       ],
     }));
     setTimeout(() => get().dismissToast(id), TOAST_DURATION);
+    return id;
+  },
+  updateToast: (id, message, type = "info") => {
+    set((state) => ({
+      toasts: state.toasts.map((t) =>
+        t.id === id ? { ...t, message, type } : t
+      ),
+    }));
   },
   dismissToast: (id) => {
     const toast = get().toasts.find((t) => t.id === id);
