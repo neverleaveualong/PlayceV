@@ -2,9 +2,13 @@ import { useState, useEffect } from "react";
 import useMapStore from "@/stores/mapStore";
 import useToastStore from "@/stores/toastStore";
 import { CITY_STATION } from "@/constants/mapConstant";
+import type { Bounds } from "@/types/map";
 
-export const useGeoLocation = (options = {}) => {
-  const { initPosition } = useMapStore();
+export const useGeoLocation = (
+  mapRef: React.RefObject<kakao.maps.Map | null>,
+  options = {}
+) => {
+  const { initPosition, search } = useMapStore();
   const { addToast, updateToast } = useToastStore();
   const [error, setError] = useState("");
 
@@ -23,7 +27,25 @@ export const useGeoLocation = (options = {}) => {
     geolocation.getCurrentPosition(
       (pos) => {
         const { latitude, longitude } = pos.coords;
-        initPosition({ lat: latitude, lng: longitude });
+        const map = mapRef.current;
+
+        if (map && window.kakao && window.kakao.maps) {
+          map.setCenter(new window.kakao.maps.LatLng(latitude, longitude));
+          const kakaoBounds = map.getBounds();
+          const sw = kakaoBounds.getSouthWest();
+          const ne = kakaoBounds.getNorthEast();
+          const bounds: Bounds = {
+            swLat: sw.getLat(),
+            swLng: sw.getLng(),
+            neLat: ne.getLat(),
+            neLng: ne.getLng(),
+          };
+          useMapStore.setState({ myPosition: { lat: latitude, lng: longitude } });
+          search(bounds);
+        } else {
+          initPosition({ lat: latitude, lng: longitude });
+        }
+
         updateToast(toastId, "현재 위치로 이동했어요!", "success");
       },
       (err) => {

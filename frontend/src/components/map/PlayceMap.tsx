@@ -8,6 +8,7 @@ import useToastStore from "@/stores/toastStore";
 import GoToCurrentLocationButton from "./CurrentMap";
 import CityQuickNav from "./CityQuickNav";
 import useNearbyRestaurants from "@/hooks/useNearbyRestaurants";
+import { useGeoLocation } from "@/hooks/useGeoLocation";
 import type { RestaurantBasic } from "@/types/restaurant.types";
 import { CITY_STATION } from "@/constants/mapConstant";
 
@@ -64,6 +65,13 @@ const PlayceMap: React.FC = () => {
   }, [isFetching, addToast]);
 
   const mapRef = useRef<kakao.maps.Map | null>(null);
+
+  const geolocationOptions = {
+    enableHighAccuracy: true,
+    timeout: 1000 * 10,
+    maximumAge: 1000 * 3600 * 24,
+  };
+  useGeoLocation(mapRef, geolocationOptions);
 
   useEffect(() => {
     if (mapRef.current) {

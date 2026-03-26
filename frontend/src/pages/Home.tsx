@@ -3,7 +3,6 @@ import LoadingSpinner from "@/components/common/LoadingSpinner";
 import AuthHeader from "@/components/auth/AuthHeader";
 import Map from "@/components/map/PlayceMap";
 import RestaurantDetailComponent from "@/components/restaurant/RestaurantDetail";
-import { useGeoLocation } from "@/hooks/useGeoLocation";
 import useMapStore from "@/stores/mapStore";
 import useMypageStore from "@/stores/mypageStore";
 import SearchPage from "./SearchPage";
@@ -32,14 +31,6 @@ const Home: React.FC = () => {
       window.history.replaceState({}, "", window.location.pathname);
     }
   }, [openDetail]);
-
-  const geolocationOptions = {
-    enableHighAccuracy: true,
-    timeout: 1000 * 10,
-    maximumAge: 1000 * 3600 * 24,
-  };
-
-  useGeoLocation(geolocationOptions);
 
   return (
     <div className="flex h-screen overflow-hidden">
